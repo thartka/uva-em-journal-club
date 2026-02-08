@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Normal Distribution - Mean and SD Demonstration</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>Exercise 2: Normal Distribution</h1>
+            <a href="index.html" class="back-link">← Back to Start</a>
+        </header>
+        
+        <div class="exercise-container">
+            <div class="controls">
+                <div class="control-group">
+                    <label for="num-samples">Number of Samples:</label>
+                    <input type="range" id="num-samples" min="10" max="1000" value="100" step="10">
+                    <span id="num-samples-value">100</span>
+                </div>
+                
+                <div class="control-group control-group-centered">
+                    <button id="add-samples-btn" class="btn btn-primary">Add Random Samples</button>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <p><strong>Distribution:</strong> Normal (μ = 14 mGy, σ = 23.1 mGy)</p>
+            </div>
+            
+            <div class="canvas-container">
+                <canvas id="histogram-canvas"></canvas>
+            </div>
+            
+            <div class="stats-display" id="stats-display">
+                <p>Adjust the slider to generate samples</p>
+            </div>
+            
+            <div class="buttons">
+                <button id="calculate-btn" class="btn btn-primary">Calculate Mean & SD</button>
+                <button id="reset-btn" class="btn btn-secondary">Reset</button>
+                <button id="next-btn" class="btn btn-primary">Next Exercise</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/histogram.js"></script>
+    <script src="js/normal-exercise.js"></script>
+</body>
+</html>

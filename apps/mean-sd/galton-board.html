@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galton Board - Mean and SD Demonstration</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>Exercise 1: Galton Board</h1>
+            <a href="index.html" class="back-link">← Back to Start</a>
+        </header>
+        
+        <div class="exercise-container">
+            <div class="controls">
+                <div class="control-group">
+                    <label for="num-balls">Number of Balls:</label>
+                    <input type="range" id="num-balls" min="10" max="250" value="100" step="10">
+                    <span id="num-balls-value">100</span>
+                </div>
+                
+                <div class="control-group control-group-centered">
+                    <button id="drop-balls-btn" class="btn btn-primary">Drop Balls</button>
+                </div>
+            </div>
+            
+            <div class="canvas-container">
+                <canvas id="galton-canvas"></canvas>
+            </div>
+            
+            <div class="buttons">
+                <button id="add-curve-btn" class="btn btn-primary">Add Normal Curve</button>
+                <button id="reset-btn" class="btn btn-secondary">Reset</button>
+                <button id="next-btn" class="btn btn-primary">Next Exercise</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/galton-board.js"></script>
+</body>
+</html>
