@@ -10,8 +10,11 @@ class GaltonBoard {
         this.bins = new Array(11).fill(0);
         this.balls = [];
         this.animationId = null;
+        this.speed = 50; // Speed setting (0-100, default 50)
+        // Initialize speeds - will be set by updateSpeedSettings()
         this.ballSpeed = 8;
         this.horizontalSpeed = 6; // Speed for horizontal movement
+        this.ballInterval = 250; // ms between ball drops (will be updated by updateSpeedSettings)
         this.pegRadius = 4;
         this.ballRadius = 5;
         this.binWidth = 0;
@@ -22,6 +25,9 @@ class GaltonBoard {
         
         this.resizeCanvas();
         window.addEventListener('resize', () => this.resizeCanvas());
+        
+        // Initialize speed settings
+        this.updateSpeedSettings();
         
         this.setupControls();
     }
@@ -90,31 +96,91 @@ class GaltonBoard {
     setupControls() {
         const numBallsSlider = document.getElementById('num-balls');
         const numBallsValue = document.getElementById('num-balls-value');
+        const speedSlider = document.getElementById('speed');
+        const speedValue = document.getElementById('speed-value');
         const dropBallsBtn = document.getElementById('drop-balls-btn');
         const resetBtn = document.getElementById('reset-btn');
         const nextBtn = document.getElementById('next-btn');
         
-        numBallsSlider.addEventListener('input', (e) => {
-            this.numBalls = parseInt(e.target.value);
-            numBallsValue.textContent = this.numBalls;
-        });
+        if (numBallsSlider && numBallsValue) {
+            numBallsSlider.addEventListener('input', (e) => {
+                this.numBalls = parseInt(e.target.value);
+                numBallsValue.textContent = this.numBalls;
+            });
+        }
         
-        dropBallsBtn.addEventListener('click', () => {
-            // Only start if not already running and no balls are active
-            if (!this.animationId && this.balls.length === 0) {
-                this.startSimulation();
-            }
-        });
+        if (speedSlider && speedValue) {
+            speedSlider.addEventListener('input', (e) => {
+                this.speed = parseInt(e.target.value);
+                // Update speed display
+                if (this.speed < 25) {
+                    speedValue.textContent = 'Slow';
+                } else if (this.speed < 75) {
+                    speedValue.textContent = 'Medium';
+                } else {
+                    speedValue.textContent = 'Fast';
+                }
+                // Update ball speed for active balls
+                this.updateSpeedSettings();
+            });
+        }
+        
+        if (dropBallsBtn) {
+            dropBallsBtn.addEventListener('click', () => {
+                // Only start if not already running and no balls are active
+                if (!this.animationId && this.balls.length === 0) {
+                    this.startSimulation();
+                }
+            });
+        }
         
         const addCurveBtn = document.getElementById('add-curve-btn');
-        addCurveBtn.addEventListener('click', () => {
-            this.toggleNormalCurve();
-        });
+        if (addCurveBtn) {
+            addCurveBtn.addEventListener('click', () => {
+                this.toggleNormalCurve();
+            });
+        }
         
-        resetBtn.addEventListener('click', () => this.reset());
-        nextBtn.addEventListener('click', () => {
-            window.location.href = 'normal-distribution.html';
-        });
+        if (resetBtn) {
+            resetBtn.addEventListener('click', () => this.reset());
+        }
+        
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                window.location.href = 'normal-distribution.html';
+            });
+        }
+    }
+    
+    updateSpeedSettings() {
+        // Calculate ball speed based on speed setting (0-100)
+        // Slow (0): 2, Medium (50): 8 (original), Fast (100): 20
+        // Use piecewise linear: from 0-50 and 50-100
+        let ballSpeed;
+        if (this.speed <= 50) {
+            // Linear from 2 to 8 as speed goes from 0 to 50
+            ballSpeed = 2 + (this.speed / 50) * 6;
+        } else {
+            // Linear from 8 to 20 as speed goes from 50 to 100
+            ballSpeed = 8 + ((this.speed - 50) / 50) * 12;
+        }
+        this.ballSpeed = ballSpeed;
+        
+        // Scale horizontal speed proportionally
+        // Slow (0): 1.5, Medium (50): 6 (original), Fast (100): 15
+        let horizontalSpeed;
+        if (this.speed <= 50) {
+            // Linear from 1.5 to 6 as speed goes from 0 to 50
+            horizontalSpeed = 1.5 + (this.speed / 50) * 4.5;
+        } else {
+            // Linear from 6 to 15 as speed goes from 50 to 100
+            horizontalSpeed = 6 + ((this.speed - 50) / 50) * 9;
+        }
+        this.horizontalSpeed = horizontalSpeed;
+        
+        // Calculate ball drop interval based on speed setting
+        // Slow (0): 500ms (10 balls in 5 seconds), Fast (100): 20ms (250 balls in 5 seconds)
+        this.ballInterval = 500 - (this.speed / 100) * 480;
     }
     
     reset() {
@@ -180,13 +246,15 @@ class GaltonBoard {
     startSimulation() {
         if (this.animationId) return; // Already running
         
+        // Update speed settings based on current slider value
+        this.updateSpeedSettings();
+        
         let ballsToDrop = this.numBalls;
-        let ballInterval = 40; // ms between ball drops (4x faster: 200/4 = 50)
         let lastBallTime = 0;
         
         const animate = (currentTime) => {
-            // Drop new ball if needed
-            if (ballsToDrop > 0 && currentTime - lastBallTime >= ballInterval) {
+            // Drop new ball if needed - use this.ballInterval so it updates dynamically
+            if (ballsToDrop > 0 && currentTime - lastBallTime >= this.ballInterval) {
                 this.dropBall();
                 ballsToDrop--;
                 lastBallTime = currentTime;
