@@ -58,14 +58,16 @@ class GaltonBoard {
         // Calculate spacing
         this.topMargin = 40;
         this.sideMargin = 20;
-        this.binHeight = 200; // Height of bins (doubled)
         this.binLabelHeight = 20; // Space for bin labels below bins
         this.pegBinGap = 30; // Gap between pegs and bins
         
-        // Calculate board dimensions (pegs area)
-        // Reserve space at bottom for bins, gap, and labels
-        const bottomReserved = this.binHeight + this.pegBinGap + this.binLabelHeight;
-        this.boardHeight = this.height - this.topMargin - bottomReserved;
+        // Calculate available space for pegs and bins (excluding margins and labels)
+        const availableHeight = this.height - this.topMargin - this.pegBinGap - this.binLabelHeight;
+        
+        // Maintain 2/3 pegs, 1/3 bins ratio
+        this.boardHeight = availableHeight * (2/3); // Pegs area gets 2/3
+        this.binHeight = availableHeight * (1/3); // Bins area gets 1/3
+        
         this.boardWidth = this.width - 2 * this.sideMargin;
         
         // Calculate peg positions
