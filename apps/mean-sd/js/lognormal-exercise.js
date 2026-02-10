@@ -43,26 +43,25 @@ class LognormalExercise {
     addSamples() {
         const numSamples = parseInt(document.getElementById('num-samples').value);
         
-        // Generate new samples and filter out values greater than 80
+        // Generate new samples - keep ALL samples (including > 80) for calculations
         const newSamples = [];
         for (let i = 0; i < numSamples; i++) {
-            const sample = this.generateLognormalSample();
-            // Only add samples that are <= 80
-            if (sample <= 80) {
-                newSamples.push(sample);
-            }
+            newSamples.push(this.generateLognormalSample());
         }
         
-        // Append to existing samples
-        const existingCount = this.samples.length;
+        // Append to existing samples (keep all for calculations)
         this.samples = this.samples.concat(newSamples);
+        
+        // Filter samples for display (only <= 80) - used for histogram plotting
+        const filteredSamples = this.samples.filter(sample => sample <= 80);
+        const existingFilteredCount = Math.max(0, filteredSamples.length - newSamples.filter(s => s <= 80).length);
         
         this.samplesAdded = true;
         this.curveShown = false;
         this.histogram.hideCurve();
         
-        // Animate the accumulation of new samples only
-        this.histogram.setDataAnimated(this.samples, existingCount, () => {
+        // Animate the accumulation of filtered samples only (for display)
+        this.histogram.setDataAnimated(filteredSamples, existingFilteredCount, () => {
             this.updateStatsDisplay();
         });
     }
@@ -89,8 +88,9 @@ class LognormalExercise {
     calculateStats() {
         if (this.samples.length === 0) return;
         
-        this.calculatedMean = this.histogram.calculateMean();
-        this.calculatedSD = this.histogram.calculateSD();
+        // Calculate mean and SD from ALL samples (including > 80)
+        this.calculatedMean = this.calculateMeanFromSamples();
+        this.calculatedSD = this.calculateSDFromSamples();
         
         // Show normal curve overlay (demonstrating why it's inappropriate)
         this.histogram.showNormalCurve(this.calculatedMean, this.calculatedSD);
@@ -98,6 +98,21 @@ class LognormalExercise {
         
         // Update stats display
         this.updateStatsDisplay();
+    }
+    
+    calculateMeanFromSamples() {
+        if (this.samples.length === 0) return 0;
+        const sum = this.samples.reduce((a, b) => a + b, 0);
+        return sum / this.samples.length;
+    }
+    
+    calculateSDFromSamples() {
+        if (this.samples.length === 0) return 0;
+        const mean = this.calculateMeanFromSamples();
+        const sumSquaredDiffs = this.samples.reduce((sum, value) => {
+            return sum + Math.pow(value - mean, 2);
+        }, 0);
+        return Math.sqrt(sumSquaredDiffs / this.samples.length);
     }
     
     updateStatsDisplay() {
@@ -108,12 +123,22 @@ class LognormalExercise {
             return;
         }
         
-        let html = `<p><strong>Number of Samples:</strong> ${this.samples.length}</p>`;
+        // Count displayed samples (<= 80) and total samples
+        const displayedSamples = this.samples.filter(s => s <= 80).length;
+        const totalSamples = this.samples.length;
+        const hiddenSamples = totalSamples - displayedSamples;
+        
+        let html = `<p><strong>Number of Samples:</strong> ${totalSamples}`;
+        if (hiddenSamples > 0) {
+            html += ` (${displayedSamples} displayed, ${hiddenSamples} > 80 hidden from plot)</p>`;
+        } else {
+            html += `</p>`;
+        }
         html += `<p><strong>True Distribution:</strong> Lognormal (s = ${this.shape}, scale = ${this.scale})</p>`;
         
         if (this.curveShown) {
-            html += `<p><strong>Calculated Mean:</strong> ${this.calculatedMean.toFixed(2)} mGy</p>`;
-            html += `<p><strong>Calculated SD:</strong> ${this.calculatedSD.toFixed(2)} mGy</p>`;
+            html += `<p><strong>Calculated Mean:</strong> ${this.calculatedMean.toFixed(2)} mGy (from all ${totalSamples} samples)</p>`;
+            html += `<p><strong>Calculated SD:</strong> ${this.calculatedSD.toFixed(2)} mGy (from all ${totalSamples} samples)</p>`;
             html += `<p style="color: #d32f2f;"><strong>⚠️ Note:</strong> The normal curve does not fit well because the data is lognormally distributed, not normally distributed!</p>`;
             html += `<p style="color: #666;">Mean and standard deviation are not appropriate summary statistics for this distribution.</p>`;
         } else {
