@@ -1,0 +1,3 @@
+# Cloudflare Pages - static site (no build step)
+name = "uva-em-journal-club"
+pages_build_output_dir = "."
