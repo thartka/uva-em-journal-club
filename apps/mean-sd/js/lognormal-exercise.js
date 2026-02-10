@@ -24,7 +24,7 @@ class LognormalExercise {
         const addSamplesBtn = document.getElementById('add-samples-btn');
         const calculateBtn = document.getElementById('calculate-btn');
         const resetBtn = document.getElementById('reset-btn');
-        const backBtn = document.getElementById('back-btn');
+        const nextBtn = document.getElementById('next-btn');
         
         numSamplesSlider.addEventListener('input', (e) => {
             const numSamples = parseInt(e.target.value);
@@ -35,8 +35,8 @@ class LognormalExercise {
         addSamplesBtn.addEventListener('click', () => this.addSamples());
         calculateBtn.addEventListener('click', () => this.calculateStats());
         resetBtn.addEventListener('click', () => this.reset());
-        backBtn.addEventListener('click', () => {
-            window.location.href = 'index.html';
+        nextBtn.addEventListener('click', () => {
+            window.location.href = 'parametric-test.html';
         });
     }
     
