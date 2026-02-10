@@ -9,6 +9,7 @@ class GaltonBoard {
         this.maxPegsPerRow = 11; // Maximum pegs per row (for layout calculations)
         this.bins = new Array(11).fill(0);
         this.balls = [];
+        this.ballsInBins = new Array(11).fill(null).map(() => []); // Array of arrays to store balls in each bin
         this.animationId = null;
         this.speed = 50; // Speed setting (0-100, default 50)
         // Initialize speeds - will be set by updateSpeedSettings()
@@ -186,6 +187,7 @@ class GaltonBoard {
     reset() {
         this.bins = new Array(11).fill(0);
         this.balls = [];
+        this.ballsInBins = new Array(11).fill(null).map(() => []);
         this.showCurve = false;
         if (this.animationId) {
             cancelAnimationFrame(this.animationId);
@@ -348,11 +350,43 @@ class GaltonBoard {
                 binIndex = Math.max(0, Math.min(10, binIndex));
                 
                 this.bins[binIndex]++;
+                
+                // Calculate position for ball in bin - arrange in horizontal rows
+                const ballsInThisBin = this.ballsInBins[binIndex].length;
+                
+                // Calculate how many balls fit in a row (based on bin width and ball diameter)
+                const ballDiameter = this.ballRadius * 2;
+                const horizontalSpacing = ballDiameter * 0.9; // Slight overlap for visual effect
+                const ballsPerRow = Math.floor((this.binWidth - 4) / horizontalSpacing); // -4 for padding
+                const ballsPerRowActual = Math.max(1, ballsPerRow); // At least 1 ball per row
+                
+                // Determine which row this ball should be in (0-indexed from bottom)
+                const rowIndex = Math.floor(ballsInThisBin / ballsPerRowActual);
+                
+                // Determine position within the row (0-indexed from left)
+                const positionInRow = ballsInThisBin % ballsPerRowActual;
+                
+                // Calculate x position within the bin (centered in bin, accounting for row width)
+                const rowWidth = (ballsPerRowActual - 1) * horizontalSpacing;
+                const rowStartX = this.sideMargin + binIndex * this.binWidth + (this.binWidth - rowWidth) / 2;
+                const binX = rowStartX + positionInRow * horizontalSpacing;
+                
+                // Calculate y position for this row (starting from bottom, moving up)
+                const verticalSpacing = ballDiameter * 0.9; // Slight overlap for visual effect
+                const binY = this.binTop + this.binHeight - (rowIndex * verticalSpacing) - this.ballRadius;
+                
+                // Store ball position in bin
+                ball.binIndex = binIndex;
+                ball.binX = binX;
+                ball.binY = binY;
                 ball.active = false;
+                
+                // Add to ballsInBins array
+                this.ballsInBins[binIndex].push(ball);
             }
         });
         
-        // Remove inactive balls
+        // Remove inactive balls from active array (they're now in ballsInBins)
         this.balls = this.balls.filter(ball => ball.active);
     }
     
@@ -363,15 +397,15 @@ class GaltonBoard {
         // Draw pegs
         this.drawPegs();
         
-        // Draw bins
+        // Draw bins (histogram) with 50% transparency - drawn first so balls appear on top
         this.drawBins();
         
-        // Draw normal curve if enabled
+        // Draw normal curve if enabled (also behind balls)
         if (this.showCurve) {
             this.drawNormalCurve();
         }
         
-        // Draw balls
+        // Draw balls (both active and in bins) - drawn last so they appear on top
         this.drawBalls();
         
         // Draw title
@@ -409,6 +443,9 @@ class GaltonBoard {
     drawBins() {
         const maxBalls = Math.max(...this.bins, 1);
         
+        // Set global alpha to 50% transparency for histogram
+        this.ctx.globalAlpha = 0.5;
+        
         for (let i = 0; i < 11; i++) {
             const x = this.sideMargin + i * this.binWidth;
             const barHeight = (this.bins[i] / maxBalls) * this.binHeight;
@@ -422,16 +459,6 @@ class GaltonBoard {
             this.ctx.strokeStyle = '#2E5C8A';
             this.ctx.lineWidth = 1;
             this.ctx.strokeRect(x, barY, this.binWidth - 2, barHeight);
-            
-            // Draw bin number (below the bin)
-            this.ctx.fillStyle = '#333';
-            this.ctx.font = '10px sans-serif';
-            this.ctx.textAlign = 'center';
-            this.ctx.fillText(
-                this.bins[i].toString(),
-                x + this.binWidth / 2,
-                this.binTop + this.binHeight + 15
-            );
         }
         
         // Draw bin separator lines
@@ -443,6 +470,22 @@ class GaltonBoard {
             this.ctx.moveTo(x, this.binTop);
             this.ctx.lineTo(x, this.binTop + this.binHeight);
             this.ctx.stroke();
+        }
+        
+        // Reset global alpha to 1.0 for other elements
+        this.ctx.globalAlpha = 1.0;
+        
+        // Draw bin numbers (below the bin) - these should be fully opaque
+        for (let i = 0; i < 11; i++) {
+            const x = this.sideMargin + i * this.binWidth;
+            this.ctx.fillStyle = '#333';
+            this.ctx.font = '10px sans-serif';
+            this.ctx.textAlign = 'center';
+            this.ctx.fillText(
+                this.bins[i].toString(),
+                x + this.binWidth / 2,
+                this.binTop + this.binHeight + 15
+            );
         }
     }
     
@@ -468,6 +511,9 @@ class GaltonBoard {
             pdfSum += this.normalPDF(x, this.curveMean, this.curveSD);
         }
         const scaleFactor = totalBalls / (pdfSum * step);
+        
+        // Set global alpha to 50% transparency for curve (same as histogram)
+        this.ctx.globalAlpha = 0.5;
         
         this.ctx.strokeStyle = '#E57200';
         this.ctx.lineWidth = 2;
@@ -496,9 +542,13 @@ class GaltonBoard {
         }
         
         this.ctx.stroke();
+        
+        // Reset global alpha to 1.0 for other elements
+        this.ctx.globalAlpha = 1.0;
     }
     
     drawBalls() {
+        // Draw active balls (falling through the board)
         this.ctx.fillStyle = '#E57200';
         this.balls.forEach(ball => {
             this.ctx.beginPath();
@@ -512,6 +562,24 @@ class GaltonBoard {
             this.ctx.fill();
             this.ctx.fillStyle = '#E57200';
         });
+        
+        // Draw balls collected in bins
+        this.ctx.fillStyle = '#E57200';
+        for (let binIndex = 0; binIndex < this.ballsInBins.length; binIndex++) {
+            this.ballsInBins[binIndex].forEach(ball => {
+                // Draw ball at its stored position in the bin
+                this.ctx.beginPath();
+                this.ctx.arc(ball.binX, ball.binY, this.ballRadius, 0, Math.PI * 2);
+                this.ctx.fill();
+                
+                // Add a highlight
+                this.ctx.fillStyle = '#FFA500';
+                this.ctx.beginPath();
+                this.ctx.arc(ball.binX - 2, ball.binY - 2, 2, 0, Math.PI * 2);
+                this.ctx.fill();
+                this.ctx.fillStyle = '#E57200';
+            });
+        }
     }
 }
 
