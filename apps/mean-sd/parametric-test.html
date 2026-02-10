@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parametric vs Non-parametric Tests - Mean and SD Demonstration</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>Exercise 4: Parametric vs Non-parametric Tests</h1>
+            <a href="index.html" class="back-link">← Back to Start</a>
+        </header>
+        
+        <div class="exercise-container">
+            <div class="controls">
+                <div class="control-group">
+                    <label for="num-samples">Sample Size per Group:</label>
+                    <input type="range" id="num-samples" min="5" max="1000" value="5" step="5">
+                    <span id="num-samples-value">5</span>
+                </div>
+                
+                <div class="control-group control-group-centered">
+                    <button id="generate-btn" class="btn btn-primary">Generate Samples</button>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <p><strong>Group A:</strong> Lognormal (shape = 1.0, scale = 10) | <strong>Group B:</strong> Lognormal (shape = 1.2, scale = 12)</p>
+                <p style="margin-top: 8px; font-size: 0.9rem;">Both groups have non-normal (lognormal) distributions. Try small sample sizes (5-15) to see when t-test is significant but Mann-Whitney U is not.</p>
+            </div>
+            
+            <div class="canvas-container">
+                <canvas id="histogram-canvas"></canvas>
+            </div>
+            
+            <div class="buttons">
+                <button id="show-normal-btn" class="btn btn-primary">Show Normal Distributions & t-test</button>
+                <button id="reset-btn" class="btn btn-secondary">Reset</button>
+                <button id="back-btn" class="btn btn-primary">Back to Start</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/dual-histogram.js"></script>
+    <script src="js/parametric-test.js"></script>
+</body>
+</html>
