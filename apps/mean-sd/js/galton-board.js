@@ -516,7 +516,7 @@ class GaltonBoard {
         this.ctx.globalAlpha = 1.0;
         
         this.ctx.strokeStyle = '#E57200';
-        this.ctx.lineWidth = 6;
+        this.ctx.lineWidth = 4;
         this.ctx.beginPath();
         
         let firstPoint = true;
