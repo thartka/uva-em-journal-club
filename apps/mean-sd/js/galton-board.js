@@ -512,11 +512,11 @@ class GaltonBoard {
         }
         const scaleFactor = totalBalls / (pdfSum * step);
         
-        // Set global alpha to 50% transparency for curve (same as histogram)
-        this.ctx.globalAlpha = 0.5;
+        // Set global alpha to fully opaque for curve
+        this.ctx.globalAlpha = 1.0;
         
         this.ctx.strokeStyle = '#E57200';
-        this.ctx.lineWidth = 2;
+        this.ctx.lineWidth = 6;
         this.ctx.beginPath();
         
         let firstPoint = true;
