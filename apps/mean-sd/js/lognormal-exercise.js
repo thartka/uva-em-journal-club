@@ -43,10 +43,14 @@ class LognormalExercise {
     addSamples() {
         const numSamples = parseInt(document.getElementById('num-samples').value);
         
-        // Generate new samples
+        // Generate new samples and filter out values greater than 80
         const newSamples = [];
         for (let i = 0; i < numSamples; i++) {
-            newSamples.push(this.generateLognormalSample());
+            const sample = this.generateLognormalSample();
+            // Only add samples that are <= 80
+            if (sample <= 80) {
+                newSamples.push(sample);
+            }
         }
         
         // Append to existing samples

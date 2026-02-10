@@ -397,16 +397,16 @@ class GaltonBoard {
         // Draw pegs
         this.drawPegs();
         
-        // Draw bins (histogram) with 50% transparency - drawn first so balls appear on top
+        // Draw balls (both active and in bins) - drawn first so histogram appears on top
+        this.drawBalls();
+        
+        // Draw bins (histogram) with 50% transparency - drawn after balls so it appears on top
         this.drawBins();
         
-        // Draw normal curve if enabled (also behind balls)
+        // Draw normal curve if enabled (also on top of balls)
         if (this.showCurve) {
             this.drawNormalCurve();
         }
-        
-        // Draw balls (both active and in bins) - drawn last so they appear on top
-        this.drawBalls();
         
         // Draw title
         this.ctx.fillStyle = '#333';
