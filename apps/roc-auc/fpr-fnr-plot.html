@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FPR and FNR vs Threshold - ROC and AUC</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>Page 2: FPR and FNR vs Probability Threshold</h1>
+            <a href="index.html" class="back-link">← Back to Start</a>
+        </header>
+
+        <div class="exercise-container">
+            <div class="info-box">
+                <p>Left y-axis: False Negative Rate. Right y-axis: False Positive Rate. Move the threshold to see how sensitivity/specificity change.</p>
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="fpr-fnr-canvas"></canvas>
+            </div>
+
+            <div class="controls">
+                <div class="control-group">
+                    <label for="threshold">Probability threshold:</label>
+                    <input type="range" id="threshold" min="0" max="1" value="0.5" step="0.01">
+                    <span id="threshold-value">0.50</span>
+                </div>
+            </div>
+
+            <div class="stats-display">
+                <p><strong>Metrics at this threshold</strong></p>
+                <p class="equation-block">Sensitivity = TP / (TP + FN) = <span id="sensitivity-value">—</span></p>
+                <p class="equation-block">Specificity = TN / (TN + FP) = <span id="specificity-value">—</span></p>
+                <p class="equation-block">PPV = TP / (TP + FP) = <span id="ppv-value">—</span></p>
+                <p class="equation-block">NPV = TN / (TN + FN) = <span id="npv-value">—</span></p>
+            </div>
+
+            <div class="buttons">
+                <button onclick="window.location.href='confusion-matrix.html'" class="btn btn-secondary">Previous</button>
+                <button onclick="window.location.href='index.html'" class="btn btn-secondary">Back to Start</button>
+                <button onclick="window.location.href='roc-table.html'" class="btn btn-primary">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/sepsis-data.js"></script>
+    <script src="js/fpr-fnr-plot.js"></script>
+    <script src="js/fpr-fnr-page.js"></script>
+</body>
+</html>

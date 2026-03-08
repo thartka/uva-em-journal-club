@@ -1,0 +1,182 @@
+// Reusable ROC curve canvas: curve, optional red points, optional fill, optional AUC label
+
+class ROCCanvasRenderer {
+    constructor(canvasId) {
+        this.canvas = document.getElementById(canvasId);
+        this.ctx = this.canvas.getContext('2d');
+        this.points = [];
+        this.highlightPoints = [];
+        this.currentPoint = null;
+        this.fillArea = false;
+        this.aucValue = null;
+        this.padding = { top: 20, right: 20, bottom: 45, left: 50 };
+        this.resizeCanvas();
+        window.addEventListener('resize', () => this.resizeCanvas());
+    }
+
+    resizeCanvas() {
+        const container = this.canvas.parentElement;
+        const containerWidth = container.clientWidth - 20;
+        const aspectRatio = 0.85;
+        const containerHeight = containerWidth * aspectRatio;
+        const dpr = window.devicePixelRatio || 1;
+        this.canvas.style.width = containerWidth + 'px';
+        this.canvas.style.height = containerHeight + 'px';
+        this.canvas.width = containerWidth * dpr;
+        this.canvas.height = containerHeight * dpr;
+        this.ctx.scale(dpr, dpr);
+        this.draw();
+    }
+
+    setPoints(points) {
+        this.points = points;
+        this.draw();
+    }
+
+    setHighlightPoints(points) {
+        this.highlightPoints = points || [];
+        this.draw();
+    }
+
+    setCurrentPoint(point) {
+        this.currentPoint = point;
+        this.draw();
+    }
+
+    setFillArea(fill) {
+        this.fillArea = !!fill;
+        this.draw();
+    }
+
+    setAUC(value) {
+        this.aucValue = value;
+        this.draw();
+    }
+
+    draw() {
+        const width = this.canvas.width / (window.devicePixelRatio || 1);
+        const height = this.canvas.height / (window.devicePixelRatio || 1);
+        const plotWidth = width - this.padding.left - this.padding.right;
+        const plotHeight = height - this.padding.top - this.padding.bottom;
+
+        this.ctx.clearRect(0, 0, width, height);
+
+        const toX = (fpr) => this.padding.left + fpr * plotWidth;
+        const toY = (tpr) => this.padding.top + plotHeight - tpr * plotHeight;
+
+        // Fill under curve first (so it's behind)
+        if (this.fillArea && this.points.length >= 2) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(toX(0), toY(0));
+            for (const p of this.points) {
+                this.ctx.lineTo(toX(p.fpr), toY(p.tpr));
+            }
+            this.ctx.lineTo(toX(1), toY(0));
+            this.ctx.closePath();
+            this.ctx.fillStyle = 'rgba(229, 114, 0, 0.25)';
+            this.ctx.fill();
+        }
+
+        // Diagonal reference line
+        this.ctx.strokeStyle = '#999';
+        this.ctx.setLineDash([4, 4]);
+        this.ctx.lineWidth = 1;
+        this.ctx.beginPath();
+        this.ctx.moveTo(toX(0), toY(0));
+        this.ctx.lineTo(toX(1), toY(1));
+        this.ctx.stroke();
+        this.ctx.setLineDash([]);
+
+        // ROC curve
+        if (this.points.length >= 2) {
+            this.ctx.strokeStyle = '#E57200';
+            this.ctx.lineWidth = 2.5;
+            this.ctx.beginPath();
+            this.ctx.moveTo(toX(this.points[0].fpr), toY(this.points[0].tpr));
+            for (let i = 1; i < this.points.length; i++) {
+                this.ctx.lineTo(toX(this.points[i].fpr), toY(this.points[i].tpr));
+            }
+            this.ctx.stroke();
+        }
+
+        // Highlight points (red dots)
+        const dotRadius = 6;
+        this.ctx.fillStyle = '#c62828';
+        this.ctx.strokeStyle = '#333';
+        this.ctx.lineWidth = 1;
+        for (const p of this.highlightPoints) {
+            const x = toX(p.fpr);
+            const y = toY(p.tpr);
+            this.ctx.beginPath();
+            this.ctx.arc(x, y, dotRadius, 0, Math.PI * 2);
+            this.ctx.fill();
+            this.ctx.stroke();
+        }
+
+        // Single current point (threshold slider)
+        if (this.currentPoint) {
+            const x = toX(this.currentPoint.fpr);
+            const y = toY(this.currentPoint.tpr);
+            this.ctx.fillStyle = '#c62828';
+            this.ctx.strokeStyle = '#333';
+            this.ctx.lineWidth = 1.5;
+            this.ctx.beginPath();
+            this.ctx.arc(x, y, dotRadius + 1, 0, Math.PI * 2);
+            this.ctx.fill();
+            this.ctx.stroke();
+        }
+
+        // Axes
+        this.ctx.strokeStyle = '#333';
+        this.ctx.lineWidth = 1;
+        this.ctx.setLineDash([]);
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.padding.left, this.padding.top);
+        this.ctx.lineTo(this.padding.left, height - this.padding.bottom);
+        this.ctx.lineTo(this.padding.left + plotWidth, height - this.padding.bottom);
+        this.ctx.stroke();
+
+        // Axis labels
+        this.ctx.fillStyle = '#333';
+        this.ctx.font = '12px sans-serif';
+        this.ctx.textAlign = 'center';
+        this.ctx.fillText('False Positive Rate', this.padding.left + plotWidth / 2, height - 10);
+        this.ctx.save();
+        this.ctx.translate(18, this.padding.top + plotHeight / 2);
+        this.ctx.rotate(-Math.PI / 2);
+        this.ctx.fillText('True Positive Rate (Sensitivity)', 0, 0);
+        this.ctx.restore();
+
+        // Y-axis ticks 0, 0.5, 1
+        [0, 0.5, 1].forEach((v) => {
+            const y = toY(v);
+            this.ctx.beginPath();
+            this.ctx.moveTo(this.padding.left - 5, y);
+            this.ctx.lineTo(this.padding.left, y);
+            this.ctx.stroke();
+            this.ctx.fillStyle = '#333';
+            this.ctx.font = '10px sans-serif';
+            this.ctx.textAlign = 'right';
+            this.ctx.fillText(v.toFixed(1), this.padding.left - 8, y + 3);
+        });
+        [0, 0.5, 1].forEach((v) => {
+            const x = toX(v);
+            this.ctx.beginPath();
+            this.ctx.moveTo(x, height - this.padding.bottom);
+            this.ctx.lineTo(x, height - this.padding.bottom + 5);
+            this.ctx.stroke();
+            this.ctx.fillStyle = '#333';
+            this.ctx.font = '10px sans-serif';
+            this.ctx.textAlign = 'center';
+            this.ctx.fillText(v.toFixed(1), x, height - this.padding.bottom + 18);
+        });
+
+        // AUC text on plot if set
+        if (this.aucValue != null && this.fillArea) {
+            this.ctx.fillStyle = '#333';
+            this.ctx.font = 'bold 14px sans-serif';
+            this.ctx.textAlign = 'center';
+            this.ctx.fillText('AUC = ' + this.aucValue.toFixed(3), this.padding.left + plotWidth / 2, this.padding.top + 30);
+        }
+    }
+}

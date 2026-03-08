@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUC - ROC and AUC</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>Page 5: Area Under the Curve (AUC)</h1>
+            <a href="index.html" class="back-link">← Back to Start</a>
+        </header>
+
+        <div class="exercise-container">
+            <div class="info-box">
+                <p>The shaded area under the ROC curve is the AUC. Unlike sensitivity or specificity at a single threshold, the AUC summarizes the model’s ability across all possible thresholds and does not depend on choosing one cutoff.</p>
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="roc-canvas"></canvas>
+            </div>
+
+            <div class="stats-display">
+                <p><strong>AUC = <span id="auc-value">—</span></strong></p>
+            </div>
+
+            <div class="buttons">
+                <button onclick="window.location.href='roc-slider.html'" class="btn btn-secondary">Previous</button>
+                <button onclick="window.location.href='index.html'" class="btn btn-primary">Back to Start</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/sepsis-data.js"></script>
+    <script src="js/roc-canvas.js"></script>
+    <script src="js/auc-page.js"></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROC Table - ROC and AUC</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>Page 3: ROC Curve and Selected Thresholds</h1>
+            <a href="index.html" class="back-link">← Back to Start</a>
+        </header>
+
+        <div class="exercise-container">
+            <div class="info-box">
+                <p>Five probability thresholds and their FPR, TPR, sensitivity, and specificity. Red dots on the ROC curve correspond to these thresholds.</p>
+            </div>
+
+            <table class="metrics-table">
+                <thead>
+                    <tr>
+                        <th>Probability threshold</th>
+                        <th>FPR</th>
+                        <th>TPR</th>
+                        <th>Sensitivity</th>
+                        <th>Specificity</th>
+                    </tr>
+                </thead>
+                <tbody id="roc-table-body"></tbody>
+            </table>
+
+            <div class="canvas-container">
+                <canvas id="roc-canvas"></canvas>
+            </div>
+
+            <div class="buttons">
+                <button onclick="window.location.href='fpr-fnr-plot.html'" class="btn btn-secondary">Previous</button>
+                <button onclick="window.location.href='index.html'" class="btn btn-secondary">Back to Start</button>
+                <button onclick="window.location.href='roc-slider.html'" class="btn btn-primary">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/sepsis-data.js"></script>
+    <script src="js/roc-canvas.js"></script>
+    <script src="js/roc-table-page.js"></script>
+</body>
+</html>

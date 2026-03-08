@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROC with Threshold - ROC and AUC</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>Page 4: ROC Curve and Threshold</h1>
+            <a href="index.html" class="back-link">← Back to Start</a>
+        </header>
+
+        <div class="exercise-container">
+            <div class="info-box">
+                <p>Set the probability threshold with the slider. The red dot shows the (FPR, TPR) for that threshold.</p>
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="roc-canvas"></canvas>
+            </div>
+
+            <div class="controls">
+                <div class="control-group">
+                    <label for="threshold">Probability threshold:</label>
+                    <input type="range" id="threshold" min="0" max="1" value="0.5" step="0.01">
+                    <span id="threshold-value">0.50</span>
+                </div>
+            </div>
+
+            <div class="stats-display">
+                <p><strong>Metrics at this threshold</strong></p>
+                <p class="equation-block">Sensitivity = <span id="sensitivity-value">—</span></p>
+                <p class="equation-block">Specificity = <span id="specificity-value">—</span></p>
+                <p class="equation-block">PPV = <span id="ppv-value">—</span></p>
+                <p class="equation-block">NPV = <span id="npv-value">—</span></p>
+            </div>
+
+            <div class="buttons">
+                <button onclick="window.location.href='roc-table.html'" class="btn btn-secondary">Previous</button>
+                <button onclick="window.location.href='index.html'" class="btn btn-secondary">Back to Start</button>
+                <button onclick="window.location.href='auc.html'" class="btn btn-primary">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/sepsis-data.js"></script>
+    <script src="js/roc-canvas.js"></script>
+    <script src="js/roc-slider-page.js"></script>
+</body>
+</html>
