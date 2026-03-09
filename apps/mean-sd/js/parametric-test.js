@@ -53,7 +53,7 @@ class ParametricTestExercise {
         const generateBtn = document.getElementById('generate-btn');
         const showNormalBtn = document.getElementById('show-normal-btn');
         const resetBtn = document.getElementById('reset-btn');
-        const backBtn = document.getElementById('back-btn');
+        const finishBtn = document.getElementById('finish-btn');
         
         numSamplesSlider.addEventListener('input', (e) => {
             const numSamples = parseInt(e.target.value);
@@ -63,7 +63,7 @@ class ParametricTestExercise {
         generateBtn.addEventListener('click', () => this.generateSamples());
         showNormalBtn.addEventListener('click', () => this.showNormalDistributions());
         resetBtn.addEventListener('click', () => this.reset());
-        backBtn.addEventListener('click', () => {
+        finishBtn.addEventListener('click', () => {
             window.location.href = '../../visualizations.html';
         });
     }

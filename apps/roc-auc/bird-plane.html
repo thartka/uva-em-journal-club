@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Is it a bird? Is it a plane? - Receiver Operating Characteristic</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>1: Is it a bird? Is it a plane?</h1>
+            <a href="../../visualizations.html" class="back-link">← Back to Visualizations</a>
+        </header>
+
+        <div class="exercise-container">
+            <div class="info-box">
+                <p>Early work on Receiver Operating Characteristic (ROC) curves grew out of radar research in the mid-20th century. Radar operators had to decide, based on a noisy blip on the screen, whether they were seeing a real target such as an airplane or just noise, birds, or weather. Signal detection theory and ROC curves formalized this tradeoff between correctly detecting true targets and avoiding false alarms.</p>
+            </div>
+
+            <div class="canvas-container">
+                <img src="../../static/img/radar_blips.png"
+                     alt="Radar screen with blips representing nearby birds and more distant planes"
+                     style="width: 100%; height: auto; display: block; border-radius: 6px;">
+            </div>
+
+            <div class="stats-display">
+                <p>On every sweep, the operator faces a decision: call this blip a <strong>target</strong> or call it <strong>noise</strong>. Lowering the decision threshold catches more real planes but also more birds and noise, increasing false alarms. Raising the threshold misses some real planes but reduces false alarms. ROC curves were invented to visualize this balance between sensitivity and false alarm rate as the decision threshold moves.</p>
+            </div>
+
+            <div class="buttons">
+                <button onclick="window.location.href='confusion-matrix.html'" class="btn btn-primary">Next</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
