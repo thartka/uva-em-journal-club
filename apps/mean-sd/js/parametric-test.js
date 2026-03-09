@@ -64,7 +64,7 @@ class ParametricTestExercise {
         showNormalBtn.addEventListener('click', () => this.showNormalDistributions());
         resetBtn.addEventListener('click', () => this.reset());
         backBtn.addEventListener('click', () => {
-            window.location.href = 'index.html';
+            window.location.href = '../../visualizations.html';
         });
     }
     
