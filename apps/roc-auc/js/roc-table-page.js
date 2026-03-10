@@ -6,6 +6,7 @@ function initRocTablePage() {
     const points = rocPoints();
     const roc = new ROCCanvasRenderer('roc-canvas');
     roc.setPoints(points);
+    roc.setHighlightStyle('x-black');
 
     const highlightPoints = TABLE_THRESHOLDS.map(t => {
         const m = metricsAtThreshold(t);

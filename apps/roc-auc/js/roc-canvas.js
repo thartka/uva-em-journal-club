@@ -13,6 +13,8 @@ class ROCCanvasRenderer {
         this.fillArea = false;
         this.aucValue = null;
     this.comparisonAlpha = 1;
+    this.highlightStyle = 'dot-red';
+    this.customArrows = [];
         this.padding = { top: 20, right: 20, bottom: 45, left: 50 };
         this.resizeCanvas();
         window.addEventListener('resize', () => this.resizeCanvas());
@@ -39,6 +41,16 @@ class ROCCanvasRenderer {
 
   setComparisonPoints(points) {
     this.comparisonPoints = points || [];
+    this.draw();
+  }
+
+  setCustomArrows(arrows) {
+    this.customArrows = Array.isArray(arrows) ? arrows : [];
+    this.draw();
+  }
+
+  setHighlightStyle(style) {
+    this.highlightStyle = style || 'dot-red';
     this.draw();
   }
 
@@ -138,18 +150,34 @@ class ROCCanvasRenderer {
             this.ctx.stroke();
         }
 
-        // Highlight points (red dots) on primary curve
+        // Highlight points on primary curve
         const dotRadius = 6;
-        this.ctx.fillStyle = '#c62828';
-        this.ctx.strokeStyle = '#333';
-        this.ctx.lineWidth = 1;
-        for (const p of this.highlightPoints) {
-            const x = toX(p.fpr);
-            const y = toY(p.tpr);
-            this.ctx.beginPath();
-            this.ctx.arc(x, y, dotRadius, 0, Math.PI * 2);
-            this.ctx.fill();
-            this.ctx.stroke();
+        if (this.highlightStyle === 'x-black') {
+            this.ctx.strokeStyle = '#000';
+            this.ctx.lineWidth = 2;
+            const arm = dotRadius + 2;
+            for (const p of this.highlightPoints) {
+                const x = toX(p.fpr);
+                const y = toY(p.tpr);
+                this.ctx.beginPath();
+                this.ctx.moveTo(x - arm, y - arm);
+                this.ctx.lineTo(x + arm, y + arm);
+                this.ctx.moveTo(x - arm, y + arm);
+                this.ctx.lineTo(x + arm, y - arm);
+                this.ctx.stroke();
+            }
+        } else {
+            this.ctx.fillStyle = '#c62828';
+            this.ctx.strokeStyle = '#333';
+            this.ctx.lineWidth = 1;
+            for (const p of this.highlightPoints) {
+                const x = toX(p.fpr);
+                const y = toY(p.tpr);
+                this.ctx.beginPath();
+                this.ctx.arc(x, y, dotRadius, 0, Math.PI * 2);
+                this.ctx.fill();
+                this.ctx.stroke();
+            }
         }
 
         // Single current point (threshold slider) on primary curve
@@ -208,6 +236,69 @@ class ROCCanvasRenderer {
             this.ctx.moveTo(endX, endY);
             this.ctx.lineTo(rightX, rightY);
             this.ctx.stroke();
+        }
+
+        // Custom labeled arrows for specific pages
+        if (this.customArrows && this.customArrows.length > 0) {
+            this.customArrows.forEach((arrow) => {
+                if (!arrow || !arrow.start || !arrow.end) return;
+                const startX = toX(arrow.start.fpr);
+                const startY = toY(arrow.start.tpr);
+                const endX = toX(arrow.end.fpr);
+                const endY = toY(arrow.end.tpr);
+
+                const color = arrow.color || '#000';
+                const label = arrow.label || '';
+
+                this.ctx.strokeStyle = color;
+                this.ctx.lineWidth = 2;
+                this.ctx.beginPath();
+                this.ctx.moveTo(startX, startY);
+                this.ctx.lineTo(endX, endY);
+                this.ctx.stroke();
+
+                // Arrowhead at the end
+                const angle = Math.atan2(endY - startY, endX - startX);
+                const arrowLength = 12;
+                const angleOffset = Math.PI / 7;
+                const leftX = endX - arrowLength * Math.cos(angle - angleOffset);
+                const leftY = endY - arrowLength * Math.sin(angle - angleOffset);
+                const rightX = endX - arrowLength * Math.cos(angle + angleOffset);
+                const rightY = endY - arrowLength * Math.sin(angle + angleOffset);
+
+                this.ctx.beginPath();
+                this.ctx.moveTo(endX, endY);
+                this.ctx.lineTo(leftX, leftY);
+                this.ctx.moveTo(endX, endY);
+                this.ctx.lineTo(rightX, rightY);
+                this.ctx.stroke();
+
+                if (label) {
+                    const midX = (startX + endX) / 2;
+                    const midY = (startY + endY) / 2;
+                    const labelOffsetX = arrow.labelOffset && typeof arrow.labelOffset.x === 'number'
+                        ? arrow.labelOffset.x
+                        : 0;
+                    const labelOffsetY = arrow.labelOffset && typeof arrow.labelOffset.y === 'number'
+                        ? arrow.labelOffset.y
+                        : -10;
+
+                    this.ctx.save();
+                    this.ctx.translate(midX + labelOffsetX, midY + labelOffsetY);
+                    // Rotate text so it is parallel to the arrow direction
+                    let textAngle = angle;
+                    if (arrow.flipLabel) {
+                        textAngle += Math.PI; // 180 degrees
+                    }
+                    this.ctx.rotate(textAngle);
+                    this.ctx.fillStyle = color;
+                    this.ctx.font = 'bold 14px sans-serif';
+                    this.ctx.textAlign = 'center';
+                    this.ctx.textBaseline = 'middle';
+                    this.ctx.fillText(label, 0, 0);
+                    this.ctx.restore();
+                }
+            });
         }
 
         // Axes
