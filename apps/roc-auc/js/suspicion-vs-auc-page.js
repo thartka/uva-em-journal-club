@@ -45,13 +45,16 @@ function initSuspicionVsAucPage() {
         const durationPhase1 = 3500; // ms: move along base curve
         const durationPhase2 = 3500; // ms: fade in better curve and morph point
         const totalDuration = durationPhase1 + durationPhase2;
-        const nowFn = (window.performance && typeof window.performance.now === 'function')
-            ? () => window.performance.now()
-            : () => Date.now();
-        const startTime = nowFn();
+        // Use a single high-resolution clock for both start and step
+        const startTime = (window.performance && typeof window.performance.now === 'function')
+            ? window.performance.now()
+            : Date.now();
 
-        function step(timestamp) {
-            const elapsed = timestamp - startTime;
+        function step() {
+            const now = (window.performance && typeof window.performance.now === 'function')
+                ? window.performance.now()
+                : Date.now();
+            const elapsed = now - startTime;
             const t = Math.min(elapsed / totalDuration, 1);
 
             if (elapsed <= durationPhase1) {
