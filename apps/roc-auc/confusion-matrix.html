@@ -22,20 +22,20 @@
                 <canvas id="confusion-matrix-canvas"></canvas>
             </div>
 
-            <div class="stats-display">
-                <p><strong>Metrics</strong></p>
-                <p class="equation-block">Sensitivity = TP / (TP + FN) = <span id="sensitivity-value">—</span></p>
-                <p class="equation-block">Specificity = TN / (TN + FP) = <span id="specificity-value">—</span></p>
-                <p class="equation-block">PPV = TP / (TP + FP) = <span id="ppv-value">—</span></p>
-                <p class="equation-block">NPV = TN / (TN + FN) = <span id="npv-value">—</span></p>
-            </div>
-
             <div class="controls">
                 <div class="control-group">
                     <label for="threshold">Probability threshold:</label>
                     <input type="range" id="threshold" min="0" max="1" value="0.5" step="0.01">
                     <span id="threshold-value">0.50</span>
                 </div>
+            </div>
+
+            <div class="stats-display">
+                <p><strong>Metrics</strong></p>
+                <p class="equation-block">Sensitivity = TP / (TP + FN) = <span id="sensitivity-value">—</span></p>
+                <p class="equation-block">Specificity = TN / (TN + FP) = <span id="specificity-value">—</span></p>
+                <p class="equation-block">PPV = TP / (TP + FP) = <span id="ppv-value">—</span></p>
+                <p class="equation-block">NPV = TN / (TN + FN) = <span id="npv-value">—</span></p>
             </div>
 
             <div class="buttons">

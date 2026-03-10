@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Youden Index - Receiver Operating Characteristic</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>6: Youden Index</h1>
+            <a href="../../visualizations.html" class="back-link">← Back to Visualizations</a>
+        </header>
+
+        <div class="exercise-container">
+            <div class="info-box">
+                <p>The Youden Index J summarizes overall test performance using a single ROC point. It is defined as J = Sensitivity + Specificity − 1.</p>
+                <p style="margin-top: 8px;">This point is exactly the one that both maximizes the sum of sensitivity and specificity and is closest to the ideal top-left corner of the ROC space (FPR = 0, TPR = 1).</p>
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="roc-canvas"></canvas>
+            </div>
+
+            <div class="stats-display">
+                <p><strong>Threshold and metrics at the Youden Index point</strong></p>
+                <p class="equation-block">Probability threshold = <span id="youden-threshold">—</span></p>
+                <p class="equation-block">Sensitivity (TPR) = <span id="youden-sensitivity">—</span></p>
+                <p class="equation-block">Specificity = <span id="youden-specificity">—</span></p>
+                <p class="equation-block">False Positive Rate (FPR) = <span id="youden-fpr">—</span></p>
+                <p class="equation-block">False Negative Rate (FNR) = <span id="youden-fnr">—</span></p>
+                <p class="equation-block">Youden Index J = Sensitivity + Specificity − 1 = <span id="youden-j">—</span></p>
+                <p class="equation-block">Distance to top-left (0, 1) in ROC space = <span id="youden-distance">—</span></p>
+            </div>
+
+            <div class="buttons">
+                <button onclick="window.location.href='roc-slider.html'" class="btn btn-secondary">Previous</button>
+                <button onclick="window.location.href='auc.html'" class="btn btn-primary">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/sepsis-data.js"></script>
+    <script src="js/roc-canvas.js"></script>
+    <script src="js/youden-index-page.js"></script>
+</body>
+</html>
+

@@ -94,12 +94,12 @@ function auc() {
     return area;
 }
 
-function fprFnrCurves(numPoints = 101) {
+function sensitivitySpecificityCurves(numPoints = 101) {
     const result = [];
     for (let i = 0; i <= numPoints; i++) {
         const threshold = i / numPoints;
         const m = metricsAtThreshold(threshold);
-        result.push({ threshold, fpr: m.fpr, fnr: m.fnr, ...m });
+        result.push({ threshold, sensitivity: m.sensitivity, specificity: m.specificity, ...m });
     }
     return result;
 }

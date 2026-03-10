@@ -20,9 +20,9 @@ function initRocTablePage() {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${threshold.toFixed(2)}</td>
-            <td>${m.fpr.toFixed(3)}</td>
             <td>${m.tpr.toFixed(3)}</td>
             <td>${m.sensitivity.toFixed(3)}</td>
+            <td>${m.fpr.toFixed(3)}</td>
             <td>${m.specificity.toFixed(3)}</td>
         `;
         tbody.appendChild(row);

@@ -7,8 +7,6 @@ function initAucPage() {
     roc.setPoints(points);
     roc.setFillArea(true);
     roc.setAUC(aucVal);
-
-    document.getElementById('auc-value').textContent = aucVal.toFixed(3);
 }
 
 if (document.readyState === 'loading') {

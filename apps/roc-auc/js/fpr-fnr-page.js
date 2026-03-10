@@ -1,4 +1,4 @@
-// Page 2: FNR/FPR vs probability plot + threshold slider + metrics
+// Page 3: Sensitivity/Specificity vs probability plot + threshold slider + metrics
 
 function formatMetric(v) {
     if (v === undefined || Number.isNaN(v)) return 'N/A';
@@ -14,7 +14,7 @@ function updateFprFnrMetrics(metrics) {
 
 function initFprFnrPage() {
     const plot = new FPRFNRPlotRenderer('fpr-fnr-canvas');
-    const curveData = fprFnrCurves(101);
+    const curveData = sensitivitySpecificityCurves(101);
     plot.setCurveData(curveData);
 
     const slider = document.getElementById('threshold');
