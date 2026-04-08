@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power Explorer - P-values and Power</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header" style="flex-direction: column; align-items: flex-start;">
+            <a href="study2.html" class="back-link">← Back</a>
+            <h1 style="width: 100%; text-align: center; margin-top: 15px; margin-bottom: 0;">Power Explorer</h1>
+        </header>
+
+        <div class="info-box">
+            <p>Experiment with sample size and effect size to see how they affect statistical power. Then run 20 simulated trials to see the results.</p>
+        </div>
+
+        <div class="controls">
+            <div class="toggle-group">
+                <label for="diff-toggle">Real 5% difference (15% vs 20%)?</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="diff-toggle">
+                    <span class="toggle-slider"></span>
+                </label>
+                <span id="toggle-label" style="font-size:0.9rem; color:#888;">No difference</span>
+            </div>
+
+            <div class="control-group">
+                <label for="n-slider">Patients per arm:</label>
+                <input type="range" id="n-slider" min="25" max="1000" value="100" step="25">
+                <span id="n-value">100</span>
+            </div>
+        </div>
+
+        <div class="params-display">
+            <div class="param-box">
+                <div class="param-label">Alpha (two-sided)</div>
+                <div class="param-value">0.05</div>
+            </div>
+            <div class="param-box">
+                <div class="param-label">Power</div>
+                <div class="param-value" id="power-value">—</div>
+            </div>
+        </div>
+
+        <div class="buttons" style="margin-bottom: 10px;">
+            <button id="run-btn" class="btn btn-primary">Run 20 Simulations</button>
+        </div>
+
+        <div id="sim-grid" class="sim-grid" style="display:none;"></div>
+        <p id="sim-summary" class="sim-summary" style="display:none;"></p>
+
+        <div class="buttons">
+            <button id="next-btn" class="btn btn-primary" style="display:none;">Next: Final Quiz →</button>
+        </div>
+    </div>
+
+    <script src="js/stats.js"></script>
+    <script src="js/rct-sim.js"></script>
+    <script src="js/power-explorer-page.js"></script>
+</body>
+</html>

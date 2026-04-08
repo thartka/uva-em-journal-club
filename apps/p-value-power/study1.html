@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PANDA Trial - P-values and Power</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header" style="flex-direction: column; align-items: flex-start;">
+            <a href="pre-quiz.html" class="back-link">← Back</a>
+            <h1 style="width: 100%; text-align: center; margin-top: 15px; margin-bottom: 0;">Study 1: The PANDA Trial</h1>
+        </header>
+
+        <div class="info-box">
+            <p><strong>PANDA Trial:</strong> Pediatric Antiemetic — Novel Delivery Assessment</p>
+            <p>A randomized controlled trial comparing <strong>IV ondansetron</strong> vs. <strong>oral dissolving tablet ondansetron</strong> for reducing vomiting in pediatric gastroenteritis.</p>
+            <p><strong>Primary outcome:</strong> Additional vomiting episode within 2 hours of treatment.</p>
+            <p><strong>Design:</strong> 100 patients per arm (200 total), &alpha;&nbsp;=&nbsp;0.05 (two-sided), power&nbsp;=&nbsp;80%.</p>
+        </div>
+
+        <div class="exercise-container">
+            <div class="legend">
+                <span class="legend-item"><span class="legend-swatch" style="background:#0072B2"></span> No vomiting</span>
+                <span class="legend-item"><span class="legend-swatch" style="background:#D55E00"></span> Vomited</span>
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="trial-canvas"></canvas>
+            </div>
+
+            <div class="stats-display" id="running-stats">
+                <p><strong>Treatment (IV):</strong> <span id="treat-rate">—</span></p>
+                <p><strong>Control (ODT):</strong> <span id="control-rate">—</span></p>
+                <p><strong>Difference:</strong> <span id="diff">—</span></p>
+            </div>
+
+            <div id="pvalue-box" class="pvalue-display pvalue-pending">
+                p-value: —
+            </div>
+
+            <div class="buttons">
+                <button id="run-btn" class="btn btn-primary">Run Trial</button>
+                <button id="next-btn" class="btn btn-primary" style="display:none;">Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/stats.js"></script>
+    <script src="js/rct-sim.js"></script>
+    <script src="js/icon-array.js"></script>
+    <script src="js/study1-page.js"></script>
+</body>
+</html>

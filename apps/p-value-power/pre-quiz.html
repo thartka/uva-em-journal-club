@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pre-Quiz - P-values and Power</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header" style="flex-direction: column; align-items: flex-start;">
+            <a href="index.html" class="back-link">← Back</a>
+            <h1 style="width: 100%; text-align: center; margin-top: 15px; margin-bottom: 0;">Before We Begin&hellip;</h1>
+        </header>
+
+        <div class="info-box">
+            <p>Answer these three questions to the best of your ability. You can also skip them and come back later.</p>
+        </div>
+
+        <div id="quiz-container"></div>
+    </div>
+
+    <script src="js/quiz.js"></script>
+    <script>
+        Quiz.renderPreQuiz(
+            document.getElementById('quiz-container'),
+            () => { window.location.href = 'study1.html'; }
+        );
+    </script>
+</body>
+</html>
