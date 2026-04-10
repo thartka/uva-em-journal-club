@@ -25,7 +25,10 @@
     <script>
         Quiz.renderPostQuiz(
             document.getElementById('quiz-container'),
-            () => { window.location.href = 'index.html'; }
+            () => {
+                sessionStorage.removeItem('pvalpower_quiz');
+                window.location.href = '../../didactics.html';
+            }
         );
     </script>
 </body>

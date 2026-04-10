@@ -49,6 +49,7 @@ class IconArrayRenderer {
     setData(treatmentArr, controlArr) {
         this.treatmentData = treatmentArr;
         this.controlData = controlArr;
+        this.nPerArm = Math.min(treatmentArr.length, controlArr.length);
         this.revealedCount = 0;
     }
 
@@ -124,6 +125,10 @@ class IconArrayRenderer {
                 const idx = r * this.cols + c;
                 const cx = offsetX + c * cellW + cellW / 2;
                 const cy = offsetY + r * cellH + cellH / 2;
+
+                if (idx >= this.nPerArm) {
+                    continue;
+                }
 
                 if (idx >= this.revealedCount || !data) {
                     this._drawPerson(cx, cy, iconSize, this.colorPending);

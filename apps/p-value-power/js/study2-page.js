@@ -31,8 +31,9 @@
 
         const p = trialData.pValue;
         const sig = p < 0.05;
-        treatRateEl.textContent = `${trialData.treatEvents}/100 (${(trialData.treatRate * 100).toFixed(1)}%)`;
-        controlRateEl.textContent = `${trialData.controlEvents}/100 (${(trialData.controlRate * 100).toFixed(1)}%)`;
+        const nPerArm = trialData.treatment.length;
+        treatRateEl.textContent = `${trialData.treatEvents}/${nPerArm} (${(trialData.treatRate * 100).toFixed(1)}%)`;
+        controlRateEl.textContent = `${trialData.controlEvents}/${nPerArm} (${(trialData.controlRate * 100).toFixed(1)}%)`;
         const d = ((trialData.treatRate - trialData.controlRate) * 100).toFixed(1);
         diffEl.textContent = `${d > 0 ? '+' : ''}${d} percentage points`;
 

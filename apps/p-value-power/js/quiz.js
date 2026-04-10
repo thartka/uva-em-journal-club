@@ -27,7 +27,7 @@ const Quiz = (() => {
         },
         {
             id: 'q2',
-            prompt: 'A study tests 1 primary outcome and 4 secondary outcomes, each at \u03B1\u00A0=\u00A00.05. If the treatment has NO real effect on any outcome, what is the approximate probability of finding at least one statistically significant result across all 5 tests?',
+            prompt: 'A study tests one primary outcome and four secondary outcomes, each at \u03B1\u00A0=\u00A00.05. If the treatment has NO real effect on any outcome, what is the approximate probability of finding at least one statistically significant result across all five tests?',
             options: [
                 { key: 'A', text: '5%, because each individual test is set at that threshold' },
                 { key: 'B', text: '23%' },

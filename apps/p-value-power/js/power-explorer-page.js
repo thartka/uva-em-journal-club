@@ -22,14 +22,11 @@
         nValueEl.textContent = n;
         toggleLabel.textContent = hasDiff ? '15% vs 20%' : 'No difference';
 
-        if (!hasDiff) {
-            powerValueEl.textContent = 'N/A';
-            powerValueEl.title = 'Power is not applicable when there is no true difference';
-        } else {
-            const pw = Stats.power(pTreat, pControl, n, 0.05);
-            powerValueEl.textContent = (pw * 100).toFixed(1) + '%';
-            powerValueEl.title = '';
-        }
+        const pw = Stats.power(pTreat, pControl, n, 0.05);
+        powerValueEl.textContent = (pw * 100).toFixed(1) + '%';
+        powerValueEl.title = hasDiff
+            ? ''
+            : 'When there is no true difference, this equals alpha (Type I error rate).';
     }
 
     diffToggle.addEventListener('change', updateDisplay);
