@@ -62,7 +62,7 @@ const RCTSim = (() => {
      * Primary: escalation of care, Standard 25 %, HFNC 10 %.
      */
     function generateStudy2Primary() {
-        return generateTrial(80, 0.10, 0.25);
+        return generateTrial(100, 0.10, 0.25);
     }
 
     /**

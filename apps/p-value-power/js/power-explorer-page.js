@@ -18,15 +18,15 @@
     }
 
     function updateDisplay() {
-        const { hasDiff, n, pTreat, pControl } = getParams();
+        const { hasDiff, n } = getParams();
         nValueEl.textContent = n;
         toggleLabel.textContent = hasDiff ? '15% vs 20%' : 'No difference';
 
-        const pw = Stats.power(pTreat, pControl, n, 0.05);
+        // A priori power: always based on planned detectable effect (15% vs 20%),
+        // independent of whether this specific simulation run has a true difference.
+        const pw = Stats.power(0.15, 0.20, n, 0.05);
         powerValueEl.textContent = (pw * 100).toFixed(1) + '%';
-        powerValueEl.title = hasDiff
-            ? ''
-            : 'When there is no true difference, this equals alpha (Type I error rate).';
+        powerValueEl.title = 'A priori power to detect a 5 percentage point difference (15% vs 20%).';
     }
 
     diffToggle.addEventListener('change', updateDisplay);
