@@ -20,7 +20,7 @@
     function updateDisplay() {
         const { hasDiff, n } = getParams();
         nValueEl.textContent = n;
-        toggleLabel.textContent = hasDiff ? '15% vs 20%' : 'No difference';
+        toggleLabel.textContent = hasDiff ? '15% vs 20%' : '15% vs 15%';
 
         // A priori power: always based on planned detectable effect (15% vs 20%),
         // independent of whether this specific simulation run has a true difference.

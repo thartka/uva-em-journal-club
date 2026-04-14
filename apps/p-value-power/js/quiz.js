@@ -27,19 +27,19 @@ const Quiz = (() => {
         },
         {
             id: 'q2',
-            prompt: 'A study tests one primary outcome and four secondary outcomes, each at \u03B1\u00A0=\u00A00.05. If the treatment has NO real effect on any outcome, what is the approximate probability of finding at least one statistically significant result across all five tests?',
+            prompt: 'If the treatment has NO real effect on any outcome, what is the approximate probability of finding at least one statistically significant result across all four secondary outcomes?',
             options: [
                 { key: 'A', text: '5%' },
-                { key: 'B', text: '23%' },
+                { key: 'B', text: '19%' },
                 { key: 'C', text: '50%' },
                 { key: 'D', text: '0%' }
             ],
             correct: 'B',
             explanations: {
-                A: '5% applies to each <em>individual</em> test. When you run multiple independent tests, the overall false-positive rate increases. The probability of at least one false positive across 5 tests is 1\u00A0\u2212\u00A00.95\u2075\u00A0\u2248\u00A023%.',
-                B: 'Correct! With 5 independent tests at \u03B1\u00A0=\u00A00.05 and no real effect, the probability of at least one significant result is 1\u00A0\u2212\u00A0(1\u00A0\u2212\u00A00.05)\u2075\u00A0\u2248\u00A022.6%.',
-                C: 'That is too high. The correct calculation is 1\u00A0\u2212\u00A00.95\u2075\u00A0\u2248\u00A023%. You would need about 14 independent tests to approach a 50% false-positive rate.',
-                D: 'Significant results <em>can</em> occur even when there is no real effect\u2014that is exactly what a Type I error (false positive) is. With \u03B1\u00A0=\u00A00.05, about 1 in 20 tests will be significant by chance.'
+                A: '5% is the false-positive rate for one test, not four tests. With multiple tests, the chance of at least one false positive is higher.',
+                B: 'Correct! For four independent secondary outcomes at \u03B1\u00A0=\u00A00.05, the probability of at least one significant result is 1\u00A0\u2212\u00A0(1\u00A0\u2212\u00A00.05)\u2074\u00A0=\u00A01\u00A0\u2212\u00A00.95\u2074\u00A0\u2248\u00A018.5%.',
+                C: '50% is too high for four tests. The correct probability is 1\u00A0\u2212\u00A00.95\u2074\u00A0\u2248\u00A018.5%.',
+                D: 'Significant results can still happen by chance even when there is no real effect. That is a Type I error.'
             }
         },
         {
