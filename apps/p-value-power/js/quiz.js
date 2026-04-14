@@ -27,7 +27,7 @@ const Quiz = (() => {
         },
         {
             id: 'q2',
-            prompt: 'If the treatment has NO real effect on any outcome, what is the approximate probability of finding at least one statistically significant result across all four secondary outcomes?',
+            prompt: 'If the treatment has NO real effect on any outcome, what is the approximate probability of finding at least one statistically significant (p<0.05) result across all four secondary outcomes?',
             options: [
                 { key: 'A', text: '5%' },
                 { key: 'B', text: '19%' },
