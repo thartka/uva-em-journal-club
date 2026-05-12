@@ -18,22 +18,25 @@
                 <p>Loading your choices from the first page...</p>
             </div>
 
+            <div id="return-note" class="warning-box hidden">
+                <p>The patient returned the next day, and a CTPA was obtained.</p>
+            </div>
+
+            <div class="buttons">
+                <button id="show-result-btn" class="btn btn-outline">Show CTPA result</button>
+            </div>
+
             <div id="outcome-panel" class="result-callout hidden">
-                <h2 id="outcome-heading">Outcome</h2>
-                <p id="outcome-text"></p>
+                <h2 id="outcome-heading">Radiology Report</h2>
+                <div id="outcome-text"></div>
             </div>
 
             <div id="debrief-panel" class="teaching-box hidden">
                 <p id="debrief-text"></p>
             </div>
 
-            <div class="warning-box">
-                <p>This simulation randomizes the outcome based on the post-test probability selected earlier. It is meant to make probability feel concrete, not to dictate management for a real patient.</p>
-            </div>
-
             <div class="buttons">
                 <button onclick="window.location.href='case-nomogram.html'" class="btn btn-secondary">Previous</button>
-                <button id="replay-btn" class="btn btn-outline">Replay Outcome</button>
                 <button onclick="window.location.href='index.html'" class="btn btn-primary">Finish</button>
             </div>
         </div>

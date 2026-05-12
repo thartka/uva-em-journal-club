@@ -1,0 +1,21 @@
+<svg width="100%" viewBox="0 0 340 320" role="img" xmlns="http://www.w3.org/2000/svg">
+    <title>Positive likelihood ratio magnitude scale</title>
+    <text x="170" y="34" text-anchor="middle" style="fill:#141413;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:22px;font-weight:700">LR+ rules in</text>
+    <text x="170" y="58" text-anchor="middle" style="fill:#3d3d3a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:16px">positive test</text>
+
+    <rect x="30" y="82" width="280" height="48" rx="8" style="fill:#e1f5ee;stroke:#0f6e56;stroke-width:1"/>
+    <text x="52" y="106" dominant-baseline="central" style="fill:#085041;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:18px;font-weight:700">&gt; 10</text>
+    <text x="290" y="106" text-anchor="end" dominant-baseline="central" style="fill:#0f6e56;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px">large, often conclusive</text>
+
+    <rect x="30" y="144" width="280" height="48" rx="8" style="fill:#e6f1fb;stroke:#185fa5;stroke-width:1"/>
+    <text x="52" y="168" dominant-baseline="central" style="fill:#0c447c;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:18px;font-weight:700">5-10</text>
+    <text x="290" y="168" text-anchor="end" dominant-baseline="central" style="fill:#185fa5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px">moderate shift</text>
+
+    <rect x="30" y="206" width="280" height="48" rx="8" style="fill:#faeeda;stroke:#854f0b;stroke-width:1"/>
+    <text x="52" y="230" dominant-baseline="central" style="fill:#633806;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:18px;font-weight:700">2-5</text>
+    <text x="290" y="230" text-anchor="end" dominant-baseline="central" style="fill:#854f0b;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px">small shift</text>
+
+    <rect x="30" y="268" width="280" height="38" rx="8" style="fill:#f1efe8;stroke:#5f5e5a;stroke-width:1"/>
+    <text x="52" y="287" dominant-baseline="central" style="fill:#444441;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:18px;font-weight:700">1-2</text>
+    <text x="290" y="287" text-anchor="end" dominant-baseline="central" style="fill:#5f5e5a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px">minimal</text>
+</svg>

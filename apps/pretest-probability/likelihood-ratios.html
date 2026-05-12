@@ -15,7 +15,8 @@
 
         <div class="exercise-container">
             <div class="info-box">
-                <p>Likelihood ratios describe how much a test result should move your estimate. They are useful because they can be applied to any starting probability.</p>
+                <p>One of the most common ways we use Bayesian analysis in medicine is through likelihood ratios.</p>
+                <p><strong>Post-test odds = Pre-test odds &times; LR</strong></p>
             </div>
 
             <div class="concept-grid">
@@ -31,17 +32,28 @@
                 </article>
             </div>
 
-            <div class="visual-panel">
-                <img class="full-width-image" src="img/likelihood-ratio-magnitude-scale.svg" alt="Scale showing how likelihood ratio magnitude changes diagnostic probability">
+            <div class="lr-scale-grid">
+                <div class="visual-panel lr-scale-panel">
+                    <img class="full-width-image" src="img/positive-likelihood-ratio-scale.svg" alt="Scale showing how positive likelihood ratios increase diagnostic probability">
+                </div>
+                <div class="visual-panel lr-scale-panel">
+                    <img class="full-width-image" src="img/negative-likelihood-ratio-scale.svg" alt="Scale showing how negative likelihood ratios decrease diagnostic probability">
+                </div>
             </div>
 
             <div class="teaching-box">
-                <p><strong>Examples from chest pain and MI:</strong></p>
+                <p><strong><u>Example of likelihood ratios in diagnosing MI</u></strong></p>
+
+                <p><strong>Positive likelihood ratios (+LR):</strong></p>
                 <ul class="inline-list">
-                    <li><strong>Chest pain radiating to both arms:</strong> LR+ about 7.1 for MI.</li>
-                    <li><strong>Positive high-sensitivity troponin I rule-in pattern:</strong> LR+ about 9 to 25 for NSTEMI, depending on the degree of elevation and delta.</li>
-                    <li><strong>Sharp or stabbing chest pain:</strong> LR about 0.3 for MI.</li>
-                    <li><strong>Negative high-sensitivity troponin I rule-out pattern:</strong> LR about 0.02 for NSTEMI in one 0/2-hour algorithm.</li>
+                    <li>Chest pain radiating to both arms: <strong>7.1</strong></li>
+                    <li>Positive troponin I: <strong>9 to 25</strong> depending on the degree of elevation and delta</li>
+                </ul>
+
+                <p><strong>Negative likelihood ratios (-LR):</strong></p>
+                <ul class="inline-list">
+                    <li>Sharp or stabbing chest pain: <strong>0.3</strong></li>
+                    <li>Negative troponin I (0/2 hours): <strong>0.02</strong></li>
                 </ul>
             </div>
 

@@ -11,6 +11,6 @@
         subtitle: 'Low Wells risk plus a positive D-dimer.'
     });
 
-    document.getElementById('case-pretest').textContent = `${formatPercent(pretest, 1)} Low-risk Well's`;
+    document.getElementById('case-pretest').textContent = `${formatPercent(pretest, 1)} (Well's Low-risk)`;
     document.getElementById('case-lr').textContent = formatLikelihoodRatio(likelihoodRatio);
 })();

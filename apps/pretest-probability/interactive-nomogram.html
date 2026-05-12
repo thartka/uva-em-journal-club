@@ -22,6 +22,10 @@
                 <p>Set a pretest probability and likelihood ratio. The nomogram connects those values to the resulting post-test probability.</p>
             </div>
 
+            <div class="visual-panel nomogram-panel">
+                <svg id="nomogram-svg" viewBox="0 0 860 520" role="img" aria-label="Interactive Fagan nomogram"></svg>
+            </div>
+
             <div class="controls">
                 <div class="control-group">
                     <label for="nomogram-pretest">Pretest probability:</label>
@@ -35,13 +39,8 @@
                 </div>
             </div>
 
-            <div class="visual-panel">
-                <svg id="nomogram-svg" viewBox="0 0 860 520" role="img" aria-label="Interactive Fagan nomogram"></svg>
-            </div>
-
             <div class="stats-display">
-                <p><strong>Post-test probability:</strong> <span id="nomogram-posttest-value">&mdash;</span></p>
-                <p><strong>Clinical interpretation:</strong> <span id="nomogram-interpretation">&mdash;</span></p>
+                <p><strong>Post-test probability:</strong> <span id="nomogram-posttest-value" class="value-display">&mdash;</span></p>
             </div>
 
             <div class="buttons">

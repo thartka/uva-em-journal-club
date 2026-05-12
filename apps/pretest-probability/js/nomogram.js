@@ -60,7 +60,7 @@ window.Nomogram = (() => {
 
         addText(svg, x, 88, title, {
             fill: '#232D4B',
-            'font-size': 18,
+            'font-size': 20,
             'font-weight': 700
         });
 
@@ -79,7 +79,7 @@ window.Nomogram = (() => {
             const anchor = align === 'left' ? 'end' : 'start';
             addText(svg, labelX, y + 5, tick.label, {
                 'text-anchor': anchor,
-                'font-size': 12
+                'font-size': 14
             });
         });
     }
@@ -96,7 +96,7 @@ window.Nomogram = (() => {
 
         const labelAttributes = {
             fill: color,
-            'font-size': 13,
+            'font-size': 15,
             'font-weight': 700
         };
 
@@ -147,14 +147,14 @@ window.Nomogram = (() => {
 
         addText(svg, WIDTH / 2, 38, title, {
             fill: '#232D4B',
-            'font-size': 20,
+            'font-size': 22,
             'font-weight': 700
         });
 
         if (subtitle) {
             addText(svg, WIDTH / 2, 62, subtitle, {
                 fill: '#555',
-                'font-size': 14
+                'font-size': 15
             });
         }
 

@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chief Complaint: Coughed up blood - Pretest Probability</title>
+    <title>Chief Complaint: Coughing of blood - Pretest Probability</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <header class="page-header">
-            <h1>1: Chief Complaint: Coughed up blood</h1>
+            <h1>1: Chief Complaint: Coughing of blood</h1>
             <a href="index.html" class="back-link">← Back to Module</a>
         </header>
 
@@ -33,11 +33,14 @@
                 <button id="select-pretest-btn" class="btn btn-primary">Select Pretest Probability</button>
             </div>
 
-            <div id="dimer-section" class="hidden">
-                <div class="warning-box">
-                    <p><strong>D-dimer result:</strong> Positive at 324 ng/mL (normal &lt;234 ng/mL).</p>
+            <div id="reveal-dimer-section" class="controls hidden">
+                <div class="inline-result-row inline-result-row-left">
+                    <button id="reveal-dimer-btn" class="btn btn-blue">Reveal D-dimer Result</button>
+                    <span id="dimer-inline-result" class="inline-result hidden"><strong>D-dimer result:</strong> Positive at 324 ng/mL (normal &lt;230 ng/mL).</span>
                 </div>
+            </div>
 
+            <div id="dimer-section" class="hidden">
                 <div class="info-box">
                     <p><strong>Step 2:</strong> Select your post-test probability.</p>
                 </div>
@@ -54,17 +57,21 @@
 
             <div id="ctpa-section" class="hidden">
                 <div class="info-box">
-                    <p><strong>Step 3:</strong> Based on your updated probability, would you order a CTPA?</p>
+                    <p><strong>Step 3:</strong> Based on your updated probability, would you accept or discontinue this order?</p>
                 </div>
-                <div class="choice-grid">
-                    <button id="ctpa-yes" class="choice-button" type="button">
-                        <strong>Order CTPA</strong>
-                        <br>Accept radiation and contrast exposure to look for PE now.
-                    </button>
-                    <button id="ctpa-no" class="choice-button" type="button">
-                        <strong>Do not order CTPA now</strong>
-                        <br>Treat the more likely respiratory illness and give return precautions.
-                    </button>
+                <div class="emr-order">
+                    <div class="emr-order-header">Pending Imaging Order</div>
+                    <div class="emr-order-body">
+                        <div class="emr-order-details">
+                            <p class="emr-order-title">CTA pulmonary with contrast</p>
+                            <p class="emr-order-meta">Indication: Evaluate for pulmonary embolism</p>
+                            <p class="emr-order-meta">Priority: 2-STAT</p>
+                        </div>
+                        <div class="emr-order-actions">
+                            <button id="ctpa-yes" class="btn btn-primary" type="button">Accept</button>
+                            <button id="ctpa-no" class="btn btn-secondary" type="button">Discontinue</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
