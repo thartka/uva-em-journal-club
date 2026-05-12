@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chief Complaint: Coughed up blood - Pretest Probability</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>1: Chief Complaint: Coughed up blood</h1>
+            <a href="index.html" class="back-link">← Back to Module</a>
+        </header>
+
+        <div class="exercise-container">
+            <section class="vignette-card">
+                <h2>Clinical Vignette</h2>
+                <p>A 34-year-old female presents with four days of nonproductive cough, myalgias, and fatigue. Today she noticed a few streaks of blood in her sputum after a prolonged coughing spell.</p>
+                <p>She is speaking comfortably and non-febrile. Temperature is 37.0&deg;C, heart rate 86, blood pressure 124/76, respiratory rate 16, and oxygen saturation 98% on room air. There is no unilateral leg swelling, no prior VTE, no recent surgery or immobilization, and no active cancer.</p>
+            </section>
+
+            <div class="info-box">
+                <p><strong>Step 1:</strong> Select your pretest probability for PE.</p>
+            </div>
+
+            <div class="controls">
+                <div class="control-group">
+                    <label for="pretest-slider">Pretest probability:</label>
+                    <input type="range" id="pretest-slider" min="0" max="100" value="50" step="1">
+                    <span id="pretest-value" class="value-display">50%</span>
+                </div>
+                <button id="select-pretest-btn" class="btn btn-primary">Select Pretest Probability</button>
+            </div>
+
+            <div id="dimer-section" class="hidden">
+                <div class="warning-box">
+                    <p><strong>D-dimer result:</strong> Positive at 324 ng/mL (normal &lt;234 ng/mL).</p>
+                </div>
+
+                <div class="info-box">
+                    <p><strong>Step 2:</strong> Select your post-test probability.</p>
+                </div>
+
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="posttest-slider">Post-test probability:</label>
+                        <input type="range" id="posttest-slider" min="0" max="100" value="50" step="1">
+                        <span id="posttest-value" class="value-display">50%</span>
+                    </div>
+                    <button id="select-posttest-btn" class="btn btn-primary">Select Post-test Probability</button>
+                </div>
+            </div>
+
+            <div id="ctpa-section" class="hidden">
+                <div class="info-box">
+                    <p><strong>Step 3:</strong> Based on your updated probability, would you order a CTPA?</p>
+                </div>
+                <div class="choice-grid">
+                    <button id="ctpa-yes" class="choice-button" type="button">
+                        <strong>Order CTPA</strong>
+                        <br>Accept radiation and contrast exposure to look for PE now.
+                    </button>
+                    <button id="ctpa-no" class="choice-button" type="button">
+                        <strong>Do not order CTPA now</strong>
+                        <br>Treat the more likely respiratory illness and give return precautions.
+                    </button>
+                </div>
+            </div>
+
+            <div id="summary-section" class="result-callout hidden">
+                <h2>Your Case Summary</h2>
+                <p id="summary-text"></p>
+                <p>The case will use your choices on the follow-up page.</p>
+            </div>
+
+            <div class="buttons">
+                <button onclick="window.location.href='index.html'" class="btn btn-secondary">Previous</button>
+                <button id="next-btn" class="btn btn-primary" disabled>Next</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/probability.js"></script>
+    <script src="js/vignette-page.js"></script>
+</body>
+</html>

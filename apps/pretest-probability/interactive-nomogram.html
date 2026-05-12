@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Likelihood Nomogram - Pretest Probability</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>4: Likelihood Nomogram</h1>
+            <a href="index.html" class="back-link">← Back to Module</a>
+        </header>
+
+        <div class="exercise-container">
+            <div class="teaching-box">
+                <p>Likelihood ratios work through odds, which is why the math can feel less intuitive than percentages. A nomogram does the conversion visually: choose the pretest probability, draw through the likelihood ratio, and read the post-test probability.</p>
+            </div>
+
+            <div class="info-box">
+                <p>Set a pretest probability and likelihood ratio. The nomogram connects those values to the resulting post-test probability.</p>
+            </div>
+
+            <div class="controls">
+                <div class="control-group">
+                    <label for="nomogram-pretest">Pretest probability:</label>
+                    <input type="range" id="nomogram-pretest" min="1" max="90" value="10" step="1">
+                    <span id="nomogram-pretest-value" class="value-display">10%</span>
+                </div>
+                <div class="control-group">
+                    <label for="nomogram-lr">Likelihood ratio:</label>
+                    <input type="range" id="nomogram-lr" min="-2" max="2" value="0" step="0.01">
+                    <span id="nomogram-lr-value" class="value-display">1.0</span>
+                </div>
+            </div>
+
+            <div class="visual-panel">
+                <svg id="nomogram-svg" viewBox="0 0 860 520" role="img" aria-label="Interactive Fagan nomogram"></svg>
+            </div>
+
+            <div class="stats-display">
+                <p><strong>Post-test probability:</strong> <span id="nomogram-posttest-value">&mdash;</span></p>
+                <p><strong>Clinical interpretation:</strong> <span id="nomogram-interpretation">&mdash;</span></p>
+            </div>
+
+            <div class="buttons">
+                <button onclick="window.location.href='likelihood-ratios.html'" class="btn btn-secondary">Previous</button>
+                <button onclick="window.location.href='case-nomogram.html'" class="btn btn-primary">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/probability.js"></script>
+    <script src="js/nomogram.js"></script>
+    <script src="js/interactive-nomogram-page.js"></script>
+</body>
+</html>

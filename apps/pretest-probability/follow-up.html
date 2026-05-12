@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Follow-up - Pretest Probability</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>6: Follow-up</h1>
+            <a href="index.html" class="back-link">← Back to Module</a>
+        </header>
+
+        <div class="exercise-container">
+            <div id="decision-summary" class="info-box">
+                <p>Loading your choices from the first page...</p>
+            </div>
+
+            <div id="outcome-panel" class="result-callout hidden">
+                <h2 id="outcome-heading">Outcome</h2>
+                <p id="outcome-text"></p>
+            </div>
+
+            <div id="debrief-panel" class="teaching-box hidden">
+                <p id="debrief-text"></p>
+            </div>
+
+            <div class="warning-box">
+                <p>This simulation randomizes the outcome based on the post-test probability selected earlier. It is meant to make probability feel concrete, not to dictate management for a real patient.</p>
+            </div>
+
+            <div class="buttons">
+                <button onclick="window.location.href='case-nomogram.html'" class="btn btn-secondary">Previous</button>
+                <button id="replay-btn" class="btn btn-outline">Replay Outcome</button>
+                <button onclick="window.location.href='index.html'" class="btn btn-primary">Finish</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/probability.js"></script>
+    <script src="js/follow-up-page.js"></script>
+</body>
+</html>

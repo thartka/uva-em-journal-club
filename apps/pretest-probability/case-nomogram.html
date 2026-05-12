@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nomogram for our Patient - Pretest Probability</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>5: Nomogram for our Patient</h1>
+            <a href="index.html" class="back-link">← Back to Module</a>
+        </header>
+
+        <div class="exercise-container">
+            <div class="info-box">
+                <p>Now apply the same framework to the initial case: a low-risk patient with infectious symptoms, scant hemoptysis, and a positive D-dimer.</p>
+            </div>
+
+            <div class="stats-display">
+                <p><strong>Pretest probability:</strong> <span id="case-pretest">&mdash;</span></p>
+                <p><strong>Positive D-dimer LR+:</strong> <span id="case-lr">&mdash;</span></p>
+            </div>
+
+            <div class="visual-panel">
+                <svg id="case-nomogram-svg" viewBox="0 0 860 520" role="img" aria-label="Case-specific Fagan nomogram"></svg>
+            </div>
+
+            <div class="teaching-box">
+                <p>A positive D-dimer moves this low-risk patient upward, but the post-test probability remains modest because the starting probability was low and the test is nonspecific.</p>
+            </div>
+
+            <div class="buttons">
+                <button onclick="window.location.href='interactive-nomogram.html'" class="btn btn-secondary">Previous</button>
+                <button onclick="window.location.href='follow-up.html'" class="btn btn-primary">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/probability.js"></script>
+    <script src="js/nomogram.js"></script>
+    <script src="js/case-nomogram-page.js"></script>
+</body>
+</html>

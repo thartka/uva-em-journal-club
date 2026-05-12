@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Likelihood Ratios - Pretest Probability</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>3: Likelihood Ratios</h1>
+            <a href="index.html" class="back-link">← Back to Module</a>
+        </header>
+
+        <div class="exercise-container">
+            <div class="info-box">
+                <p>Likelihood ratios describe how much a test result should move your estimate. They are useful because they can be applied to any starting probability.</p>
+            </div>
+
+            <div class="concept-grid">
+                <article class="concept-card">
+                    <h3>Positive likelihood ratio</h3>
+                    <p>LR+ describes how much a positive test increases the probability of disease. Larger values create stronger upward movement.</p>
+                    <div class="formula-block">LR+ = sensitivity / (1 - specificity)</div>
+                </article>
+                <article class="concept-card">
+                    <h3>Negative likelihood ratio</h3>
+                    <p>LR- describes how much a negative test decreases the probability of disease. Smaller values create stronger downward movement.</p>
+                    <div class="formula-block">LR- = (1 - sensitivity) / specificity</div>
+                </article>
+            </div>
+
+            <div class="visual-panel">
+                <img class="full-width-image" src="img/likelihood-ratio-magnitude-scale.svg" alt="Scale showing how likelihood ratio magnitude changes diagnostic probability">
+            </div>
+
+            <div class="teaching-box">
+                <p><strong>Examples from chest pain and MI:</strong></p>
+                <ul class="inline-list">
+                    <li><strong>Chest pain radiating to both arms:</strong> LR+ about 7.1 for MI.</li>
+                    <li><strong>Positive high-sensitivity troponin I rule-in pattern:</strong> LR+ about 9 to 25 for NSTEMI, depending on the degree of elevation and delta.</li>
+                    <li><strong>Sharp or stabbing chest pain:</strong> LR about 0.3 for MI.</li>
+                    <li><strong>Negative high-sensitivity troponin I rule-out pattern:</strong> LR about 0.02 for NSTEMI in one 0/2-hour algorithm.</li>
+                </ul>
+            </div>
+
+            <div class="buttons">
+                <button onclick="window.location.href='bayes-background.html'" class="btn btn-secondary">Previous</button>
+                <button onclick="window.location.href='interactive-nomogram.html'" class="btn btn-primary">Next</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
