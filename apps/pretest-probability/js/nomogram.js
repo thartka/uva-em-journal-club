@@ -1,13 +1,13 @@
 window.Nomogram = (() => {
     const NS = 'http://www.w3.org/2000/svg';
-    const WIDTH = 860;
-    const HEIGHT = 560;
-    const CENTER_Y = 305;
-    const MIN_Y = 115;
-    const MAX_Y = 495;
-    const LEFT_X = 130;
-    const MID_X = 430;
-    const RIGHT_X = 730;
+    const WIDTH = 430;
+    const HEIGHT = 430;
+    const CENTER_Y = 250;
+    const MIN_Y = 100;
+    const MAX_Y = 390;
+    const LEFT_X = 70;
+    const MID_X = 215;
+    const RIGHT_X = 360;
     const SCALE = (MAX_Y - MIN_Y) / (2 * Math.log10(99));
 
     function createSvgElement(name, attributes = {}) {
@@ -60,7 +60,7 @@ window.Nomogram = (() => {
 
         addText(svg, x, 88, title, {
             fill: '#232D4B',
-            'font-size': 20,
+            'font-size': 16,
             'font-weight': 700
         });
 
@@ -75,11 +75,11 @@ window.Nomogram = (() => {
                 'stroke-width': 2
             }));
 
-            const labelX = align === 'left' ? x - 16 : x + 18;
+            const labelX = align === 'left' ? x - 12 : x + 12;
             const anchor = align === 'left' ? 'end' : 'start';
             addText(svg, labelX, y + 5, tick.label, {
                 'text-anchor': anchor,
-                'font-size': 14
+                'font-size': 13
             });
         });
     }
@@ -96,12 +96,12 @@ window.Nomogram = (() => {
 
         const labelAttributes = {
             fill: color,
-            'font-size': 15,
+            'font-size': 14,
             'font-weight': 700
         };
 
         if (labelPosition === 'left') {
-            addText(svg, x - 20, y + 5, label, {
+            addText(svg, x - 14, y + 5, label, {
                 ...labelAttributes,
                 'text-anchor': 'end'
             });
@@ -109,7 +109,7 @@ window.Nomogram = (() => {
         }
 
         if (labelPosition === 'right') {
-            addText(svg, x + 20, y + 5, label, {
+            addText(svg, x + 14, y + 5, label, {
                 ...labelAttributes,
                 'text-anchor': 'start'
             });
@@ -147,14 +147,14 @@ window.Nomogram = (() => {
 
         addText(svg, WIDTH / 2, 38, title, {
             fill: '#232D4B',
-            'font-size': 22,
+            'font-size': 20,
             'font-weight': 700
         });
 
         if (subtitle) {
             addText(svg, WIDTH / 2, 62, subtitle, {
                 fill: '#555',
-                'font-size': 15
+                'font-size': 13
             });
         }
 

@@ -388,15 +388,6 @@ body {
     overflow: hidden;
 }
 
-.nomogram-panel {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-}
-
-.nomogram-panel svg {
-    min-width: 760px;
-}
-
 .lr-scale-grid {
     display: grid;
     grid-template-columns: 1fr;
