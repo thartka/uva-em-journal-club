@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drawing DAGs - Causality</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>3: Drawing DAGs</h1>
+            <a href="index.html" class="back-link">&larr; Back to Module</a>
+        </header>
+
+        <div class="exercise-container">
+            <div class="info-box">
+                <p>A <strong>directed acyclic graph (DAG)</strong> is a picture of causal assumptions. Each <strong>node</strong> is a variable; each <strong>arrow</strong> means &ldquo;this may cause that.&rdquo; Drag from one node to another to draw an arrow.</p>
+            </div>
+
+            <section class="dag-draw-section">
+                <h2 class="section-heading">Exercise 1: Smoking and cancer</h2>
+                <p>Drag from one node to the other to show which variable you think causes the other.</p>
+
+                <div id="draw-board-1" class="dag-draw-board" aria-label="Smoking and cancer DAG exercise"></div>
+                <div id="feedback-1" class="dag-draw-feedback feedback-info">Drag from one node to the other to draw a causal arrow.</div>
+
+                <div class="buttons dag-action-row">
+                    <button id="reset-1" class="btn btn-secondary" type="button">Clear</button>
+                </div>
+            </section>
+
+            <section class="dag-draw-section">
+                <h2 class="section-heading">Exercise 2: Add inflammation</h2>
+                <p>Draw arrows among all three nodes. Try a mediator chain (Smoking &rarr; Inflammation &rarr; Cancer), then clear and try pointing both Smoking and Cancer into Inflammation.</p>
+
+                <div id="draw-board-2" class="dag-draw-board" aria-label="Smoking, inflammation, and cancer DAG exercise"></div>
+                <div id="feedback-2" class="dag-draw-feedback feedback-info">Drag between nodes to draw arrows. Try building Smoking &rarr; Inflammation &rarr; Cancer, or draw both Smoking and Cancer into Inflammation.</div>
+
+                <div class="buttons dag-action-row">
+                    <button id="reset-2" class="btn btn-secondary" type="button">Clear</button>
+                </div>
+            </section>
+
+            <div class="teaching-box">
+                <p><strong>Takeaway:</strong> The same variables can be arranged into different causal stories. A mediator lies <em>on</em> the pathway; a collider is where two arrows <em>meet</em>.</p>
+            </div>
+
+            <div class="buttons">
+                <button onclick="window.location.href='hill-criteria.html'" class="btn btn-secondary">Previous</button>
+                <button onclick="window.location.href='dags.html'" class="btn btn-primary">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/dag-intro-page.js"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debrief - Causality</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>5: Return to Your Answers</h1>
+            <a href="index.html" class="back-link">&larr; Back to Module</a>
+        </header>
+
+        <div class="exercise-container">
+            <div id="initial-summary" class="info-box">
+                <p>Loading your initial answers...</p>
+            </div>
+
+            <div class="warning-box">
+                <p>Answer both questions again, then submit to reveal feedback. Compare to what you chose on page 1.</p>
+            </div>
+
+            <div id="post-quiz-form" class="quiz-form"></div>
+
+            <p id="quiz-error" class="quiz-error hidden">Please answer both questions before submitting.</p>
+
+            <div id="debrief-panel" class="result-callout hidden">
+                <h2>Take-home</h2>
+                <p>You should still give antibiotics early in sepsis — but you should read the literature knowing <strong>why</strong> observational timing studies can overstate causality. Association is not proof; Hill's criteria and bias frameworks help you read critically without ignoring plausible interventions.</p>
+            </div>
+
+            <div class="buttons">
+                <button onclick="window.location.href='dags.html'" class="btn btn-secondary">Previous</button>
+                <button id="submit-btn" class="btn btn-primary">Submit Answers</button>
+                <button id="finish-btn" class="btn btn-primary hidden">Finish</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/questions.js"></script>
+    <script src="js/debrief-page.js"></script>
+</body>
+</html>
