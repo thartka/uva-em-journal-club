@@ -10,6 +10,40 @@
         return edges.some(e => e.from === from && e.to === to);
     }
 
+    function hasCycle(edges) {
+        const adj = {};
+        const nodes = new Set();
+
+        edges.forEach(({ from, to }) => {
+            nodes.add(from);
+            nodes.add(to);
+            if (!adj[from]) adj[from] = [];
+            adj[from].push(to);
+        });
+
+        const visiting = new Set();
+        const visited = new Set();
+
+        function dfs(node) {
+            if (visiting.has(node)) return true;
+            if (visited.has(node)) return false;
+
+            visiting.add(node);
+            for (const next of adj[node] || []) {
+                if (dfs(next)) return true;
+            }
+            visiting.delete(node);
+            visited.add(node);
+            return false;
+        }
+
+        for (const node of nodes) {
+            if (dfs(node)) return true;
+        }
+
+        return false;
+    }
+
     function interpretTwoNode(edges) {
         if (edges.length === 0) {
             return {
@@ -46,8 +80,16 @@
             };
         }
 
+        if (hasCycle(edges)) {
+            return {
+                tone: 'warning',
+                text: '<strong>Not a DAG — cycle detected.</strong> Your arrows form a directed loop. A DAG must be <em>acyclic</em>: causal arrows cannot eventually point back to an earlier variable. Remove or reverse an arrow to break the cycle.'
+            };
+        }
+
         const smokingToInflammation = hasEdge(edges, 'smoking', 'inflammation');
         const inflammationToCancer = hasEdge(edges, 'inflammation', 'cancer');
+        const inflammationToSmoking = hasEdge(edges, 'inflammation', 'smoking');
         const cancerToInflammation = hasEdge(edges, 'cancer', 'inflammation');
         const smokingToCancer = hasEdge(edges, 'smoking', 'cancer');
 
@@ -55,6 +97,13 @@
             return {
                 tone: 'success',
                 text: '<strong>Mediator pathway.</strong> Smoking &rarr; Inflammation &rarr; Cancer. Inflammation lies on the causal pathway between exposure and outcome.'
+            };
+        }
+
+        if (cancerToInflammation && inflammationToSmoking && edges.length === 2) {
+            return {
+                tone: 'warning',
+                text: '<strong>Reverse mediator pathway.</strong> Cancer &rarr; Inflammation &rarr; Smoking. You drew that cancer causes smoking, mediated by inflammation — reverse causation rather than the conventional story.'
             };
         }
 
