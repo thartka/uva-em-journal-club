@@ -14,22 +14,24 @@
         </header>
 
         <div class="exercise-container">
+            <div class="teaching-box hill-intro">
+                <p><strong>Sir Austin Bradford Hill</strong> (1897&ndash;1991) was a British epidemiologist and statistician. He helped establish the modern randomized controlled trial.</p>
+                <p>In 1965, he delivered a landmark address titled <em>The Environment and Disease: Association or Causation?</em> Observational studies often show associations, but association alone does not prove that one factor causes another. Hill asked: when might an association support a causal interpretation?</p>
+                <p>He proposed nine viewpoints to guide that judgment, with many adding reversibility as a tenth consideration.</p>
+            </div>
+
             <div class="info-box">
-                <p>Hill proposed <strong>nine viewpoints</strong> — not a checklist. Some curricula add <strong>reversibility</strong> as a tenth consideration. Use these to structure skepticism, not to "score" a study pass/fail.</p>
+                <p><strong>Tap</strong> each cell under <em>Early Antibiotics and Sepsis</em> to reveal that criterion&rsquo;s application to the vignette.</p>
             </div>
 
-            <div class="teaching-box">
-                <p><strong>Key line for early antibiotics:</strong> Plausibility and coherence are strong; specificity and experiment are weak. That is why we stay skeptical despite a strong association.</p>
-            </div>
-
-            <div class="table-wrap">
+            <div id="hill-table-wrap" class="table-wrap hill-table-interactive">
                 <table class="hill-table">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Criterion</th>
                             <th scope="col">One-line meaning</th>
-                            <th scope="col">Early ABX in sepsis</th>
+                            <th scope="col">Early Antibiotics and Sepsis</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -97,15 +99,13 @@
                 </table>
             </div>
 
-            <div class="warning-box">
-                <p><strong>Association &ne; causation.</strong> Statistical significance and a steep hourly gradient do not close the causal question when confounding threatens the design.</p>
-            </div>
-
             <div class="buttons">
                 <button onclick="window.location.href='vignette.html'" class="btn btn-secondary">Previous</button>
                 <button onclick="window.location.href='dag-intro.html'" class="btn btn-primary">Next</button>
             </div>
         </div>
     </div>
+
+    <script src="js/hill-criteria-page.js"></script>
 </body>
 </html>

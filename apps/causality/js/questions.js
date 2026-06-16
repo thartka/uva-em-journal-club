@@ -12,7 +12,7 @@ const CausalityQuestions = (() => {
             prompt: 'Based on this observational study alone, which conclusion is most supported by the evidence?',
             options: [
                 { key: 'A', text: 'Antibiotic delay leads to an increase in mortality' },
-                { key: 'B', text: 'Antibiotic delay is associated with mortality' },
+                { key: 'B', text: 'Antibiotic delay is associated with an increase in mortality' },
                 { key: 'C', text: 'Antibiotic delay has no relationship to mortality' },
                 { key: 'D', text: 'This study shows that 60 minutes is the most appropriate target' }
             ],
@@ -26,19 +26,19 @@ const CausalityQuestions = (() => {
         },
         {
             id: 'q2',
-            prompt: 'A large, multi-institutional cross-sectional study demonstrates that smoking is associated with lung cancer. Which finding would most strengthen the argument for a causal relationship?',
+            prompt: 'Which Bradford Hill criterion does this observational study not address?',
             options: [
-                { key: 'A', text: 'Larger sample size' },
-                { key: 'B', text: 'Dose-response relationship' },
-                { key: 'C', text: 'Replication of result' },
-                { key: 'D', text: 'Narrower confidence interval' }
+                { key: 'A', text: 'Temporality' },
+                { key: 'B', text: 'Dose response' },
+                { key: 'C', text: 'Experimental evidence' },
+                { key: 'D', text: 'Strength / effect size' }
             ],
-            correct: 'B',
+            correct: 'C',
             explanations: {
-                A: 'A larger sample size improves precision and statistical power, but it does not address whether the association is causal. Big studies can still be confounded.',
-                B: 'Correct. A dose-response relationship (more exposure &rarr; greater risk) is biological gradient — one of Bradford Hill\'s criteria that specifically supports a causal interpretation beyond mere association.',
-                C: 'Replication supports consistency, another Hill criterion, but dose-response more directly strengthens the causal argument by showing risk tracks with exposure intensity.',
-                D: 'A narrower confidence interval reflects greater statistical precision. It does not distinguish causal association from confounded association.'
+                A: 'Temporality is partially satisfied: antibiotics are given before death. Time zero can be fuzzy in sepsis, but this criterion is not what the design fails to provide.',
+                B: 'Dose response (biological gradient) is partially addressed — the study reports worsening outcomes with longer delay. The main limitation is not absence of a gradient.',
+                C: 'Correct. This observational design cannot provide experimental evidence. RCTs that intentionally delay antibiotics would be unethical, so causation cannot be proven by intervention.',
+                D: 'Strength of association is a Hill criterion, and this study reports a large, statistically significant gradient. Effect size is not the main gap in the causal argument.'
             }
         }
     ];

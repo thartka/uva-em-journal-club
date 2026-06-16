@@ -324,6 +324,14 @@ body {
     margin-top: 10px;
 }
 
+.hill-intro p {
+    margin-bottom: 10px;
+}
+
+.hill-intro p:last-child {
+    margin-bottom: 0;
+}
+
 /* Hill table */
 .table-wrap {
     overflow-x: auto;
@@ -332,10 +340,35 @@ body {
     border-radius: 8px;
 }
 
+.hill-table-interactive {
+    touch-action: auto;
+}
+
 .hill-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.92rem;
+    table-layout: fixed;
+}
+
+.hill-table th:nth-child(1),
+.hill-table td:nth-child(1) {
+    width: 8%;
+}
+
+.hill-table th:nth-child(2),
+.hill-table td:nth-child(2) {
+    width: 22%;
+}
+
+.hill-table th:nth-child(3),
+.hill-table td:nth-child(3) {
+    width: 30%;
+}
+
+.hill-table th:nth-child(4),
+.hill-table td:nth-child(4) {
+    width: 40%;
 }
 
 .hill-table th,
@@ -350,6 +383,66 @@ body {
     background-color: #232D4B;
     color: white;
     font-weight: 600;
+}
+
+.hill-reveal-cell {
+    padding: 8px 10px;
+    vertical-align: top;
+}
+
+.hill-reveal-row {
+    width: 100%;
+}
+
+.hill-reveal-stack {
+    position: relative;
+    min-height: 2.8em;
+    padding: 8px 10px;
+    border-radius: 6px;
+    background: #fafbfc;
+    border: 1px solid #e8ecf0;
+}
+
+.hill-reveal-text {
+    display: block;
+    line-height: 1.45;
+    font-size: 0.9rem;
+}
+
+.hill-reveal-cover {
+    position: absolute;
+    inset: 0;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #dfe6f3 0%, #cfd9ea 100%);
+    border: 1px solid #b8c5dc;
+    color: #5c6b88;
+    font-size: 0.82rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.hill-reveal-cover:hover {
+    background: linear-gradient(90deg, #d5ddea 0%, #c5d0e2 100%);
+    color: #232D4B;
+}
+
+.hill-reveal-cover:active {
+    transform: scale(0.99);
+}
+
+.hill-reveal-row.hill-revealed .hill-reveal-cover {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.hill-table tbody tr:nth-child(even) .hill-reveal-stack {
+    background: #f3f6fa;
+}
+
+.hill-table tbody tr:nth-child(even) .hill-reveal-cover {
+    background: linear-gradient(90deg, #d5ddea 0%, #c5d0e2 100%);
 }
 
 .hill-table tbody tr:nth-child(even) {
