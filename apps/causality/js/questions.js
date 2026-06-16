@@ -26,7 +26,7 @@ const CausalityQuestions = (() => {
         },
         {
             id: 'q2',
-            prompt: 'Which Bradford Hill criterion does this observational study not address?',
+            prompt: 'What causal criteria does this observational study not address?',
             options: [
                 { key: 'A', text: 'Temporality' },
                 { key: 'B', text: 'Dose response' },
@@ -38,7 +38,7 @@ const CausalityQuestions = (() => {
                 A: 'Temporality is partially satisfied: antibiotics are given before death. Time zero can be fuzzy in sepsis, but this criterion is not what the design fails to provide.',
                 B: 'Dose response (biological gradient) is partially addressed — the study reports worsening outcomes with longer delay. The main limitation is not absence of a gradient.',
                 C: 'Correct. This observational design cannot provide experimental evidence. RCTs that intentionally delay antibiotics would be unethical, so causation cannot be proven by intervention.',
-                D: 'Strength of association is a Hill criterion, and this study reports a large, statistically significant gradient. Effect size is not the main gap in the causal argument.'
+                D: 'Strength of association is a causal criterion, and this study reports a large, statistically significant gradient. Effect size is not the main gap in the causal argument.'
             }
         }
     ];

@@ -521,6 +521,14 @@ body {
     pointer-events: none;
 }
 
+.dag-spurious-link {
+    fill: none;
+    stroke: #E57200;
+    stroke-width: 2.5;
+    stroke-dasharray: 8 6;
+    pointer-events: none;
+}
+
 .dag-draw-feedback {
     padding: 14px 16px;
     margin-bottom: 12px;

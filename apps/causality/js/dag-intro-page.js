@@ -10,6 +10,54 @@
         return edges.some(e => e.from === from && e.to === to);
     }
 
+    function hasDirectEdge(edges, a, b) {
+        return hasEdge(edges, a, b) || hasEdge(edges, b, a);
+    }
+
+    function getSpuriousPairs(edges) {
+        const incoming = {};
+        const outgoing = {};
+        const pairKeys = new Set();
+        const pairs = [];
+
+        edges.forEach(({ from, to }) => {
+            if (!incoming[to]) incoming[to] = [];
+            incoming[to].push(from);
+            if (!outgoing[from]) outgoing[from] = [];
+            outgoing[from].push(to);
+        });
+
+        function addPair(a, b) {
+            if (hasDirectEdge(edges, a, b)) return;
+            const key = [a, b].sort().join('|');
+            if (pairKeys.has(key)) return;
+            pairKeys.add(key);
+            pairs.push([a, b]);
+        }
+
+        Object.values(incoming).forEach(sources => {
+            if (sources.length >= 2) {
+                for (let i = 0; i < sources.length; i += 1) {
+                    for (let j = i + 1; j < sources.length; j += 1) {
+                        addPair(sources[i], sources[j]);
+                    }
+                }
+            }
+        });
+
+        Object.values(outgoing).forEach(targets => {
+            if (targets.length >= 2) {
+                for (let i = 0; i < targets.length; i += 1) {
+                    for (let j = i + 1; j < targets.length; j += 1) {
+                        addPair(targets[i], targets[j]);
+                    }
+                }
+            }
+        });
+
+        return pairs;
+    }
+
     function hasCycle(edges) {
         const adj = {};
         const nodes = new Set();
@@ -110,7 +158,14 @@
         if (smokingToInflammation && cancerToInflammation && edges.length === 2) {
             return {
                 tone: 'warning',
-                text: '<strong>Collider.</strong> Both Smoking and Cancer point into Inflammation. Inflammation is a collider — adjusting for or restricting to it can open a spurious association.'
+                text: '<strong>Collider.</strong> Both Smoking and Cancer point into Inflammation. Inflammation is a collider — adjusting for or restricting to it can open spurious associations (dotted lines).'
+            };
+        }
+
+        if (inflammationToSmoking && inflammationToCancer && edges.length === 2) {
+            return {
+                tone: 'warning',
+                text: '<strong>Confounder.</strong> Inflammation &rarr; Smoking and Inflammation &rarr; Cancer. Inflammation affects both smoking and cancer. The dotted lines show spurious associations through the confounder.'
             };
         }
 
@@ -152,7 +207,14 @@
         if (cancerToInflammation && smokingToInflammation) {
             return {
                 tone: 'warning',
-                text: '<strong>Collider.</strong> Both Smoking and Cancer point into Inflammation. Conditioning on inflammation can distort the smoking–cancer relationship.'
+                text: '<strong>Collider.</strong> Both Smoking and Cancer point into Inflammation. Conditioning on inflammation can distort relationships between the other variables (dotted lines).'
+            };
+        }
+
+        if (inflammationToSmoking && inflammationToCancer) {
+            return {
+                tone: 'warning',
+                text: '<strong>Confounder.</strong> Inflammation &rarr; Smoking and Inflammation &rarr; Cancer. Inflammation affects both variables. The dotted lines show spurious associations through the confounder.'
             };
         }
 
@@ -200,6 +262,10 @@
             this.edgesLayer = this.svg.querySelector('.dag-draw-edges');
             this.previewLine = this.svg.querySelector('.dag-draw-preview');
             this.nodesLayer = this.svg.querySelector('.dag-draw-nodes');
+
+            this.spuriousLayer = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            this.spuriousLayer.setAttribute('class', 'dag-spurious-layer');
+            this.svg.insertBefore(this.spuriousLayer, this.nodesLayer);
 
             this.nodes.forEach(node => {
                 const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
@@ -387,6 +453,38 @@
             });
         }
 
+        getSpuriousPathD(fromNode, toNode) {
+            const { x1, y1, x2, y2 } = this.getAnchorPoints(fromNode, toNode);
+            const dx = toNode.x - fromNode.x;
+            const dy = toNode.y - fromNode.y;
+            const dist = Math.hypot(dx, dy) || 1;
+            const perpX = -dy / dist;
+            const perpY = dx / dist;
+            const bulge = Math.max(40, dist * 0.28);
+            const mx = (fromNode.x + toNode.x) / 2;
+            const my = (fromNode.y + toNode.y) / 2;
+            const cx = mx + perpX * bulge;
+            const cy = my + perpY * bulge;
+            return `M ${x1} ${y1} Q ${cx} ${cy} ${x2} ${y2}`;
+        }
+
+        updateSpuriousLinks(pairs) {
+            if (!this.spuriousLayer) return;
+
+            this.spuriousLayer.innerHTML = '';
+
+            pairs.forEach(([fromId, toId]) => {
+                const fromNode = this.nodeMap[fromId];
+                const toNode = this.nodeMap[toId];
+                if (!fromNode || !toNode) return;
+
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('class', 'dag-spurious-link');
+                path.setAttribute('d', this.getSpuriousPathD(fromNode, toNode));
+                this.spuriousLayer.appendChild(path);
+            });
+        }
+
         updateFeedback() {
             if (!this.feedbackEl) return;
 
@@ -394,6 +492,9 @@
             this.feedbackEl.innerHTML = result.text;
             this.feedbackEl.classList.remove('hidden', 'feedback-info', 'feedback-success', 'feedback-warning');
             this.feedbackEl.classList.add(`feedback-${result.tone}`);
+
+            const pairs = hasCycle(this.edges) ? [] : getSpuriousPairs(this.edges);
+            this.updateSpuriousLinks(pairs);
         }
     }
 

@@ -2,6 +2,7 @@
     const { QUESTIONS, storePreAnswer, getStoredAnswers } = CausalityQuestions;
 
     const form = document.getElementById('quiz-form');
+    const skipBtn = document.getElementById('skip-btn');
     const continueBtn = document.getElementById('continue-btn');
     const errorMsg = document.getElementById('quiz-error');
 
@@ -46,6 +47,10 @@
             const selected = block.querySelector(`input[name="${q.id}"]:checked`);
             if (selected) storePreAnswer(q.id, selected.value);
         });
+    });
+
+    skipBtn.addEventListener('click', () => {
+        window.location.href = 'hill-criteria.html';
     });
 
     continueBtn.addEventListener('click', () => {

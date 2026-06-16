@@ -1,7 +1,6 @@
 (() => {
     const { QUESTIONS, getStoredAnswers, storePostAnswer, getOptionText } = CausalityQuestions;
 
-    const initialSummary = document.getElementById('initial-summary');
     const quizForm = document.getElementById('post-quiz-form');
     const submitBtn = document.getElementById('submit-btn');
     const finishBtn = document.getElementById('finish-btn');
@@ -11,14 +10,6 @@
     const stored = getStoredAnswers();
     const preAnswers = stored.pre || {};
     if (!stored.post) stored.post = {};
-
-    if (QUESTIONS.every(q => preAnswers[q.id])) {
-        initialSummary.innerHTML = QUESTIONS.map(q =>
-            `<p><strong>Question ${q.id === 'q1' ? '1' : '2'} (initial):</strong> ${getOptionText(q.id, preAnswers[q.id])}</p>`
-        ).join('');
-    } else {
-        initialSummary.innerHTML = '<p>No initial answers found. Return to the first page if you want to compare responses.</p>';
-    }
 
     QUESTIONS.forEach(q => {
         const block = document.createElement('div');
