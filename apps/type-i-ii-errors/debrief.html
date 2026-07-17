@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wrap-up — Type I &amp; Type II Errors</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>Wrap-up</h1>
+            <a href="q5-significance.html" class="back-link">← Previous</a>
+        </header>
+
+        <div class="step-indicator">
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+        </div>
+
+        <p class="score-line" id="score-line"></p>
+
+        <p class="intro" style="margin-bottom: 10px;">
+            The whole session lives in one table. A study can be right or wrong in two ways —
+            and the two wrong ways are the errors we design trials to control.
+        </p>
+
+        <table class="truth-table">
+            <thead>
+                <tr>
+                    <th rowspan="2" style="background:#f0f0f0; color:#232D4B;">Reality</th>
+                    <th colspan="2">Study finding</th>
+                </tr>
+                <tr>
+                    <th>No difference found</th>
+                    <th>Difference found</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="rowhead">Effect does<br>NOT exist</td>
+                    <td class="correct-cell">Correct</td>
+                    <td class="type1-cell">Type I error (α)<br><small>false positive</small></td>
+                </tr>
+                <tr>
+                    <td class="rowhead">Effect<br>exists</td>
+                    <td class="type2-cell">Type II error (β)<br><small>false negative</small></td>
+                    <td class="correct-cell">Correct<br><small>power = 1 − β</small></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <ul class="takeaways">
+            <li><strong>Type I error (α):</strong> a false positive — claiming an effect that isn’t real. You set this directly with the significance level (α = 0.05 means a 1-in-20 false-positive rate).</li>
+            <li><strong>Type II error (β):</strong> a false negative — missing an effect that is real. <strong>Power = 1 − β</strong> is the chance of catching it.</li>
+            <li><strong>They trade off:</strong> for a fixed effect size and sample size, a stricter α raises β. The lever that improves both is a <strong>larger sample</strong> (or a larger true effect / less variability).</li>
+            <li><strong>Statistical ≠ clinical significance:</strong> a big enough trial can make a trivial difference “significant.” Read the effect size and its confidence interval, not just the p-value.</li>
+            <li><strong>Reading a paper:</strong> a negative trial may be underpowered (Type II), not truly negative — check whether it could have detected a meaningful effect.</li>
+        </ul>
+
+        <div class="buttons">
+            <a href="q1-type-i.html" class="btn btn-secondary">Review again</a>
+            <a href="../../questions.html" class="btn btn-primary">Done →</a>
+        </div>
+    </div>
+
+    <script src="js/stats.js"></script>
+    <script src="js/questions.js"></script>
+    <script>
+        (() => {
+            const answers = TypeErrorQuestions.getStoredAnswers();
+            const total = TypeErrorQuestions.QUESTIONS.length;
+            const answered = Object.keys(answers).length;
+            const correct = Object.values(answers).filter(a => a.correct).length;
+            const el = document.getElementById('score-line');
+            if (answered === 0) {
+                el.textContent = '';
+            } else {
+                el.textContent = `You answered ${correct} of ${total} correctly.`;
+            }
+        })();
+    </script>
+</body>
+</html>

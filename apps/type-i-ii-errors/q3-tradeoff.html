@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question 3 — The α / β Trade-off</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>Question 3 of 5</h1>
+            <a href="q2-type-ii.html" class="back-link">← Previous</a>
+        </header>
+
+        <div class="step-indicator">
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot active"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+        </div>
+
+        <div id="question-container"></div>
+
+        <section id="interactive" class="interactive" hidden>
+            <h2 class="interactive-heading">See it: drag the threshold</h2>
+            <div id="mount"></div>
+        </section>
+    </div>
+
+    <script src="js/stats.js"></script>
+    <script src="js/questions.js"></script>
+    <script src="js/tradeoff-curves.js"></script>
+    <script>
+        TypeErrorQuestions.render(
+            document.getElementById('question-container'),
+            'q3',
+            {
+                nextHref: 'q4-power.html',
+                nextLabel: 'Next question →',
+                onReveal: () => {
+                    const area = document.getElementById('interactive');
+                    area.hidden = false;
+                    new TradeoffCurves(document.getElementById('mount'));
+                    area.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            }
+        );
+    </script>
+</body>
+</html>
