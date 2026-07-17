@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Question 3 — The α / β Trade-off</title>
+    <title>Question 3 — Type I Error &amp; Sample Size</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -24,14 +24,14 @@
         <div id="question-container"></div>
 
         <section id="interactive" class="interactive" hidden>
-            <h2 class="interactive-heading">See it: drag the threshold</h2>
+            <h2 class="interactive-heading">See it: sample size vs. α on the Type I error rate</h2>
             <div id="mount"></div>
         </section>
     </div>
 
     <script src="js/stats.js"></script>
     <script src="js/questions.js"></script>
-    <script src="js/tradeoff-curves.js"></script>
+    <script src="js/type-i-sample-size.js"></script>
     <script>
         TypeErrorQuestions.render(
             document.getElementById('question-container'),
@@ -42,7 +42,7 @@
                 onReveal: () => {
                     const area = document.getElementById('interactive');
                     area.hidden = false;
-                    new TradeoffCurves(document.getElementById('mount'));
+                    new TypeISampleSize(document.getElementById('mount'));
                     area.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }
             }
