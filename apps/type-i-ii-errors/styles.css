@@ -226,20 +226,6 @@ body {
 .ink-beta { color: #0072B2; }
 .ink-power { color: #2e7d32; }
 
-/* Verdict shown after "Make a Type I/II error" */
-.error-verdict {
-    margin-top: 12px;
-    padding: 10px 14px;
-    font-size: 0.93rem;
-    line-height: 1.5;
-    background: #f8f9fa;
-    border: 1px solid #e0e0e0;
-    border-left: 4px solid #ccc;
-    border-radius: 4px;
-}
-
-.error-verdict[hidden] { display: none; }
-
 /* ---- Canvas ---- */
 .canvas-container {
     width: 100%;

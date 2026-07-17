@@ -24,14 +24,14 @@
         <div id="question-container"></div>
 
         <section id="interactive" class="interactive" hidden>
-            <h2 class="interactive-heading">See it: the effect you can miss</h2>
+            <h2 class="interactive-heading">See it: how sample size changes the risk of a Type II error</h2>
             <div id="mount"></div>
         </section>
     </div>
 
     <script src="js/stats.js"></script>
     <script src="js/questions.js"></script>
-    <script src="js/type-ii-curves.js"></script>
+    <script src="js/type-ii-sample-size.js"></script>
     <script>
         TypeErrorQuestions.render(
             document.getElementById('question-container'),
@@ -42,7 +42,7 @@
                 onReveal: () => {
                     const area = document.getElementById('interactive');
                     area.hidden = false;
-                    new TypeIICurves(document.getElementById('mount'));
+                    new TypeIISampleSize(document.getElementById('mount'));
                     area.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }
             }
