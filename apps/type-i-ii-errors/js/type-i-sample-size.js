@@ -111,7 +111,9 @@ class TypeISampleSize {
     _resize() {
         const rect = this.canvas.parentElement.getBoundingClientRect();
         const w = rect.width - 20;
-        this._grid = Math.min(w, 360);
+        // Cap by viewport height too, so the square grid fits a rotated phone.
+        const maxByHeight = Math.round((window.innerHeight || 480) * 0.6);
+        this._grid = Math.max(150, Math.min(w, 360, maxByHeight));
         const h = this._grid;
         this.canvas.style.width = w + 'px';
         this.canvas.style.height = h + 'px';
