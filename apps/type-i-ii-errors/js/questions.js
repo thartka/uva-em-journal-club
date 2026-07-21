@@ -54,19 +54,19 @@ const TypeErrorQuestions = (() => {
         {
             id: 'q3',
             number: 3,
-            prompt: 'A treatment has no true effect. Two trials test it — one small, one very large — each using α = 0.05. Compared with the small trial, the large trial’s probability of a false-positive result (a Type I error) is:',
+            prompt: 'A trial uses α = 0.05. If the investigators greatly increase the sample size, the probability of a false-positive result (a Type I error) will:',
             options: [
-                { key: 'A', text: 'The same — about 5%' },
-                { key: 'B', text: 'Lower, because large trials are more reliable' },
-                { key: 'C', text: 'Higher, because it runs more comparisons' },
-                { key: 'D', text: 'Near zero, because of the large sample' }
+                { key: 'A', text: 'Stay about the same (≈ 5%)' },
+                { key: 'B', text: 'Decrease' },
+                { key: 'C', text: 'Increase' },
+                { key: 'D', text: 'Approach zero' }
             ],
             correct: 'A',
             explanations: {
-                A: 'Correct. When there is no true effect, the chance of a false positive equals the significance level α — about 5% here — for a trial of any size. Sample size lowers the Type II error rate (β); it does not touch the Type I error rate.',
-                B: 'A larger trial gives more precise estimates and lowers the Type II error rate (β), but the Type I error rate stays at α. Size does not protect against a false positive.',
-                C: 'This trial runs the same single test, just with more patients. Running many separate comparisons inflates Type I error, but enrolling more patients in one test does not.',
-                D: 'Sample size does not push the false-positive rate toward zero. It is fixed at α (5%) regardless of n; the only way to lower it is to lower α.'
+                A: 'Correct. The probability of a Type I error is the significance level α — about 5% here — and it does not depend on sample size. A larger trial lowers the Type II error rate (β), not the Type I error rate.',
+                B: 'A larger trial gives more precise estimates and lowers the Type II error rate (β), but the Type I error rate stays at α. Size does not reduce false positives.',
+                C: 'Enrolling more patients in the same single test does not raise the false-positive rate. Running many separate comparisons inflates Type I error, but a bigger single trial does not.',
+                D: 'Sample size does not push the false-positive rate toward zero. It is fixed at α; the only way to lower it is to lower α.'
             }
         },
         {
