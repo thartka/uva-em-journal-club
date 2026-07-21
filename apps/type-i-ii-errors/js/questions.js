@@ -72,24 +72,6 @@ const TypeErrorQuestions = (() => {
         {
             id: 'q4',
             number: 4,
-            prompt: 'A trial is planned with 80% power. Which single change would most increase its power to detect a true effect of the assumed size?',
-            options: [
-                { key: 'A', text: 'Lowering α to 0.01' },
-                { key: 'B', text: 'Increasing the sample size' },
-                { key: 'C', text: 'Choosing a more variable outcome' },
-                { key: 'D', text: 'Reducing the sample size' }
-            ],
-            correct: 'B',
-            explanations: {
-                A: 'Lowering α makes the test more stringent and <em>decreases</em> power (increases β) — the opposite of the goal.',
-                B: 'Correct. A larger sample narrows the sampling distributions, so a true effect is easier to detect — power rises and β falls. A larger true effect and a less variable outcome also raise power.',
-                C: 'Greater outcome variability decreases power; you would need an even larger sample to overcome it.',
-                D: 'Reducing the sample size decreases power and increases the risk of a Type II error.'
-            }
-        },
-        {
-            id: 'q5',
-            number: 5,
             prompt: 'A trial of 200,000 patients finds that a new triage protocol produces a statistically significant reduction in ED length of stay of 2 minutes (p < 0.05). The most important concern is:',
             options: [
                 { key: 'A', text: 'Insufficient statistical power to detect the effect' },
