@@ -41,14 +41,14 @@ const TypeErrorQuestions = (() => {
                 { key: 'A', text: 'Type I error' },
                 { key: 'B', text: 'Type II error' },
                 { key: 'C', text: 'Publication bias' },
-                { key: 'D', text: 'Small effect size' }
+                { key: 'D', text: 'Selection bias' }
             ],
             correct: 'B',
             explanations: {
                 A: 'A Type I error is a false positive — claiming an effect that is not real. Here a real effect was missed.',
                 B: 'Correct. A Type II error is failing to reject a false null — missing an effect that is truly there (a false negative). Its probability is β, and power = 1 − β.',
                 C: 'Publication bias concerns which studies get published, not whether a given study detects its effect.',
-                D: 'A small effect size contributes to low power, but the error itself is the missed detection — a Type II error.'
+                D: 'Selection bias is a systematic flaw in how patients enter or are grouped in a study, not a failure to detect a real effect. Missing a true benefit is a Type II error.'
             }
         },
         {
