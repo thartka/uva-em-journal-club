@@ -11,10 +11,11 @@
 
 const FallHeightChart = (() => {
 
-    // Editable data: [fall height (inches), estimated probability of ciTBI (%)].
+    // [fall height (inches), estimated probability of ciTBI (%)] — from the model
+    // table (heights are 0–200 cm converted to inches).
     const DATA = [
-        [0, 11], [10, 23], [20, 40], [30, 59], [40, 74],
-        [50, 83], [60, 89], [70, 93], [80, 96]
+        [0.0, 11.3], [9.8, 22.7], [19.7, 40.3], [29.5, 58.7], [39.4, 74.1],
+        [49.2, 82.9], [59.1, 89.1], [68.9, 93.3], [78.7, 95.9]
     ];
 
     class Chart {
@@ -237,7 +238,7 @@ const FallHeightChart = (() => {
             const feet = (this.h / 12);
             this.hVal.textContent = `${this.h} in`;
             this.rhEl.textContent = `${this.h} in (${feet.toFixed(1)} ft)`;
-            this.rpEl.textContent = `${Math.round(this._probAt(this.h))}%`;
+            this.rpEl.textContent = `${this._probAt(this.h).toFixed(1)}%`;
             this._draw();
         }
     }

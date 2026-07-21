@@ -89,6 +89,14 @@
         .chart-readout .rv { font-size: 1.4rem; font-weight: 700; color: #232D4B; }
 
         .chart-note { text-align: center; font-size: 0.85rem; color: #888; margin-top: 8px; }
+
+        /* Model table */
+        .data-table-wrap { overflow-x: auto; margin-bottom: 26px; }
+        .data-table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+        .data-table caption { caption-side: top; text-align: left; font-size: 0.9rem; color: #666; margin-bottom: 8px; }
+        .data-table th, .data-table td { border: 1px solid #e0e0e0; padding: 8px 12px; text-align: right; white-space: nowrap; }
+        .data-table thead th { background: #232D4B; color: #fff; font-weight: 600; }
+        .data-table tbody tr:nth-child(even) { background: #f8f9fa; }
     </style>
 </head>
 <body>
@@ -106,6 +114,26 @@
                 <div class="paper-title">Fall height and impact surface in relation to clinically important traumatic brain injury among children under two years</div>
                 <div class="paper-cite">Oishi, Amagasa, Uematsu, Moriya. Am J Emerg Med. 2026;104:79–84. doi:10.1016/j.ajem.2026.03.002</div>
             </a>
+
+            <div class="data-table-wrap">
+                <table class="data-table">
+                    <caption>Estimated probability of clinically important TBI by fall height.</caption>
+                    <thead>
+                        <tr><th>Height (cm)</th><th>Height (in)</th><th>Log odds</th><th>Probability</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>0</td><td>0.0</td><td>-2.06</td><td>11.3%</td></tr>
+                        <tr><td>25</td><td>9.8</td><td>-1.23</td><td>22.7%</td></tr>
+                        <tr><td>50</td><td>19.7</td><td>-0.39</td><td>40.3%</td></tr>
+                        <tr><td>75</td><td>29.5</td><td>0.35</td><td>58.7%</td></tr>
+                        <tr><td>100</td><td>39.4</td><td>1.05</td><td>74.1%</td></tr>
+                        <tr><td>125</td><td>49.2</td><td>1.58</td><td>82.9%</td></tr>
+                        <tr><td>150</td><td>59.1</td><td>2.11</td><td>89.1%</td></tr>
+                        <tr><td>175</td><td>68.9</td><td>2.63</td><td>93.3%</td></tr>
+                        <tr><td>200</td><td>78.7</td><td>3.16</td><td>95.9%</td></tr>
+                    </tbody>
+                </table>
+            </div>
 
             <div id="chart"></div>
         </main>
