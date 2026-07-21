@@ -20,6 +20,12 @@ class SignificanceSim {
         this.sigma = 0.833;     // lognormal shape → strong right skew (CV ≈ 1)
         this.meaningful = 30;   // minutes: a rough "would this matter?" line
         this.xMax = 600;        // minutes shown on the x-axis
+        this.maxReduction = 60; // matches the slider max
+
+        // Fixed y-scale: the tallest the treatment curve ever gets (at the
+        // largest reduction). Holding it constant means the control curve is
+        // drawn at the same height every frame and never appears to change.
+        this._maxDensity = this._peakDensity(this.meanC - this.maxReduction);
 
         this._build();
         this._dpr = window.devicePixelRatio || 1;
@@ -110,6 +116,13 @@ class SignificanceSim {
         return Math.exp(-((Math.log(x) - mu) ** 2) / (2 * s * s)) / (x * s * Math.sqrt(2 * Math.PI));
     }
 
+    _peakDensity(mean) {
+        const mu = this._muFor(mean);
+        let m = 0;
+        for (let x = 1; x <= this.xMax; x += 2) m = Math.max(m, this._pdf(x, mu));
+        return m;
+    }
+
     _stats() {
         const se = this.sd * Math.sqrt(2 / this.n);
         const z = this.reduction / se;
@@ -133,11 +146,7 @@ class SignificanceSim {
         const muC = this._muFor(this.meanC);
         const muT = this._muFor(meanT);
 
-        let maxD = 0;
-        for (let x = 1; x <= this.xMax; x += 3) {
-            maxD = Math.max(maxD, this._pdf(x, muC), this._pdf(x, muT));
-        }
-        const yFor = (d) => baseY - (d / maxD) * plotH * 0.9;
+        const yFor = (d) => baseY - (d / this._maxDensity) * plotH * 0.9;
 
         const tracePath = (mu) => {
             ctx.beginPath();
