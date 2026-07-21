@@ -10,6 +10,10 @@ const TypeErrorQuestions = (() => {
 
     const STORAGE_KEY = 'type_i_ii';
 
+    // FIXED ORDER — do not reorder options or change their A–D keys.
+    // Options render in array order with no shuffling, so every device shows the
+    // same layout. The presenter's screen must match the residents' phones, so
+    // this order must stay stable across versions once published.
     const QUESTIONS = [
         {
             id: 'q1',
