@@ -16,7 +16,7 @@
             text-decoration: none;
             color: #333;
             transition: all 0.2s;
-            margin-bottom: 28px;
+            margin-bottom: 24px;
         }
         .paper-link:hover {
             border-color: #E57200;
@@ -35,23 +35,60 @@
         .paper-title { font-size: 1.15rem; color: #232D4B; font-weight: 600; margin-bottom: 8px; }
         .paper-cite { font-size: 0.9rem; color: #666; }
 
-        figure.supp-figure { margin: 0; }
-        figure.supp-figure img {
+        /* Interactive chart */
+        .chart-intro { font-size: 0.95rem; color: #444; margin-bottom: 12px; }
+        .chart-canvas-wrap {
             width: 100%;
-            max-width: 760px;
-            height: auto;
-            display: block;
-            margin: 0 auto;
-            border: 1px solid #e0e0e0;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 8px;
+            overflow: hidden;
+        }
+        .chart-canvas-wrap canvas { width: 100%; display: block; }
+
+        .chart-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 14px 0;
+            padding: 14px 15px;
+            background: #f8f9fa;
             border-radius: 8px;
         }
-        figure.supp-figure figcaption {
-            text-align: center;
-            font-size: 0.9rem;
-            color: #666;
-            margin-top: 12px;
-            padding: 0 10px;
+        .chart-controls label { font-weight: 500; font-size: 0.95rem; }
+        .chart-controls input[type="range"] {
+            flex: 1; min-width: 180px; height: 8px; border-radius: 5px;
+            background: #ddd; outline: none; -webkit-appearance: none; appearance: none;
         }
+        .chart-controls input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 24px; height: 24px; border-radius: 50%;
+            background: #E57200; cursor: pointer; border: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .chart-controls input[type="range"]::-moz-range-thumb {
+            width: 24px; height: 24px; border-radius: 50%;
+            background: #E57200; cursor: pointer; border: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .chart-controls > span {
+            font-weight: 600; color: #E57200; min-width: 56px; text-align: right; font-size: 1rem;
+        }
+
+        .chart-readouts { display: flex; gap: 16px; justify-content: center; margin: 14px 0; flex-wrap: wrap; }
+        .chart-readout {
+            text-align: center; padding: 12px 18px; border-radius: 8px;
+            border: 1px solid #e0e0e0; background: #f8f9fa; min-width: 150px; flex: 1;
+        }
+        .chart-readout .rl {
+            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.4px;
+            color: #888; margin-bottom: 4px;
+        }
+        .chart-readout .rv { font-size: 1.4rem; font-weight: 700; color: #232D4B; }
+
+        .chart-note { text-align: center; font-size: 0.85rem; color: #888; margin-top: 8px; }
     </style>
 </head>
 <body>
@@ -70,12 +107,13 @@
                 <div class="paper-cite">Oishi, Amagasa, Uematsu, Moriya. Am J Emerg Med. 2026;104:79–84. doi:10.1016/j.ajem.2026.03.002</div>
             </a>
 
-            <figure class="supp-figure">
-                <img src="../static/ciTBI%20vs%20fall%20height.png"
-                     alt="Estimated probability of clinically important TBI versus fall height">
-                <figcaption>Estimated probability of clinically important TBI (ciTBI) by fall height. Figure produced by Thomas Hartka.</figcaption>
-            </figure>
+            <div id="chart"></div>
         </main>
     </div>
+
+    <script src="js/fall-height-chart.js"></script>
+    <script>
+        new FallHeightChart.Chart(document.getElementById('chart'));
+    </script>
 </body>
 </html>
