@@ -30,7 +30,7 @@ class TypeIArray {
                 <strong>nothing</strong> (both arms have an identical ${Math.round(this.trueRate * 100)}%
                 event rate, ${this.nPerArm} patients per arm). Any card that turns orange
                 reached <strong>p &lt; 0.05</strong> &mdash; a false positive, a Type I error.
-                Run several batches and watch the running rate settle near α = 0.05 (1 in 20).
+                Run several batches and watch the running rate settle near α = 0.05.
             </p>
             <div class="buttons" style="margin-top:0;">
                 <button class="btn btn-primary" data-role="run">Run 20 trials</button>
