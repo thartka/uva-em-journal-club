@@ -18,7 +18,7 @@ class SignificanceSim {
         this.meanC = 180;       // control mean LOS
         this.reduction = 2;     // minutes shorter under the new protocol (slider)
         this.sigma = 0.833;     // lognormal shape → strong right skew (CV ≈ 1)
-        this.meaningful = 30;   // minutes: a rough "would this matter?" line
+        this.meaningful = 15;   // minutes: a rough "would this matter?" line
         this.xMax = 600;        // minutes shown on the x-axis
         this.maxReduction = 60; // matches the slider max
 
