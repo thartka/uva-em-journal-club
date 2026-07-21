@@ -1,26 +1,24 @@
 /**
  * Q4 interactive — statistical vs. clinical significance.
  *
- * ED length of stay is right-skewed. A new protocol shortens the MEAN stay by a
- * clinically trivial 2 minutes (180 → 178). The canvas draws the two group
- * distributions, which sit almost perfectly on top of each other — clinically
- * the same. The slider sets the sample size and the readouts beneath update:
- * with a large enough sample the 2-minute gap becomes "statistically
- * significant," even though the distributions never change. Significance is not
- * the same as clinical importance.
+ * Both arms are fixed at 200,000 patients. ED length of stay is right-skewed
+ * (control mean 180 min). The slider moves the treatment mean — i.e. how much
+ * the new protocol shortens the average stay. With a sample this large, almost
+ * any reduction is "statistically significant," so "significant?" reads Yes
+ * across nearly the whole range while "clinically meaningful?" only turns Yes
+ * once the difference is genuinely large — and the orange curve has visibly
+ * pulled away from the navy one. Significance is not the same as importance.
  */
 
 class SignificanceSim {
     constructor(mount) {
         this.mount = mount;
+        this.n = 200000;        // patients per arm (FIXED)
         this.sd = 180;          // within-arm SD of LOS (minutes)
         this.meanC = 180;       // control mean LOS
-        this.meanT = 178;       // treatment mean LOS (2 minutes shorter)
-        this.trueDiff = this.meanC - this.meanT;
+        this.reduction = 2;     // minutes shorter under the new protocol (slider)
         this.sigma = 0.833;     // lognormal shape → strong right skew (CV ≈ 1)
-        this.nMin = 100;        // patients per arm
-        this.nMax = 200000;
-        this.n = 1000;
+        this.meaningful = 30;   // minutes: a rough "would this matter?" line
         this.xMax = 600;        // minutes shown on the x-axis
 
         this._build();
@@ -38,22 +36,22 @@ class SignificanceSim {
     _build() {
         this.mount.innerHTML = `
             <p class="interactive-intro">
-                ED length of stay is <strong>right-skewed</strong> — most patients leave quickly, a few
-                stay a long time. A new triage protocol shortens the <strong>mean</strong> stay by just
-                <strong>2 minutes</strong> (180 → 178). The two curves below — control and treatment —
-                sit almost exactly on top of each other. Set the sample size and watch the p-value:
-                with enough patients, this trivial gap turns “statistically significant.”
+                ED length of stay is <strong>right-skewed</strong>, with a control mean of 180 min.
+                Both arms have <strong>200,000 patients</strong>. Drag the slider to change how much
+                the new protocol shortens the <strong>mean</strong> stay, and watch the readouts: with a
+                sample this large, almost any reduction is “statistically significant” — but only a large
+                one is clinically meaningful, and only then do the curves visibly separate.
             </p>
             <div class="canvas-container"><canvas data-role="canvas"></canvas></div>
             <div class="legend">
                 <span class="legend-item"><span class="legend-swatch" style="background:#232D4B"></span>Control (mean 180 min)</span>
-                <span class="legend-item"><span class="legend-swatch" style="background:#E57200"></span>New protocol (mean 178 min)</span>
+                <span class="legend-item"><span class="legend-swatch" style="background:#E57200"></span>New protocol</span>
             </div>
             <div class="controls">
                 <div class="control-group">
-                    <label for="npn">Total patients:</label>
-                    <input type="range" id="npn" data-role="n" min="0" max="1000" value="332" step="1">
-                    <span data-role="nval">2,000</span>
+                    <label for="redu">Reduction in mean stay:</label>
+                    <input type="range" id="redu" data-role="r" min="0" max="60" value="2" step="1">
+                    <span data-role="rval">2 min</span>
                 </div>
             </div>
             <div class="params-display">
@@ -75,20 +73,22 @@ class SignificanceSim {
 
         this.canvas = this.mount.querySelector('[data-role="canvas"]');
         this.ctx = this.canvas.getContext('2d');
-        this.nSlider = this.mount.querySelector('[data-role="n"]');
-        this.nVal = this.mount.querySelector('[data-role="nval"]');
+        this.rSlider = this.mount.querySelector('[data-role="r"]');
+        this.rVal = this.mount.querySelector('[data-role="rval"]');
         this.pEl = this.mount.querySelector('[data-role="p"]');
         this.sigEl = this.mount.querySelector('[data-role="sig"]');
         this.clinEl = this.mount.querySelector('[data-role="clin"]');
         this.noteEl = this.mount.querySelector('[data-role="note"]');
 
-        this.nSlider.addEventListener('input', () => this._update());
+        this.rSlider.addEventListener('input', () => {
+            this.reduction = parseInt(this.rSlider.value, 10);
+            this._update();
+        });
     }
 
     _resize() {
         const rect = this.canvas.parentElement.getBoundingClientRect();
         const w = rect.width - 20;
-        // Cap height by viewport too, so it fits a rotated phone.
         const h = Math.min(Math.max(w * 0.5, 210), 300, Math.round((window.innerHeight || 480) * 0.6));
         this.canvas.style.width = w + 'px';
         this.canvas.style.height = h + 'px';
@@ -101,7 +101,6 @@ class SignificanceSim {
     }
 
     _muFor(mean) {
-        // Lognormal μ so that exp(μ + σ²/2) = mean.
         return Math.log(mean) - (this.sigma * this.sigma) / 2;
     }
 
@@ -111,16 +110,11 @@ class SignificanceSim {
         return Math.exp(-((Math.log(x) - mu) ** 2) / (2 * s * s)) / (x * s * Math.sqrt(2 * Math.PI));
     }
 
-    _nFromSlider() {
-        const idx = parseInt(this.nSlider.value, 10) / 1000;
-        return Math.round(this.nMin * Math.pow(this.nMax / this.nMin, idx));
-    }
-
     _stats() {
         const se = this.sd * Math.sqrt(2 / this.n);
-        const z = this.trueDiff / se;
+        const z = this.reduction / se;
         const p = 2 * (1 - Stats.normalCDF(Math.abs(z)));
-        return { se, p, significant: p < 0.05 };
+        return { p, significant: p < 0.05 };
     }
 
     _xToPx(min) {
@@ -135,10 +129,10 @@ class SignificanceSim {
         const baseY = this._h - padB;
         const plotH = baseY - padT;
 
+        const meanT = this.meanC - this.reduction;
         const muC = this._muFor(this.meanC);
-        const muT = this._muFor(this.meanT);
+        const muT = this._muFor(meanT);
 
-        // Scale so the tallest point of either curve fills ~90% of the plot.
         let maxD = 0;
         for (let x = 1; x <= this.xMax; x += 3) {
             maxD = Math.max(maxD, this._pdf(x, muC), this._pdf(x, muT));
@@ -154,7 +148,7 @@ class SignificanceSim {
             ctx.lineTo(this._xToPx(this.xMax), baseY);
         };
 
-        // Control: filled navy area.
+        // Control: filled navy.
         tracePath(muC);
         ctx.fillStyle = 'rgba(35,45,75,0.22)';
         ctx.fill();
@@ -162,7 +156,7 @@ class SignificanceSim {
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        // Treatment: orange outline (lands right on top of the control curve).
+        // Treatment: orange outline, shifts left as the reduction grows.
         tracePath(muT);
         ctx.strokeStyle = '#E57200';
         ctx.lineWidth = 2;
@@ -192,39 +186,50 @@ class SignificanceSim {
         ctx.fillStyle = '#555';
         ctx.fillText('ED length of stay (minutes)', this._xToPx(this.xMax / 2), baseY + 20);
 
-        // Mean marker (the two means are ~2 min apart — visually one line).
-        const meanX = this._xToPx(this.meanC);
-        ctx.beginPath();
-        ctx.setLineDash([5, 4]);
-        ctx.moveTo(meanX, baseY);
-        ctx.lineTo(meanX, padT + 2);
-        ctx.strokeStyle = '#555';
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.fillStyle = '#333';
-        ctx.font = '600 11px -apple-system, BlinkMacSystemFont, sans-serif';
+        // Mean markers.
+        const drawMean = (mean, color) => {
+            const x = this._xToPx(mean);
+            ctx.beginPath();
+            ctx.setLineDash([5, 4]);
+            ctx.moveTo(x, baseY);
+            ctx.lineTo(x, padT + 2);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+            ctx.setLineDash([]);
+        };
+        drawMean(this.meanC, '#232D4B');
+        drawMean(meanT, '#E57200');
+
+        // Numeric annotation (top-left, so it never collides with the lines).
         ctx.textAlign = 'left';
         ctx.textBaseline = 'top';
-        ctx.fillText('means: 180 vs 178 min', meanX + 6, padT + 2);
-        ctx.fillText('(2 min apart)', meanX + 6, padT + 16);
+        ctx.font = '600 11px -apple-system, BlinkMacSystemFont, sans-serif';
+        ctx.fillStyle = '#232D4B';
+        ctx.fillText('Control mean: 180 min', this._xToPx(0) + 6, padT + 2);
+        ctx.fillStyle = '#c15400';
+        ctx.fillText(`New mean: ${meanT} min  (−${this.reduction})`, this._xToPx(0) + 6, padT + 18);
     }
 
     _update() {
-        this.n = this._nFromSlider();
-        this.nVal.textContent = (this.n * 2).toLocaleString('en-US');
-
+        this.rVal.textContent = `${this.reduction} min`;
         const { p, significant } = this._stats();
-        this.pEl.textContent = p < 0.001 ? '<0.001' : p.toFixed(3);
+        const meaningful = this.reduction >= this.meaningful;
+
+        this.pEl.textContent = this.reduction === 0 ? '1.00' : (p < 0.001 ? '<0.001' : p.toFixed(3));
         this.sigEl.textContent = significant ? 'Yes' : 'No';
         this.sigEl.style.color = significant ? '#E57200' : '#888';
-        this.clinEl.textContent = 'No';          // a 2-minute mean difference is never meaningful
-        this.clinEl.style.color = '#888';
+        this.clinEl.textContent = meaningful ? 'Yes' : 'No';
+        this.clinEl.style.color = meaningful ? '#2e7d32' : '#888';
 
-        if (significant) {
-            this.noteEl.innerHTML = 'Now <strong>p &lt; 0.05</strong> — “statistically significant.” But the curves are unchanged: a 2-minute difference no patient would ever feel. Big samples make trivial differences significant.';
+        if (this.reduction === 0) {
+            this.noteEl.innerHTML = 'No difference between the groups — so even with 200,000 patients per arm, the result is <strong>not</strong> statistically significant.';
+        } else if (!significant) {
+            this.noteEl.innerHTML = `Even with 200,000 patients per arm, a ${this.reduction}-minute difference is not <em>quite</em> statistically significant (p = ${p.toFixed(2)}).`;
+        } else if (!meaningful) {
+            this.noteEl.innerHTML = `A ${this.reduction}-minute reduction is <strong>statistically significant</strong> — but with 200,000 patients per arm, almost any difference is. Clinically, ${this.reduction} minutes barely registers, and the curves are still on top of each other.`;
         } else {
-            this.noteEl.innerHTML = 'At this size the 2-minute difference is <strong>not</strong> statistically significant. Keep adding patients and watch the p-value — the curves stay identical the whole time.';
+            this.noteEl.innerHTML = `A ${this.reduction}-minute reduction is statistically significant <strong>and</strong> clinically meaningful — the difference is finally large enough to matter, and you can see the curves separate.`;
         }
         this._draw();
     }
