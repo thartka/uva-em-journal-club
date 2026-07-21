@@ -20,16 +20,16 @@ const TypeErrorQuestions = (() => {
             number: 1,
             prompt: 'A trial concludes that a thiamine, steroids, and vitamin C bundle reduces sepsis mortality. A larger, more rigorous trial later shows the bundle has no real effect on mortality. The first trial’s positive result is best described as a:',
             options: [
-                { key: 'A', text: 'Selection bias' },
-                { key: 'B', text: 'Type I error' },
-                { key: 'C', text: 'Type II error' },
+                { key: 'A', text: 'Type I error' },
+                { key: 'B', text: 'Type II error' },
+                { key: 'C', text: 'Selection bias' },
                 { key: 'D', text: 'Inadequate power' }
             ],
-            correct: 'B',
+            correct: 'A',
             explanations: {
-                A: 'Selection bias is a systematic flaw in how patients enter or are grouped in a study. This false positive arose from chance under α, not from a design flaw.',
-                B: 'Correct. A Type I error is rejecting a true null hypothesis — detecting an effect that is not real (a false positive). Its long-run rate is exactly the significance level α you choose.',
-                C: 'A Type II error is the opposite: <em>failing</em> to detect an effect that truly exists. Here an effect was reported when none exists.',
+                A: 'Correct. A Type I error is rejecting a true null hypothesis — detecting an effect that is not real (a false positive). Its long-run rate is exactly the significance level α you choose.',
+                B: 'A Type II error is the opposite: <em>failing</em> to detect an effect that truly exists. Here an effect was reported when none exists.',
+                C: 'Selection bias is a systematic flaw in how patients enter or are grouped in a study. This false positive arose from chance under α, not from a design flaw.',
                 D: 'Inadequate power drives Type II errors (false negatives). A false positive is governed by α, not by power.'
             }
         },
@@ -39,16 +39,16 @@ const TypeErrorQuestions = (() => {
             prompt: 'An underpowered trial of thrombolytics for acute MI reports “no significant difference” in mortality, even though the drug truly reduces death. Failing to detect this real benefit is a:',
             options: [
                 { key: 'A', text: 'Type I error' },
-                { key: 'B', text: 'Publication bias' },
-                { key: 'C', text: 'Small effect size' },
-                { key: 'D', text: 'Type II error' }
+                { key: 'B', text: 'Type II error' },
+                { key: 'C', text: 'Publication bias' },
+                { key: 'D', text: 'Small effect size' }
             ],
-            correct: 'D',
+            correct: 'B',
             explanations: {
                 A: 'A Type I error is a false positive — claiming an effect that is not real. Here a real effect was missed.',
-                B: 'Publication bias concerns which studies get published, not whether a given study detects its effect.',
-                C: 'A small effect size contributes to low power, but the error itself is the missed detection — a Type II error.',
-                D: 'Correct. A Type II error is failing to reject a false null — missing an effect that is truly there (a false negative). Its probability is β, and power = 1 − β.'
+                B: 'Correct. A Type II error is failing to reject a false null — missing an effect that is truly there (a false negative). Its probability is β, and power = 1 − β.',
+                C: 'Publication bias concerns which studies get published, not whether a given study detects its effect.',
+                D: 'A small effect size contributes to low power, but the error itself is the missed detection — a Type II error.'
             }
         },
         {
