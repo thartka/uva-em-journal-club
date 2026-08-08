@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question 4 — Non-significant ≠ no effect</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>Question 4 of 4</h1>
+            <a href="q3-sample-size.html" class="back-link">← Previous</a>
+        </header>
+
+        <div class="step-indicator">
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot active"></span>
+        </div>
+
+        <div id="question-container"></div>
+
+        <section id="interactive" class="interactive" hidden>
+            <h2 class="interactive-heading">See it: two non-significant trials, two conclusions</h2>
+            <div id="mount"></div>
+        </section>
+    </div>
+
+    <script src="js/stats.js"></script>
+    <script src="js/questions.js"></script>
+    <script src="js/ci-compare.js"></script>
+    <script>
+        PValueQuestions.render(
+            document.getElementById('question-container'),
+            'q4',
+            {
+                nextHref: 'debrief.html',
+                nextLabel: 'Wrap up →',
+                onReveal: () => {
+                    const area = document.getElementById('interactive');
+                    area.hidden = false;
+                    new CICompare(document.getElementById('mount'));
+                    area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        );
+    </script>
+</body>
+</html>

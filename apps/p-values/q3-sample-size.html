@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question 3 — Smaller p ≠ stronger evidence</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>Question 3 of 4</h1>
+            <a href="q2-coin.html" class="back-link">← Previous</a>
+        </header>
+
+        <div class="step-indicator">
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot active"></span>
+            <span class="step-dot"></span>
+        </div>
+
+        <div id="question-container"></div>
+
+        <section id="interactive" class="interactive" hidden>
+            <h2 class="interactive-heading">See it: grow the sample, watch the p-value fall</h2>
+            <div id="mount"></div>
+        </section>
+    </div>
+
+    <script src="js/stats.js"></script>
+    <script src="js/questions.js"></script>
+    <script src="js/sample-size-p.js"></script>
+    <script>
+        PValueQuestions.render(
+            document.getElementById('question-container'),
+            'q3',
+            {
+                nextHref: 'q4-confidence-interval.html',
+                nextLabel: 'Next question →',
+                onReveal: () => {
+                    const area = document.getElementById('interactive');
+                    area.hidden = false;
+                    new SampleSizeP(document.getElementById('mount'));
+                    area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        );
+    </script>
+</body>
+</html>
