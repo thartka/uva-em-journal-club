@@ -72,14 +72,14 @@ const Stats = (() => {
     }
 
     /**
-     * One-sided p-value for a fair-coin test given `k` heads in `n` flips:
+     * Two-sided p-value for a fair-coin test given `k` heads in `n` flips:
      * the probability, under a fair coin, of a result at least this lopsided
-     * in the observed direction. For k = 8, n = 10 this returns ≈ 0.0547.
+     * in either direction. For k = 8, n = 10 this returns ≈ 0.109.
      */
-    function coinPValueOneSided(k, n) {
-        const expected = n / 2;
-        if (k >= expected) return binomTailUpper(k, n, 0.5);
-        return binomTailLower(k, n, 0.5);
+    function coinPValueTwoSided(k, n) {
+        const hi = Math.max(k, n - k);
+        const lo = n - hi;
+        return Math.min(1, binomTailUpper(hi, n, 0.5) + binomTailLower(lo, n, 0.5));
     }
 
     /** Inverse normal (quantile) via Beasley-Springer-Moro approximation. */
@@ -144,7 +144,7 @@ const Stats = (() => {
         binomPMF,
         binomTailUpper,
         binomTailLower,
-        coinPValueOneSided,
+        coinPValueTwoSided,
         zQuantile,
         binomialCount
     };

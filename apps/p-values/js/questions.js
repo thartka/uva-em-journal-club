@@ -37,54 +37,54 @@ const PValueQuestions = (() => {
         {
             id: 'q2',
             number: 2,
-            prompt: 'You flip a coin 10 times and get 8 heads. If the coin were fair, the probability of 8 or more heads is about 5.6%. What does that 5.6% tell you?',
+            prompt: 'You have a coin that you are trying to determine if it\'s fair or biased. You flip it 10 times and get 8 heads. The p-value is 0.11 for the hypothesis that the coin is fair. What does that 0.11 tell you?',
             options: [
-                { key: 'A', text: 'If the coin were fair, a result at least this extreme would arise about 5.6% of the time.' },
-                { key: 'B', text: 'There is only a 5.6% probability that this particular coin is actually fair.' },
-                { key: 'C', text: 'There is a 94.4% probability that this coin is genuinely biased rather than fair.' },
-                { key: 'D', text: 'Over many tosses, this coin would be expected to land heads about 5.6% more often than tails.' }
+                { key: 'A', text: 'If the coin were fair, a result at least this lopsided — 8 or more heads, or 8 or more tails — would arise about 11% of the time.' },
+                { key: 'B', text: 'There is only an 11% probability that this particular coin is actually fair.' },
+                { key: 'C', text: 'There is an 89% probability that this coin is genuinely biased rather than fair.' },
+                { key: 'D', text: 'Over many tosses, this coin would be expected to land heads about 11% more often than tails.' }
             ],
             correct: 'A',
             explanations: {
-                A: 'Correct. 5.6% is P(data | fair coin) — the chance of 8 or more heads <em>if</em> the coin is fair. It describes the data under the assumption of fairness, not whether the coin is actually fair.',
-                B: 'This reverses the conditional. The chance the coin is fair <em>given</em> the data (the Bayesian posterior) depends on how common biased coins are to begin with. When most coins are fair, 8 heads still usually comes from a fair coin — that probability is far higher than 5.6%.',
-                C: 'This is just 1 minus the misconception in B, and wrong for the same reason. A small p-value is not the probability the coin is loaded.',
-                D: 'The 5.6% is a p-value, not a measure of how biased the coin is. It says nothing about the size of any bias.'
+                A: 'Correct. 0.11 is P(data | fair coin) — the chance of a result at least this lopsided (8 or more heads, or 8 or more tails) <em>if</em> the coin is fair. It describes the data under the assumption of fairness, not whether the coin is actually fair.',
+                B: 'This reverses the conditional. The chance the coin is fair <em>given</em> the data (the Bayesian posterior) depends on how common biased coins are to begin with. When most coins are fair, 8 heads still usually comes from a fair coin — that probability is far higher than 11%.',
+                C: 'This is just 1 minus the misconception in B, and wrong for the same reason. The p-value is not the probability the coin is fair, so 1 minus it is not the probability the coin is loaded.',
+                D: 'The 0.11 is a p-value, not a measure of how biased the coin is. It says nothing about the size of any bias.'
             }
         },
         {
             id: 'q3',
             number: 3,
-            prompt: 'Two trials test the same blood-pressure drug and find an identical mean reduction of 1 mmHg. Trial A (n = 40) reports p = 0.30; Trial B (n = 40,000) reports p < 0.001. Which conclusion is best supported?',
+            prompt: 'Two trials test the same blood-pressure drug and find an identical mean reduction of 5 mmHg relative to the placebo. Trial A (n = 40) reports p = 0.30; Trial B (n = 40,000) reports p < 0.001. Which conclusion is best supported?',
             options: [
                 { key: 'A', text: 'The much larger treatment effect in Trial B is what drove its smaller p-value.' },
                 { key: 'B', text: 'The drug produced a stronger blood-pressure response in Trial B’s population.' },
-                { key: 'C', text: 'Trial B’s smaller p-value chiefly reflects its far larger sample size.' },
+                { key: 'C', text: 'Trial B’s smaller p-value reflects its far larger sample size.' },
                 { key: 'D', text: 'Because it was not significant, Trial A shows the drug has no effect.' }
             ],
             correct: 'C',
             explanations: {
-                A: 'The effect is identical in both trials (1 mmHg). Trial B’s tiny p-value comes from its precision, not a bigger effect.',
-                B: 'Both trials found the same 1 mmHg response. Nothing here suggests the drug works differently in the two populations.',
-                C: 'Correct. With 1,000× the sample size, even a trivial 1 mmHg difference becomes highly “significant.” A smaller p-value means more precise, not larger or more clinically important — p-values are driven by sample size and variability, not effect magnitude alone.',
-                D: 'A non-significant result is not proof of no effect. Trial A was simply too small to distinguish a 1 mmHg difference from zero — the trap in the next question.'
+                A: 'The effect is identical in both trials (5 mmHg). Trial B’s tiny p-value comes from its precision, not a bigger effect.',
+                B: 'Both trials found the same 5 mmHg response. Nothing here suggests the drug works differently in the two populations.',
+                C: 'Correct. With 1,000× the sample size, the very same 5 mmHg difference becomes highly “significant.” A smaller p-value means more precise, not larger or more clinically important — p-values are driven by sample size and variability, not effect magnitude alone.',
+                D: 'A non-significant result is not proof of no effect. Trial A was simply too small to distinguish a 5 mmHg difference from zero — the trap in the next question.'
             }
         },
         {
             id: 'q4',
             number: 4,
-            prompt: 'A stroke-therapy trial reports a 15% relative risk reduction in mortality that is not significant: p = 0.20, 95% CI for the risk ratio 0.55–1.30. What is the best interpretation?',
+            prompt: 'A stroke-therapy trial reports a 15% relative risk reduction in mortality that is not significant: p = 0.20, 95% CI for the risk ratio 0.66–1.09. What is the best interpretation?',
             options: [
                 { key: 'A', text: 'With p = 0.20, the trial shows the therapy has no effect on mortality.' },
-                { key: 'B', text: 'The result is inconclusive: the CI spans meaningful benefit to modest harm.' },
+                { key: 'B', text: 'The therapy\'s effect on mortality remains uncertain; a larger trial may be warranted.' },
                 { key: 'C', text: 'The wide confidence interval rules out any clinically important mortality benefit.' },
                 { key: 'D', text: 'The therapy should be adopted, since the point estimate still favors treatment.' }
             ],
             correct: 'B',
             explanations: {
                 A: 'Absence of significance is not evidence of no effect. A wide confidence interval that crosses 1 means the data are simply inconclusive.',
-                B: 'Correct. The CI (0.55–1.30) runs from a large mortality benefit to modest harm, so the trial can neither confirm nor exclude a clinically important effect. A non-significant p-value with a wide CI means “we don’t know yet,” not “no effect.”',
-                C: 'The opposite is true. Because the CI extends down to 0.55, a large benefit is entirely compatible with these data — nothing important is ruled out.',
+                B: 'Correct. The CI (0.66–1.09) runs from a substantial mortality benefit — a 34% relative reduction — to modest harm, so the trial can neither confirm nor exclude a clinically important effect. A non-significant p-value with a wide CI means “we don’t know yet,” not “no effect.”',
+                C: 'The opposite is true. Because the CI extends down to 0.66, a large benefit is entirely compatible with these data — nothing important is ruled out.',
                 D: 'A point estimate favoring treatment with a CI that crosses 1 does not justify adoption. The uncertainty is too wide to act on; read the whole CI, not just the direction of the estimate.'
             }
         }

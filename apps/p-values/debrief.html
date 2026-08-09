@@ -23,8 +23,8 @@
         <p class="score-line" id="score-line"></p>
 
         <p class="intro" style="margin-bottom: 10px;">
-            One definition does all the work: a p-value is the probability of data at least this extreme
-            <em>if the null hypothesis were true</em>. Everything a p-value is <em>not</em> follows from that.
+            P-values are a challenging concept, but when correctly interpreted, can be a powerful
+            statistical device.
         </p>
 
         <table class="summary-table">
@@ -40,11 +40,11 @@
                     <td class="isnot-col">the probability that H₀ is true, or that the treatment works (Q1, Q2).</td>
                 </tr>
                 <tr>
-                    <td class="is-col">a measure that shrinks with more precision (bigger n, less variability).</td>
+                    <td class="is-col">a measure that shrinks with a larger sample (less variability).</td>
                     <td class="isnot-col">a measure of effect size, clinical importance, or “strength of evidence” (Q3).</td>
                 </tr>
                 <tr>
-                    <td class="is-col">one input to interpret alongside the effect size and its confidence interval.</td>
+                    <td class="is-col">one data point to interpret alongside the effect size and its confidence interval.</td>
                     <td class="isnot-col">proof of “no effect” when it's above 0.05 — that may just be an imprecise study (Q4).</td>
                 </tr>
             </tbody>
@@ -53,8 +53,8 @@
         <ul class="takeaways">
             <li><strong>Q1 — Definition:</strong> the p-value is the tail area under the null. It answers “how surprising are these data if nothing is going on?” — not “is the null true?”</li>
             <li><strong>Q2 — Direction of the conditional:</strong> P(data | H₀) is not P(H₀ | data). When most coins are fair, a surprising flip usually still came from a fair coin. A small p-value is not the chance the null is true.</li>
-            <li><strong>Q3 — Precision, not magnitude:</strong> the same 1 mmHg effect went from p = 0.30 to p &lt; 0.001 on sample size alone. A smaller p means a more precise estimate, not a bigger or more important one.</li>
-            <li><strong>Q4 — Read the CI:</strong> two non-significant trials can mean opposite things. A wide CI is inconclusive; a tight CI hugging the null actually rules out a meaningful effect. The confidence interval tells them apart.</li>
+            <li><strong>Q3 — Precision, not magnitude:</strong> the same 5 mmHg effect went from p = 0.30 to p &lt; 0.001 on sample size alone. A smaller p means a more precise estimate, not a bigger or more important one.</li>
+            <li><strong>Q4 — Non-significant ≠ no effect:</strong> the same 15% risk reduction that was “negative” at 500 patients became significant at ≈1,200. A non-significant result from a small trial means “we don’t know yet” — read the CI, and ask whether a larger trial is warranted.</li>
             <li><strong>Bottom line:</strong> a p-value is one piece of evidence. Always combine it with the effect size, the confidence interval, and clinical judgment.</li>
         </ul>
 

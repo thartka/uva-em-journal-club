@@ -1,19 +1,22 @@
 /**
  * Q1 interactive — what a p-value measures (tail area under the null).
  *
- * Draws the sampling distribution of the test statistic assuming H0 is true
- * (a standard normal centered at 0). The slider sets the observed statistic z;
- * the shaded tail area IS the p-value — the probability, if H0 were true, of a
- * result at least this extreme. A one-/two-tailed toggle shows why the same
- * observed statistic yields different p-values depending on the test.
+ * The curve is the sampling distribution of the test statistic assuming H0 is
+ * true (a standard normal centered at 0). The slider sets the TOTAL shaded
+ * area (the significance level); the matching cutoff in standard deviations is
+ * derived and labeled on the curve. The one-/two-tailed toggle is the point of
+ * the exercise: the total stays the same, but a two-tailed test SPLITS it
+ * between both tails (each half as big, cutoff further out), while a one-tailed
+ * test puts it all on one side (that tail visibly larger, cutoff closer in).
  */
 
 class PValueCurve {
     constructor(mount) {
         this.mount = mount;
-        this.z = 1.96;          // observed test statistic (slider)
+        this.total = 0.05;      // TOTAL shaded area (slider, as a fraction)
         this.tails = 2;         // 1 or 2
         this.zMax = 4;          // x-axis extent (in SD units)
+        this._recompute();
 
         this._build();
         this._dpr = window.devicePixelRatio || 1;
@@ -27,20 +30,30 @@ class PValueCurve {
         window.removeEventListener('resize', this._onResize);
     }
 
+    // Area in each shaded tail, and the SD cutoff that produces it.
+    _perTail() {
+        return this.tails === 2 ? this.total / 2 : this.total;
+    }
+
+    _recompute() {
+        this.z = Stats.zQuantile(1 - this._perTail());
+    }
+
     _build() {
         this.mount.innerHTML = `
             <p class="interactive-intro">
                 This bell curve is what the result would look like <strong>if the null hypothesis were true</strong>
-                (no real effect). Drag the slider to set the <strong>observed</strong> test statistic, and watch the
-                shaded area: that area <em>is</em> the p-value — the chance of a result at least this extreme when
-                nothing is really going on. Toggle one- vs two-tailed to see the same statistic give a different p.
+                (no real effect). The slider sets the <strong>total shaded area</strong> — the p-value — and the
+                matching cutoff (in standard deviations) is shown on the curve. <strong>Switch one → two tailed</strong>:
+                the total stays the same, but a two-tailed test <em>splits</em> it between both tails, so the shaded
+                area on one side is larger for a one-tailed test.
             </p>
             <div class="canvas-container"><canvas data-role="canvas"></canvas></div>
             <div class="controls">
                 <div class="control-group">
-                    <label for="zobs">Observed statistic (SDs from 0):</label>
-                    <input type="range" id="zobs" data-role="z" min="0" max="4" value="1.96" step="0.01">
-                    <span data-role="zval">1.96</span>
+                    <label for="area">Total shaded area:</label>
+                    <input type="range" id="area" data-role="a" min="1" max="40" value="5" step="0.5">
+                    <span data-role="aval">5%</span>
                 </div>
                 <div class="control-group">
                     <label>Test type:</label>
@@ -50,31 +63,19 @@ class PValueCurve {
                     </div>
                 </div>
             </div>
-            <div class="params-display">
-                <div class="param-box">
-                    <div class="param-label">Shaded tail area = p-value</div>
-                    <div class="param-value" data-role="p">—</div>
-                </div>
-                <div class="param-box">
-                    <div class="param-label">Significant? (p &lt; 0.05)</div>
-                    <div class="param-value" data-role="sig">—</div>
-                </div>
-            </div>
             <p class="interactive-note" data-role="note"></p>
         `;
 
         this.canvas = this.mount.querySelector('[data-role="canvas"]');
         this.ctx = this.canvas.getContext('2d');
-        this.zSlider = this.mount.querySelector('[data-role="z"]');
-        this.zVal = this.mount.querySelector('[data-role="zval"]');
-        this.pEl = this.mount.querySelector('[data-role="p"]');
-        this.sigEl = this.mount.querySelector('[data-role="sig"]');
+        this.aSlider = this.mount.querySelector('[data-role="a"]');
+        this.aVal = this.mount.querySelector('[data-role="aval"]');
         this.noteEl = this.mount.querySelector('[data-role="note"]');
         this.btn2 = this.mount.querySelector('[data-role="t2"]');
         this.btn1 = this.mount.querySelector('[data-role="t1"]');
 
-        this.zSlider.addEventListener('input', () => {
-            this.z = parseFloat(this.zSlider.value);
+        this.aSlider.addEventListener('input', () => {
+            this.total = parseFloat(this.aSlider.value) / 100;
             this._update();
         });
         this.btn2.addEventListener('click', () => { this.tails = 2; this._update(); });
@@ -95,9 +96,9 @@ class PValueCurve {
         this._draw();
     }
 
-    _pValue() {
-        const upper = 1 - Stats.normalCDF(this.z);   // P(Z >= z)
-        return this.tails === 2 ? Math.min(1, 2 * upper) : upper;
+    _fmtPct(frac) {
+        const pct = frac * 100;
+        return (pct >= 9.95 ? pct.toFixed(0) : pct.toFixed(1)) + '%';
     }
 
     _xToPx(z) {
@@ -165,47 +166,53 @@ class PValueCurve {
             ctx.fillText(t === 0 ? '0' : (t > 0 ? '+' + t : t), x, baseY + 6);
         });
         ctx.fillStyle = '#555';
-        ctx.fillText('Test statistic if H₀ were true (SDs from 0)', this._xToPx(0), baseY + 20);
+        ctx.fillText('Test statistic if H₀ were true (standard deviations from 0)', this._xToPx(0), baseY + 20);
 
-        // Observed-statistic marker line(s).
-        const drawMarker = (z) => {
+        // Cutoff line(s) with the SD value labeled on the chart.
+        const drawCutoff = (z, label) => {
             const x = this._xToPx(z);
             ctx.beginPath();
             ctx.setLineDash([5, 4]);
             ctx.moveTo(x, baseY);
-            ctx.lineTo(x, padT + 2);
+            ctx.lineTo(x, padT + 14);
             ctx.strokeStyle = '#E57200';
             ctx.lineWidth = 1.5;
             ctx.stroke();
             ctx.setLineDash([]);
+            ctx.fillStyle = '#c15400';
+            ctx.font = '600 11px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            ctx.fillText(label, x, padT + 12);
         };
-        drawMarker(this.z);
-        if (this.tails === 2) drawMarker(-this.z);
+        drawCutoff(this.z, `${this.z.toFixed(2)} SD`);
+        if (this.tails === 2) drawCutoff(-this.z, `-${this.z.toFixed(2)} SD`);
 
-        // Observed label.
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.font = '600 11px -apple-system, BlinkMacSystemFont, sans-serif';
+        // Per-tail percentage labels, drawn just above where each tail meets the
+        // curve (handout-style).
+        const tailPct = this._fmtPct(this._perTail());
+        ctx.font = '700 12px -apple-system, BlinkMacSystemFont, sans-serif';
         ctx.fillStyle = '#c15400';
-        ctx.fillText(`observed = ${this.z >= 0 ? '+' : ''}${this.z.toFixed(2)}`, this._xToPx(this.z) + 6, padT + 2);
+        ctx.textBaseline = 'bottom';
+        const labelY = Math.max(padT + 30, yFor(Stats.normalPDF(this.z)) - 6);
+        ctx.textAlign = 'left';
+        ctx.fillText(tailPct, Math.min(this._xToPx(this.z) + 4, this._w - 42), labelY);
+        if (this.tails === 2) {
+            ctx.textAlign = 'right';
+            ctx.fillText(tailPct, Math.max(this._xToPx(-this.z) - 4, 42), labelY);
+        }
     }
 
     _update() {
-        this.zVal.textContent = this.z.toFixed(2);
+        this._recompute();
+        this.aVal.textContent = this._fmtPct(this.total);
         this.btn2.classList.toggle('active', this.tails === 2);
         this.btn1.classList.toggle('active', this.tails === 1);
 
-        const p = this._pValue();
-        const sig = p < 0.05;
-        this.pEl.textContent = p < 0.001 ? '<0.001' : p.toFixed(3);
-        this.sigEl.textContent = sig ? 'Yes' : 'No';
-        this.sigEl.style.color = sig ? '#E57200' : '#888';
-
-        const tailWord = this.tails === 2 ? 'either direction' : 'this direction';
-        if (this.z < 0.01) {
-            this.noteEl.innerHTML = 'An observed statistic of 0 is exactly what the null predicts — essentially the whole distribution is “this extreme or more,” so the p-value is near 1.';
+        if (this.tails === 2) {
+            this.noteEl.innerHTML = `Two-tailed: the total ${this._fmtPct(this.total)} is <strong>split between both tails</strong> — ${this._fmtPct(this._perTail())} in each — so the cutoff sits further out at <strong>±${this.z.toFixed(2)} SD</strong>. Switch to one-tailed and it all moves to one side.`;
         } else {
-            this.noteEl.innerHTML = `If the null hypothesis were true, a result at least this far from 0 (in ${tailWord}) would happen about <strong>${(p * 100).toFixed(1)}%</strong> of the time. That shaded area is the p-value — it measures surprise under the null, not the chance the null is true.`;
+            this.noteEl.innerHTML = `One-tailed: the whole ${this._fmtPct(this.total)} sits in <strong>one tail</strong>, so that shaded area is larger and the cutoff is closer in at <strong>${this.z.toFixed(2)} SD</strong>. Switch to two-tailed to split the same total between both sides.`;
         }
         this._draw();
     }

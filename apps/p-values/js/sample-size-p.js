@@ -1,24 +1,29 @@
 /**
  * Q3 interactive — sample size drives the p-value.
  *
- * The true effect is held FIXED at a 1 mmHg mean reduction (the same effect in
- * both trials from the question). The slider changes only the sample size per
- * arm. As n grows, the 95% confidence interval tightens around the unchanged
- * 1 mmHg point estimate and the p-value plummets — a smaller p means more
- * precise, not a larger or more important effect. Jump buttons land on the two
+ * Shows the sampling distributions of the mean BP reduction for the placebo
+ * group (centered at 5 mmHg) and the treatment group (centered at 10 mmHg —
+ * a fixed 5 mmHg difference, as in the question). The slider changes only the
+ * sample size per arm. Each curve's spread is the standard error of its mean
+ * (SD/√n), so as n grows both bells narrow and pull apart while the means
+ * never move — and the p-value collapses. Jump buttons land on the two
  * trials from the question (n = 40 → p ≈ 0.30, n = 40,000 → p < 0.001).
  */
 
 class SampleSizeP {
     constructor(mount) {
         this.mount = mount;
-        this.effect = 1.0;      // FIXED true mean reduction (mmHg)
-        this.sd = 4.3;          // within-arm SD of the change (mmHg)
+        this.ctrlMean = 5.0;    // FIXED true mean reduction, placebo arm (mmHg)
+        this.txMean = 10.0;     // FIXED true mean reduction, treatment arm (mmHg)
+        this.effect = this.txMean - this.ctrlMean;  // the 5 mmHg difference driving the p-value
+        this.sd = 21.5;         // within-arm SD of the change (mmHg)
         this.nMin = 20;
         this.nMax = 100000;
         this.n = 40;            // patients per arm (slider)
-        this.eMin = -1.0;       // effect axis extent (mmHg)
-        this.eMax = 3.5;
+        this.eMin = -7;         // axis extent (mmHg mean reduction)
+        this.eMax = 22;
+        this.ctrlColor = '#232D4B';   // control curve (UVA navy)
+        this.txColor = '#E57200';     // treatment curve (UVA orange)
 
         this._build();
         this._dpr = window.devicePixelRatio || 1;
@@ -36,10 +41,12 @@ class SampleSizeP {
     _build() {
         this.mount.innerHTML = `
             <p class="interactive-intro">
-                The drug's true effect is fixed at a <strong>1 mmHg</strong> reduction — the same in both trials.
-                Only the <strong>sample size</strong> changes. Watch the 95% confidence interval tighten around
-                that unchanged 1 mmHg estimate while the p-value collapses. A smaller p means a more
-                <em>precise</em> estimate, not a bigger or more important effect.
+                Each bell curve is the sampling distribution of one group's <strong>mean</strong> BP reduction —
+                <span style="color:${this.ctrlColor};font-weight:600;">placebo (true mean 5 mmHg)</span> and
+                <span style="color:${this.txColor};font-weight:600;">treatment (true mean 10 mmHg)</span>,
+                a fixed 5 mmHg difference. The true means never move. Only the <strong>sample size</strong> changes: as n grows, each mean
+                is pinned down more precisely (SE = SD/&radic;n), the curves narrow and separate, and the
+                p-value collapses.
             </p>
             <div class="canvas-container"><canvas data-role="canvas"></canvas></div>
             <div class="controls">
@@ -58,8 +65,8 @@ class SampleSizeP {
             </div>
             <div class="params-display">
                 <div class="param-box">
-                    <div class="param-label">Effect (fixed)</div>
-                    <div class="param-value">1.0 mmHg</div>
+                    <div class="param-label">Difference (fixed)</div>
+                    <div class="param-value">5.0 mmHg</div>
                 </div>
                 <div class="param-box">
                     <div class="param-label">p-value</div>
@@ -102,7 +109,7 @@ class SampleSizeP {
     _resize() {
         const rect = this.canvas.parentElement.getBoundingClientRect();
         const w = rect.width - 20;
-        const h = Math.min(Math.max(w * 0.42, 170), 240);
+        const h = Math.min(Math.max(w * 0.48, 200), 280);
         this.canvas.style.width = w + 'px';
         this.canvas.style.height = h + 'px';
         this.canvas.width = w * this._dpr;
@@ -113,13 +120,16 @@ class SampleSizeP {
         this._draw();
     }
 
-    _se() { return this.sd * Math.sqrt(2 / this.n); }
+    // SE of the mean within one arm (drives each curve's width).
+    _seMean() { return this.sd / Math.sqrt(this.n); }
+
+    // SE of the difference in means (drives the p-value).
+    _seDiff() { return this.sd * Math.sqrt(2 / this.n); }
 
     _stats() {
-        const se = this._se();
-        const z = this.effect / se;
+        const z = this.effect / this._seDiff();
         const p = 2 * (1 - Stats.normalCDF(Math.abs(z)));
-        return { se, p, significant: p < 0.05 };
+        return { p, significant: p < 0.05 };
     }
 
     _xForE(e) {
@@ -127,55 +137,70 @@ class SampleSizeP {
         return padL + ((e - this.eMin) / (this.eMax - this.eMin)) * (this._w - padL - padR);
     }
 
+    _drawCurve(mu, se, baseY, topY, strokeColor, fillColor) {
+        const ctx = this.ctx;
+        const plotH = baseY - topY;
+        // At huge n the true SE is far narrower than a pixel; floor the drawn
+        // width at ~1.5 px so the curve stays a visible sliver instead of
+        // vanishing between sample points. Stats use the real SE, not this.
+        const ePerPx = (this.eMax - this.eMin) / (this._w - 40);
+        const seDraw = Math.max(se, 1.5 * ePerPx);
+        // Normalize to each curve's own peak so the bells always use the full
+        // height — what changes with n is their width, which is the point.
+        const peak = Stats.normalPDF(0) / seDraw;
+
+        ctx.beginPath();
+        ctx.moveTo(this._xForE(this.eMin), baseY);
+        const steps = Math.max(240, Math.ceil(this._w * 2));
+        for (let i = 0; i <= steps; i++) {
+            const e = this.eMin + (i / steps) * (this.eMax - this.eMin);
+            const dens = Stats.normalPDF((e - mu) / seDraw) / seDraw;
+            const y = baseY - (dens / peak) * plotH;
+            ctx.lineTo(this._xForE(e), y);
+        }
+        ctx.lineTo(this._xForE(this.eMax), baseY);
+        ctx.closePath();
+        ctx.fillStyle = fillColor;
+        ctx.fill();
+        ctx.strokeStyle = strokeColor;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    }
+
     _draw() {
         const ctx = this.ctx;
         ctx.clearRect(0, 0, this._w, this._h);
-        const baseY = this._h - 30;
-        const midY = (baseY + 24) / 2 + 6;
+        const baseY = this._h - 34;
+        const topY = 26;
 
-        const { se, significant } = this._stats();
-        const lo = this.effect - 1.96 * se;
-        const hi = this.effect + 1.96 * se;
-        const color = significant ? '#2e7d32' : '#888';
+        const se = this._seMean();
 
-        // Null line at 0.
-        const x0 = this._xForE(0);
-        ctx.beginPath();
-        ctx.setLineDash([5, 4]);
-        ctx.moveTo(x0, 20);
-        ctx.lineTo(x0, baseY);
-        ctx.strokeStyle = '#232D4B';
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.fillStyle = '#232D4B';
-        ctx.font = '600 11px -apple-system, BlinkMacSystemFont, sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText('no effect', x0, 18);
-
-        // Confidence interval bar (clamped to the visible axis).
-        const xLo = this._xForE(Math.max(this.eMin, lo));
-        const xHi = this._xForE(Math.min(this.eMax, hi));
-        ctx.strokeStyle = color;
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(xLo, midY);
-        ctx.lineTo(xHi, midY);
-        ctx.stroke();
-        [xLo, xHi].forEach(x => {
+        // Dashed guides at the two true means.
+        [[this.ctrlMean, this.ctrlColor], [this.txMean, this.txColor]].forEach(([mu, color]) => {
+            const x = this._xForE(mu);
             ctx.beginPath();
-            ctx.moveTo(x, midY - 8);
-            ctx.lineTo(x, midY + 8);
+            ctx.setLineDash([5, 4]);
+            ctx.moveTo(x, topY - 4);
+            ctx.lineTo(x, baseY);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 1;
             ctx.stroke();
+            ctx.setLineDash([]);
         });
 
-        // Point estimate (fixed at 1.0).
-        const xPt = this._xForE(this.effect);
-        ctx.fillStyle = color;
-        ctx.beginPath();
-        ctx.arc(xPt, midY, 6, 0, 2 * Math.PI);
-        ctx.fill();
+        // Curves: placebo behind, treatment in front.
+        this._drawCurve(this.ctrlMean, se, baseY, topY, this.ctrlColor, 'rgba(35, 45, 75, 0.18)');
+        this._drawCurve(this.txMean, se, baseY, topY, this.txColor, 'rgba(229, 114, 0, 0.18)');
+
+        // Mean labels along the top, nudged apart so they never collide.
+        ctx.font = '600 11px -apple-system, BlinkMacSystemFont, sans-serif';
+        ctx.textBaseline = 'bottom';
+        ctx.fillStyle = this.ctrlColor;
+        ctx.textAlign = 'right';
+        ctx.fillText('placebo: 5 mmHg', this._xForE(this.ctrlMean) - 4, topY - 6);
+        ctx.fillStyle = this.txColor;
+        ctx.textAlign = 'left';
+        ctx.fillText('treatment: 10 mmHg', this._xForE(this.txMean) + 4, topY - 6);
 
         // Axis.
         ctx.strokeStyle = '#999';
@@ -189,7 +214,7 @@ class SampleSizeP {
         ctx.font = '11px -apple-system, BlinkMacSystemFont, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
-        [-1, 0, 1, 2, 3].forEach(t => {
+        [-5, 0, 5, 10, 15, 20].forEach(t => {
             const x = this._xForE(t);
             ctx.beginPath();
             ctx.moveTo(x, baseY);
@@ -200,13 +225,6 @@ class SampleSizeP {
         });
         ctx.fillStyle = '#555';
         ctx.fillText('Mean BP reduction (mmHg)  →  benefit', this._xForE((this.eMin + this.eMax) / 2), baseY + 20);
-
-        // Point-estimate label.
-        ctx.fillStyle = color;
-        ctx.font = '600 11px -apple-system, BlinkMacSystemFont, sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText('1.0 mmHg', xPt, midY - 12);
     }
 
     _fmtN(n) {
@@ -221,9 +239,9 @@ class SampleSizeP {
         this.sigEl.style.color = significant ? '#2e7d32' : '#888';
 
         if (!significant) {
-            this.noteEl.innerHTML = `With ${this._fmtN(this.n)} patients per arm, the 1 mmHg effect is too imprecise to separate from zero — the CI still crosses “no effect,” so p = ${p.toFixed(2)}. The effect hasn't changed; the study just isn't precise enough yet.`;
+            this.noteEl.innerHTML = `With ${this._fmtN(this.n)} patients per arm, each group's mean is estimated so imprecisely that the two curves overlap heavily — a mean from the placebo group could easily look like one from the treatment group, so the 5 mmHg gap can't be told from noise (p = ${p.toFixed(2)}).`;
         } else {
-            this.noteEl.innerHTML = `With ${this._fmtN(this.n)} patients per arm, the very same 1 mmHg effect is now “statistically significant” (p ${p < 0.001 ? '< 0.001' : '= ' + p.toFixed(3)}). Nothing about the effect changed — only the sample size. A tiny p-value reflects precision, not importance.`;
+            this.noteEl.innerHTML = `With ${this._fmtN(this.n)} patients per arm, the curves have pulled apart: each mean is now pinned down so precisely that the very same 5 mmHg gap is unmistakable (p ${p < 0.001 ? '< 0.001' : '= ' + p.toFixed(3)}). The means never moved — only the precision changed.`;
         }
         this._draw();
     }

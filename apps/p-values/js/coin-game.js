@@ -1,23 +1,22 @@
 /**
  * Q2 interactive — "guess the coin."
  *
- * Each round a coin is drawn in secret: 80% of the time it is FAIR, 20% of the
- * time it is BIASED (toward heads or tails, chosen at random, P(heads) = 0.80
- * or 0.20). The learner flips it 10 times and sees BOTH numbers from the
- * handout:
- *   • the p-value  = P(a result at least this lopsided | the coin is fair)
- *   • the posterior = P(the coin is fair | this result), using the 80% prior
+ * A bag holds 10 coins: 8 fair, 1 biased toward heads (P(heads) = 0.80), and
+ * 1 biased toward tails (P(heads) = 0.20). Each round the learner picks a
+ * coin from the bag at random, flips it 10 times, and sees BOTH numbers:
+ *   • the p-value  = P(data at least this extreme | the coin is fair)
+ *   • the posterior = P(the coin is fair | this result), using the 8-in-10 prior
  * Then they call it fair or biased and the truth is revealed. The lesson: a
  * surprising result (small p-value) usually still comes from a fair coin,
- * because most coins are fair — P(data | fair) is not P(fair | data).
+ * because most coins in the bag are fair — P(data | fair) is not P(fair | data).
  */
 
 class CoinGame {
     constructor(mount) {
         this.mount = mount;
         this.N = 10;              // flips per round
-        this.PRIOR_FAIR = 0.80;  // P(coin is fair) before flipping
-        this.BIAS = 0.80;        // P(heads) for a heads-biased coin (tails-biased = 0.20)
+        this.PRIOR_FAIR = 0.80;  // 8 of the 10 coins in the bag are fair
+        this.BIAS = 0.80;        // P(heads) for the heads-biased coin (tails-biased = 0.20)
         this.tally = { correct: 0, total: 0 };
 
         this._build();
@@ -29,21 +28,22 @@ class CoinGame {
     _build() {
         this.mount.innerHTML = `
             <p class="interactive-intro">
-                A coin is drawn in secret. Most coins here are fair, but <strong>1 in 5 is biased</strong>
-                (toward heads or tails). Flip it 10 times, read the two probabilities, then decide: fair or biased?
+                A bag holds <strong>10 coins: 8 are fair, 1 is biased toward heads, and 1 is biased
+                toward tails</strong>. Pick a coin at random, flip it 10 times, read the two
+                probabilities, then decide: fair or biased?
             </p>
             <div class="buttons">
-                <button type="button" class="btn btn-primary" data-role="flip">Flip 10 times</button>
+                <button type="button" class="btn btn-primary" data-role="flip">Pick a coin and flip it 10 times</button>
             </div>
             <div class="coin-row" data-role="coins"></div>
             <div class="coin-count" data-role="count"></div>
             <div class="params-display" data-role="params" hidden>
                 <div class="param-box">
-                    <div class="param-label">p-value: P(result this lopsided | fair)</div>
+                    <div class="param-label">p-value: probability you would get data this extreme, given a fair coin</div>
                     <div class="param-value" data-role="p">—</div>
                 </div>
                 <div class="param-box">
-                    <div class="param-label">P(coin is fair | this result)</div>
+                    <div class="param-label">Bayesian: probability this coin is fair, given this result</div>
                     <div class="param-value" data-role="post">—</div>
                 </div>
             </div>
@@ -56,7 +56,7 @@ class CoinGame {
             </div>
             <div data-role="reveal"></div>
             <div class="buttons" data-role="resetrow" hidden>
-                <button type="button" class="btn btn-primary" data-role="reset">New coin →</button>
+                <button type="button" class="btn btn-primary" data-role="reset">Put it back and pick another coin →</button>
             </div>
             <p class="tally-line" data-role="tally"></p>
             <p class="interactive-note" data-role="note">
@@ -86,7 +86,7 @@ class CoinGame {
     }
 
     _newCoin() {
-        // Draw a coin in secret.
+        // Draw a coin from the bag in secret.
         this.isFair = Math.random() < this.PRIOR_FAIR;
         if (this.isFair) {
             this.pHeads = 0.5;
@@ -101,6 +101,8 @@ class CoinGame {
         this.countEl.textContent = '';
         this.paramsEl.hidden = true;
         this.guessArea.hidden = true;
+        this.gFair.disabled = false;
+        this.gBiased.disabled = false;
         this.revealEl.innerHTML = '';
         this.resetRow.hidden = true;
         this.flipBtn.hidden = false;
@@ -126,8 +128,9 @@ class CoinGame {
         this.k = heads;
         this.countEl.textContent = `${heads} heads, ${this.N - heads} tails`;
 
-        // p-value: one-sided, in the observed direction, under a fair coin.
-        const p = Stats.coinPValueOneSided(heads, this.N);
+        // p-value: two-sided — a result at least this lopsided in either
+        // direction, under a fair coin. Matches the framing in question 2.
+        const p = Stats.coinPValueTwoSided(heads, this.N);
 
         // Posterior P(fair | data) via Bayes with the 80% prior.
         const lFair = Stats.binomPMF(heads, this.N, 0.5);
@@ -158,11 +161,11 @@ class CoinGame {
 
         let lesson;
         if (this.pValue < 0.05 && this.isFair) {
-            lesson = `The result looked surprising (p = ${(this.pValue * 100).toFixed(1)}%), yet the coin was fair. A small p-value is <em>not</em> the chance the coin is biased — most coins are fair, so this result probably still came from a fair one (P(fair | data) = ${(this.postFair * 100).toFixed(0)}%).`;
+            lesson = `The result looked surprising (p = ${(this.pValue * 100).toFixed(1)}%), yet the coin was fair. A small p-value is <em>not</em> the chance the coin is biased — 8 of the 10 coins in the bag are fair, so this result probably still came from a fair one (P(fair | data) = ${(this.postFair * 100).toFixed(0)}%).`;
         } else if (this.pValue >= 0.05 && !this.isFair) {
             lesson = `The result did not look surprising (p = ${(this.pValue * 100).toFixed(1)}%), but the coin was biased. A large p-value is not proof the coin is fair — the flips just did not happen to reveal the bias.`;
         } else {
-            lesson = `p-value = ${(this.pValue * 100).toFixed(1)}% is P(this result | fair). The chance the coin is actually fair given this result is ${(this.postFair * 100).toFixed(0)}% — a different question, and it depends on how common biased coins are.`;
+            lesson = `p-value = ${(this.pValue * 100).toFixed(1)}% is P(this result | fair). The chance the coin is actually fair given this result is ${(this.postFair * 100).toFixed(0)}% — a different question, and it depends on how many of the coins in the bag are biased.`;
         }
 
         this.revealEl.innerHTML = `

@@ -471,7 +471,7 @@ body {
     vertical-align: top;
 }
 
-.summary-table thead th { background: #232D4B; color: #fff; text-align: center; }
+.summary-table thead th { background: #dfe4f0; color: #232D4B; font-weight: 700; text-align: center; }
 .summary-table .is-col { background: #eef7ee; }
 .summary-table .isnot-col { background: #fff3e0; }
 
