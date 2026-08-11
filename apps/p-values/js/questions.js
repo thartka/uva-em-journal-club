@@ -22,14 +22,14 @@ const PValueQuestions = (() => {
             prompt: 'A trial comparing a new antiemetic to placebo reports p = 0.04 for the difference in nausea scores. Which statement best describes what this p-value means?',
             options: [
                 { key: 'A', text: 'Given the data observed in this trial, there is only about a 4% probability that the antiemetic has no real effect.' },
-                { key: 'B', text: 'If the drugs truly did not differ, a difference this large would occur about 4% of the time.' },
+                { key: 'B', text: 'If the effect of this drug did not differ from placebo, a difference this large would occur about 4% of the time.' },
                 { key: 'C', text: 'There is roughly a 96% probability that the antiemetic has a real effect.' },
                 { key: 'D', text: 'On average, the antiemetic reduces nausea scores by about 4% versus placebo.' }
             ],
             correct: 'B',
             explanations: {
                 A: 'This flips the conditional. A p-value is <em>not</em> the probability that the null hypothesis is true. It is calculated <em>assuming</em> no real effect, so it cannot also tell you the chance that assumption is right.',
-                B: 'Correct. A p-value is P(data this extreme | no true difference) — the probability of a result at least this large <em>if</em> the drugs truly did not differ. It is a statement about the data under the null, not about the hypothesis.',
+                B: 'Correct. A p-value is P(data this extreme | no true difference) — the probability of a result at least this large <em>if</em> the effect of the drug did not differ from placebo. It is a statement about the data under the null, not about the hypothesis.',
                 C: 'This is just 1 minus the misconception in option A, and it is wrong for the same reason: a p-value says nothing directly about the probability the treatment works.',
                 D: 'A p-value is not an effect size. It does not tell you how big the difference is — only how surprising the data would be under the null. Read the effect size and its confidence interval for magnitude.'
             }
@@ -39,7 +39,7 @@ const PValueQuestions = (() => {
             number: 2,
             prompt: 'You have a coin that you are trying to determine if it\'s fair or biased. You flip it 10 times and get 8 heads. The p-value is 0.11 for the hypothesis that the coin is fair. What does that 0.11 tell you?',
             options: [
-                { key: 'A', text: 'If the coin were fair, a result at least this lopsided — 8 or more heads, or 8 or more tails — would arise about 11% of the time.' },
+                { key: 'A', text: 'If the coin were fair, a result this extreme would arise about 11% of the time.' },
                 { key: 'B', text: 'There is only an 11% probability that this particular coin is actually fair.' },
                 { key: 'C', text: 'There is an 89% probability that this coin is genuinely biased rather than fair.' },
                 { key: 'D', text: 'Over many tosses, this coin would be expected to land heads about 11% more often than tails.' }
