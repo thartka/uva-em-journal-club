@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Non-parametric Data - Data Distributions</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>4. Non-parametric Data</h1>
+            <a href="index.html" class="back-link">← Module home</a>
+        </header>
+
+        <div class="step-indicator">
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot active"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+        </div>
+
+        <p class="lead">
+            When we cannot describe a distribution using parameters like that, we call it
+            <strong>non-parametric</strong>, and we summarize it in other ways. Here are three
+            such variables from any ED dataset.
+        </p>
+
+        <div class="tab-strip" id="gallery-tabs"></div>
+
+        <h3 id="gallery-title" style="color:#232D4B; font-size:1.05rem; margin-bottom:4px;"></h3>
+        <p id="gallery-stats" style="font-size:0.92rem; margin-bottom:8px;"></p>
+
+        <div class="canvas-container"><canvas id="gallery-canvas"></canvas></div>
+
+        <div class="buttons" style="margin-top:8px">
+            <button id="gal-medianiqr-btn" class="btn btn-secondary">Show median (IQR)</button>
+            <button id="gal-normal-btn" class="btn btn-secondary">Fit a normal curve</button>
+        </div>
+
+        <div class="buttons">
+            <a href="p3-binomial.html" class="btn btn-secondary">← Back</a>
+            <a href="p5-why-it-matters.html" class="btn btn-primary">Next: why this matters →</a>
+        </div>
+    </div>
+
+    <script src="js/rng.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/chart.js"></script>
+    <script src="js/shape-gallery.js"></script>
+    <script>
+        new ShapeGallery();
+    </script>
+</body>
+</html>

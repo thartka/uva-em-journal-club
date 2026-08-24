@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time-Based Distributions - Data Distributions</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>2. Time-Based Distributions</h1>
+            <a href="index.html" class="back-link">← Module home</a>
+        </header>
+
+        <div class="step-indicator">
+            <span class="step-dot done"></span>
+            <span class="step-dot active"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="arr-rate">Average arrival rate:</label>
+                <input type="range" id="arr-rate" min="1" max="20" value="6" step="1">
+                <span id="arr-rate-value">6/hr</span>
+            </div>
+            <div class="control-group control-group-centered">
+                <button id="arr-run-btn" class="btn btn-primary">Simulate arrivals</button>
+            </div>
+        </div>
+
+        <h3 style="color:#232D4B; font-size:1.05rem; margin-top:18px;">
+            Arrivals per hour: a Poisson distribution
+        </h3>
+        <div class="canvas-container"><canvas id="arrivals-count-canvas"></canvas></div>
+
+        <h3 style="color:#232D4B; font-size:1.05rem; margin-top:22px;">
+            Minutes between arrivals: an exponential distribution
+        </h3>
+        <div class="canvas-container"><canvas id="arrivals-gap-canvas"></canvas></div>
+
+        <div class="info-box" style="margin-top:16px">
+            <p>
+                Both plots look at different aspects of patient arrivals to the emergency
+                department. For any average rate of patient arrivals, there is considerable
+                variation in the patients to expect per hour and the minutes between arrivals.
+            </p>
+        </div>
+
+        <div class="buttons">
+            <a href="p1-galton-board.html" class="btn btn-secondary">← Back</a>
+            <a href="p3-binomial.html" class="btn btn-primary">Next: binomial distributions →</a>
+        </div>
+    </div>
+
+    <script src="js/rng.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/chart.js"></script>
+    <script src="js/arrivals-sim.js"></script>
+    <script>
+        new ArrivalsSim();
+    </script>
+</body>
+</html>

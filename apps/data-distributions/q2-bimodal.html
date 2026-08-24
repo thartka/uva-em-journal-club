@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question 2 - Data Distributions</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>Question 2 of 2</h1>
+            <a href="index.html" class="back-link">← Module home</a>
+        </header>
+
+        <div class="step-indicator">
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot active"></span>
+            <span class="step-dot"></span>
+        </div>
+
+        <div id="question-container"></div>
+
+        <section id="interactive" class="interactive" hidden>
+            <h2 class="interactive-heading">See it: both summaries land where nobody is</h2>
+            <p class="interactive-intro">
+                Two clear groups of patients, and neither the mean nor the median is anywhere
+                near either one: both sit in the trough between them, where fewest patients
+                present. Note the share of patients inside mean ± SD, well short of the 68% a
+                bell would give even though the band is wide enough to reach toward both
+                groups.
+            </p>
+            <div id="mount"></div>
+        </section>
+    </div>
+
+    <script src="js/rng.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/chart.js"></script>
+    <script src="js/questions.js"></script>
+    <script src="js/bimodal-explorer.js"></script>
+    <script>
+        DistributionQuestions.render(
+            document.getElementById('question-container'),
+            'q2',
+            {
+                nextHref: 'debrief.html',
+                nextLabel: 'See the debrief →',
+                onReveal: () => {
+                    const area = document.getElementById('interactive');
+                    area.hidden = false;
+                    new BimodalExplorer('mount');
+                    area.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            }
+        );
+    </script>
+</body>
+</html>

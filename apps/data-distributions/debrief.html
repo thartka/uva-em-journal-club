@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debrief - Data Distributions</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>Debrief</h1>
+            <a href="index.html" class="back-link">← Module home</a>
+        </header>
+
+        <div class="step-indicator">
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot active"></span>
+        </div>
+
+        <p class="score-line" id="score-line"></p>
+
+        <table class="summary-table">
+            <thead>
+                <tr>
+                    <th style="width:34%">If the data are…</th>
+                    <th class="is-col">Describe the patients with</th>
+                    <th class="isnot-col">And compare groups with</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Approximately normal</strong><br>
+                        <span style="font-size:0.86rem;color:#666">symmetric, single peak,
+                        mean − 2 SD is a possible value</span></td>
+                    <td class="is-col">Mean ± SD.<br>Add a 95% CI if you want the precision of
+                        the mean.</td>
+                    <td class="isnot-col">t-test, ANOVA, linear regression</td>
+                </tr>
+                <tr>
+                    <td><strong>Skewed</strong><br>
+                        <span style="font-size:0.86rem;color:#666">long tail one way; mean and
+                        median disagree</span></td>
+                    <td class="is-col">Median with IQR, or the range.</td>
+                    <td class="isnot-col">Mann-Whitney U, Kruskal-Wallis</td>
+                </tr>
+                <tr>
+                    <td><strong>Bimodal, plateau, or otherwise odd</strong></td>
+                    <td class="is-col">Show the figure. Report the subgroups separately if they
+                        are clinically distinct.</td>
+                    <td class="isnot-col">Non-parametric, but think hard about whether one
+                        comparison even answers the question</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <ul class="takeaways">
+            <li><strong>The shape decides the summary and the test.</strong> This is the one
+                decision that gets made before any analysis and is almost never reported.</li>
+            <li><strong>Mean ± SD is only for approximately normal data.</strong> The fastest
+                check needs no software: if mean − 2 SD is impossible for the variable (a
+                negative age, a negative length of stay), the distribution is skewed and the
+                mean ± SD you are reading is misleading.</li>
+            <li><strong>Mean ≈ median is evidence of symmetry, not of normality.</strong> A
+                bimodal distribution is perfectly symmetric about a centre where hardly any
+                patients sit. Look at the figure.</li>
+            <li><strong>SD and CI answer different questions.</strong> The SD describes the
+                spread of the patients; a confidence interval describes the precision of the
+                estimate. A narrow CI never rescues a skewed variable.</li>
+            <li><strong>"Always non-parametric" is not the lesson.</strong> On genuinely normal
+                data the parametric test is the more powerful one. Match the method to the
+                shape. That is the whole skill.</li>
+        </ul>
+
+        <div class="info-box">
+            <p>
+                <strong>Reading a paper this week?</strong> Go to Table 1 and check every
+                continuous variable for a SD larger than about half the mean on something that
+                cannot be negative. Length of stay, time to antibiotics, door-to-balloon,
+                troponin. That is where you will find it.
+            </p>
+        </div>
+
+        <div class="buttons">
+            <a href="p1-galton-board.html" class="btn btn-secondary">Review the demonstrations</a>
+            <a href="../../modules.html" class="btn btn-primary">Back to Modules</a>
+        </div>
+    </div>
+
+    <script src="js/questions.js"></script>
+    <script>
+        (function () {
+            const answers = DistributionQuestions.getStoredAnswers();
+            const ids = DistributionQuestions.QUESTIONS.map(q => q.id);
+            const answered = ids.filter(id => answers[id]);
+            const correct = answered.filter(id => answers[id].correct).length;
+            const line = document.getElementById('score-line');
+            if (!answered.length) {
+                line.textContent = '';
+                return;
+            }
+            line.textContent = 'You answered ' + correct + ' of ' + answered.length +
+                ' correctly.';
+        })();
+    </script>
+</body>
+</html>

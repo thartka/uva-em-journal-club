@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Normal Distributions - Data Distributions</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>1. Normal Distributions</h1>
+            <a href="index.html" class="back-link">← Module home</a>
+        </header>
+
+        <div class="step-indicator">
+            <span class="step-dot active"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="num-balls">Number of Balls:</label>
+                <input type="range" id="num-balls" min="10" max="200" value="100" step="10">
+                <span id="num-balls-value">100</span>
+            </div>
+
+            <div class="control-group">
+                <label for="speed">Speed:</label>
+                <input type="range" id="speed" min="0" max="100" value="50" step="1">
+                <span id="speed-value">Medium</span>
+            </div>
+
+            <div class="control-group control-group-centered">
+                <button id="drop-balls-btn" class="btn btn-primary">Drop Balls</button>
+            </div>
+        </div>
+
+        <div class="board-container">
+            <canvas id="galton-canvas"></canvas>
+        </div>
+
+        <div class="buttons">
+            <button id="add-curve-btn" class="btn btn-secondary">Add Normal Curve</button>
+            <button id="reset-btn" class="btn btn-secondary">Reset</button>
+        </div>
+
+        <div class="info-box" style="margin-top:16px">
+            <p>
+                A normal distribution comes from adding up many small independent effects. No
+                single bounce off a pin is bell-shaped, but the sum of ten of them is. The same
+                is true of serum sodium and body temperature: a set point with lots of small
+                physiologic pushes around it.
+            </p>
+        </div>
+
+        <div class="buttons">
+            <a href="p2-arrivals.html" class="btn btn-primary">Next: time-based distributions →</a>
+        </div>
+    </div>
+
+    <script src="js/rng.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/galton-board.js"></script>
+    <script>
+        new GaltonBoard('galton-canvas');
+    </script>
+</body>
+</html>

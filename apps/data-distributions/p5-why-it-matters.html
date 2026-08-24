@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why This Matters - Data Distributions</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>5. Why This Matters</h1>
+            <a href="index.html" class="back-link">← Module home</a>
+        </header>
+
+        <div class="step-indicator">
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot active"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+        </div>
+
+        <p class="lead">
+            Pathway B really is <strong>1 hour slower</strong> than Pathway A, 30 patients in
+            each group. Both tests are looking for that difference. Run 100 studies and count
+            how often each one finds it.
+        </p>
+
+        <div class="controls">
+            <div class="control-group">
+                <label>Shape of the data:</label>
+                <div class="seg">
+                    <button class="btn btn-secondary" data-shape="normal">Normal</button>
+                    <button class="btn btn-secondary" data-shape="skewed">Skewed</button>
+                </div>
+            </div>
+            <div class="control-group">
+                <label>True difference:</label>
+                <div class="seg">
+                    <button class="btn btn-secondary" data-effect="1">1 hour</button>
+                    <button class="btn btn-secondary" data-effect="0">None</button>
+                </div>
+            </div>
+            <div class="control-group control-group-centered">
+                <button id="tc-trials-btn" class="btn btn-primary">Run 100 studies</button>
+            </div>
+        </div>
+
+        <div class="canvas-container"><canvas id="tc-canvas"></canvas></div>
+
+        <h3 id="tc-score-title" style="color:#232D4B; font-size:1.05rem; margin:18px 0 10px;">
+            Out of 100 studies, how often did each test find the difference?
+        </h3>
+
+        <div class="test-row parametric">
+            <span class="test-name">t-test
+                <span class="test-sub">parametric: compares means</span></span>
+            <span class="score-bar"><span class="score-fill" id="tc-fill-t"></span></span>
+            <span class="score-num" id="tc-num-t">- <span class="score-of">of 100</span></span>
+        </div>
+        <div class="test-row nonparametric">
+            <span class="test-name">Mann-Whitney U
+                <span class="test-sub">non-parametric: compares ranks</span></span>
+            <span class="score-bar"><span class="score-fill" id="tc-fill-mw"></span></span>
+            <span class="score-num" id="tc-num-mw">- <span class="score-of">of 100</span></span>
+        </div>
+
+        <div class="info-box" style="margin-top:16px">
+            <p>
+                On <em>skewed</em> data the two tests come apart: a handful of boarded patients
+                yank the mean around, so the t-test misses a difference that is really there,
+                while the rank-based test finds it most of the time. On <em>normal</em> data
+                they agree almost perfectly. The test you choose only matters when the data has
+                a shape the test cannot handle, which is why "always use a non-parametric test"
+                is the wrong lesson to take away.
+            </p>
+        </div>
+
+        <div class="buttons">
+            <a href="p4-shapes.html" class="btn btn-secondary">← Back</a>
+            <a href="q1-age.html" class="btn btn-primary">On to the questions →</a>
+        </div>
+    </div>
+
+    <script src="js/rng.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/chart.js"></script>
+    <script src="js/test-compare.js"></script>
+    <script>
+        new TestCompare();
+    </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binomial Distributions - Data Distributions</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>3. Binomial Distributions</h1>
+            <a href="index.html" class="back-link">← Module home</a>
+        </header>
+
+        <div class="step-indicator">
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot active"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="binom-n">Admissions per day:</label>
+                <input type="range" id="binom-n" min="5" max="200" value="40" step="5">
+                <span id="binom-n-value">40</span>
+            </div>
+            <div class="control-group">
+                <label for="binom-p">Mortality percentage:</label>
+                <input type="range" id="binom-p" min="1" max="50" value="5" step="1">
+                <span id="binom-p-value">5%</span>
+            </div>
+            <div class="control-group control-group-centered">
+                <button id="binom-run-btn" class="btn btn-primary">Simulate again</button>
+            </div>
+        </div>
+
+        <div class="canvas-container"><canvas id="binom-canvas"></canvas></div>
+
+        <div class="buttons">
+            <button id="binom-normal-btn" class="btn btn-secondary">Overlay normal approximation</button>
+        </div>
+
+        <div class="info-box" style="margin-top:16px">
+            <p>
+                A binomial distribution comes from repeating an experiment many times, where
+                each run takes a fixed number of samples with a binary outcome and counts how
+                many came out one way. Here each day is one run: a fixed number of admissions,
+                each of whom either survives or does not.
+            </p>
+        </div>
+
+        <div class="buttons">
+            <a href="p2-arrivals.html" class="btn btn-secondary">← Back</a>
+            <a href="p4-shapes.html" class="btn btn-primary">Next: non-parametric data →</a>
+        </div>
+    </div>
+
+    <script src="js/rng.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/chart.js"></script>
+    <script src="js/binomial-sim.js"></script>
+    <script>
+        new BinomialSim();
+    </script>
+</body>
+</html>
