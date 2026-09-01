@@ -1014,12 +1014,22 @@ class GaltonBoard {
         ctx.lineWidth = 2.5;
         ctx.stroke();
 
-        ctx.font = '600 12px -apple-system, Segoe UI, sans-serif';
+        // Label goes in the clear band between the last pin row and the tops of
+        // the bins. It used to sit just inside the bins, where it competed with
+        // the dividers and the piling balls for legibility. Size tracks the
+        // board so it does not overflow a narrow phone layout.
+        const gapTop = p.pegTop + (p.rows - 1) * p.rowSpacing;
+        const fontPx = Math.max(9, Math.min(13, p.binW * 0.30));
+
+        ctx.save();
+        ctx.font = '600 ' + fontPx.toFixed(1) + 'px -apple-system, Segoe UI, sans-serif';
         ctx.fillStyle = '#232D4B';
         ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
         ctx.fillText('Normal curve  (mean ' + stats.mean.toFixed(2) +
                      ', SD ' + stats.sd.toFixed(2) + ')',
-                     p.fieldLeft + 6, p.binTop + 14);
+                     p.fieldLeft + 6, (gapTop + p.binTop) / 2);
+        ctx.restore();
     }
 
     _drawCounts(ctx, p) {
