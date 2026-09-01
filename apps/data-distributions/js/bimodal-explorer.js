@@ -3,13 +3,13 @@
  *
  * Ejection fraction across a heart failure population, which is bimodal for a
  * clinical reason: one peak is HFrEF and the other HFpEF. The point is where
- * the summaries land. Mean and median both sit in the trough between the
+ * the summaries land. The fitted normal peaks in the trough between the
  * groups, and the trough here is not merely sparse, it is the mildly reduced
  * band that is its own third category and the smallest of the three.
  *
- * The number worth reading out loud is the share of patients actually inside
- * mean +/- SD, which comes in below the 68% a bell would give even though the
- * band is wide enough to reach from one group toward the other.
+ * The mean and SD appear only as that fitted curve, and the number worth
+ * reading out loud is the share of patients actually inside mean +/- SD, which
+ * comes in below the 68% a bell would give.
  */
 
 class BimodalExplorer {
@@ -17,19 +17,6 @@ class BimodalExplorer {
         const mount = typeof mountId === 'string' ? document.getElementById(mountId) : mountId;
         mount.innerHTML =
             '<div class="canvas-container"><canvas id="be-canvas"></canvas></div>' +
-            '<div class="legend">' +
-              '<span class="legend-item"><span class="legend-swatch" style="background:#1565c0"></span>mean ± SD</span>' +
-              '<span class="legend-item"><span class="legend-swatch" style="background:#2e7d32"></span>median (IQR)</span>' +
-            '</div>' +
-            '<div class="readout">' +
-              '<div class="readout-box"><h4>Mean (SD)</h4><div class="big" id="be-mean">-</div>' +
-                '<div class="sub" id="be-mean-sub"></div></div>' +
-              '<div class="readout-box"><h4>Median (IQR)</h4><div class="big" id="be-median">-</div>' +
-                '<div class="sub" id="be-median-sub"></div></div>' +
-              '<div class="readout-box"><h4>Patients within mean ± SD</h4>' +
-                '<div class="big" id="be-inside">-</div>' +
-                '<div class="sub">A normal distribution would hold about 68%.</div></div>' +
-            '</div>' +
             '<p class="interactive-note" id="be-note"></p>';
 
         this.chart = new HistChart('be-canvas', {
@@ -81,12 +68,18 @@ class BimodalExplorer {
         this.chart.render({
             lo: 5, hi: 80, nBins: 30,
             data: data,
+            // The fitted normal stands in for the mean and SD. Drawn against a
+            // two-humped histogram it makes the mismatch obvious in a way the
+            // bars never did: its peak sits in the gap between the groups.
+            curve: {
+                fn: x => Stats.normalDensity(x, mean, sd),
+                n: data.length,
+                color: '#1565c0'
+            },
             bands: [
-                { from: mean - sd, to: mean + sd, label: 'mean ± SD', color: '#1565c0' },
                 { from: q.q1, to: q.q3, label: 'median (IQR)', color: '#2e7d32' }
             ],
             markers: [
-                { x: mean, label: 'mean ' + mean.toFixed(0), color: '#1565c0' },
                 { x: med, label: 'median ' + med.toFixed(0), color: '#2e7d32', dash: [5, 4] }
             ]
         });
@@ -96,13 +89,6 @@ class BimodalExplorer {
             if (el) el.innerHTML = txt;
         };
 
-        set('be-mean', mean.toFixed(0) + '% (' + sd.toFixed(0) + ')');
-        set('be-median', med.toFixed(0) + '% (' + q.q1.toFixed(0) + '–' + q.q3.toFixed(0) + ')');
-        set('be-inside', pctInside.toFixed(0) + '%');
-        set('be-mean-sub',
-            'Peaks at ' + muReduced.toFixed(0) + '% and ' + muPreserved.toFixed(0) + '%.');
-        set('be-median-sub',
-            'Mean and median differ by ' + Math.abs(mean - med).toFixed(1) + ' points.');
         set('be-note',
             'The peaks are at <strong>' + muReduced.toFixed(0) + '%</strong> and <strong>' +
             muPreserved.toFixed(0) + '%</strong>, yet the mean sits at <strong>' +

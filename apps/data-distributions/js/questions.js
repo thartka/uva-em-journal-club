@@ -48,11 +48,12 @@ const DistributionQuestions = (() => {
         {
             id: 'q2',
             number: 2,
-            prompt: 'Left ventricular ejection fraction in 12,000 patients with heart failure. ' +
-                    'The histogram shows two distinct peaks, one near 30% in patients with ' +
-                    'reduced EF and one near 60% in those with preserved EF. Reported values: ' +
-                    '<strong>mean 45% (SD 16)</strong>, <strong>median 46% (IQR 31–58)</strong>. ' +
-                    'What is the most appropriate way to summarize this?',
+            prompt: 'There was a study of 12,000 patients with heart failure. Data of the ' +
+                    'distribution of ejection fractions for these patients shows one peak near ' +
+                    '30% in patients with reduced EF and one peak near 60% in those with ' +
+                    'preserved EF. Reported values: <strong>mean 45% (SD 16)</strong>, ' +
+                    '<strong>median 46% (IQR 31–58)</strong>. What is the most appropriate way ' +
+                    'to summarize this?',
             options: [
                 { key: 'A', text: 'Mean 45% (SD 16): mean and median are nearly equal, so the data are normal.' },
                 { key: 'B', text: 'Median 46% (IQR 31–58).' },
