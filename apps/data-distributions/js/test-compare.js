@@ -24,8 +24,11 @@ class TestCompare {
     constructor(opts = {}) {
         this.rng = new RNG(opts.seed || 909);
 
-        this.shape = 'skewed';     // 'normal' | 'skewed'
-        this.effect = 1.0;         // true difference in hours: 1.0 or 0
+        // Opens on normal data with no real difference, so the first thing the
+        // room sees is the false-positive rate both tests are supposed to hold
+        // at alpha. The interesting settings are one click away from there.
+        this.shape = 'normal';     // 'normal' | 'skewed'
+        this.effect = 0;           // true difference in hours: 1.0 or 0
         this.n = 30;               // patients per group, fixed
         this.alpha = 0.05;
 

@@ -51,8 +51,7 @@ const SHAPES = [
         floor: 0,
         // Close to an even split on purpose. Tip the mixture past 50% either way
         // and the median stops falling in the valley and lands inside the
-        // nearer peak, which loses the point of the panel, and contradicts the
-        // mean 36 / median 35 reported in question 2.
+        // nearer peak, which loses the point of the panel.
         draw: rng => (rng.next() < 0.48
             ? rng.normal(15, 5.5)
             : rng.normal(58, 12)),

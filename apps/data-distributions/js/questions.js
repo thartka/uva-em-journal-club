@@ -48,14 +48,15 @@ const DistributionQuestions = (() => {
         {
             id: 'q2',
             number: 2,
-            prompt: 'Age of patients presenting with appendicitis, n = 900. The histogram shows ' +
-                    'two distinct peaks, one in adolescence and one around age 60. Reported ' +
-                    'values: <strong>mean 36 (SD 22)</strong>, <strong>median 35 (IQR 15–55)' +
-                    '</strong>. What is the most appropriate way to summarize this?',
+            prompt: 'Left ventricular ejection fraction in 12,000 patients with heart failure. ' +
+                    'The histogram shows two distinct peaks, one near 30% in patients with ' +
+                    'reduced EF and one near 60% in those with preserved EF. Reported values: ' +
+                    '<strong>mean 45% (SD 16)</strong>, <strong>median 46% (IQR 31–58)</strong>. ' +
+                    'What is the most appropriate way to summarize this?',
             options: [
-                { key: 'A', text: 'Mean 36 (SD 22): mean and median are nearly equal, so the data are normal.' },
-                { key: 'B', text: 'Median 35 (IQR 15–55).' },
-                { key: 'C', text: 'Neither single summary captures this: show the distribution and describe both age peaks.' },
+                { key: 'A', text: 'Mean 45% (SD 16): mean and median are nearly equal, so the data are normal.' },
+                { key: 'B', text: 'Median 46% (IQR 31–58).' },
+                { key: 'C', text: 'Neither single summary captures this: show the distribution and describe both groups.' },
                 { key: 'D', text: 'Mean with a 95% CI, since the sample is large.' }
             ],
             correct: 'C',
@@ -63,20 +64,24 @@ const DistributionQuestions = (() => {
                 A: 'This is the trap. Mean ≈ median tells you the distribution is roughly ' +
                    '<em>symmetric</em>. It does not tell you it is <em>normal</em>. A bimodal ' +
                    'distribution with two balanced peaks is perfectly symmetric about its ' +
-                   'centre, and its centre is the valley where the fewest patients are.',
+                   'centre, and its centre is the valley where the fewest patients are. Here ' +
+                   'that centre lands at 45%, the mildly reduced range, which is the smallest ' +
+                   'of the three EF categories.',
                 B: 'Not wrong so much as insufficient, which makes it the most interesting ' +
-                   'distractor here. The median and IQR are robust and honest, but "median 35" ' +
+                   'distractor here. The median and IQR are robust and honest, but "median 46%" ' +
                    'still describes a single typical patient, and there is no single typical ' +
-                   'appendicitis patient in this dataset: there are two groups.',
+                   'heart failure patient in this dataset: there are two, and they are not the ' +
+                   'same disease to treat.',
                 C: 'Correct. With two peaks, every single-number summary lands in the trough ' +
-                   'between them and describes an age at which relatively few patients actually ' +
-                   'present. This is the case the handout means by "visual representation is ' +
-                   'helpful for multimodal data": show the histogram, and report the two groups ' +
-                   'separately if they are clinically distinct.',
-                D: 'Sample size is not the issue. n = 900 makes the mean very <em>precise</em>, ' +
-                   'and a precise estimate of a number that describes nobody is still not a ' +
-                   'useful summary. A narrow CI around 36 years would give false confidence in ' +
-                   'a value sitting between the two real groups.'
+                   'between them and describes an ejection fraction that relatively few ' +
+                   'patients actually have. This is the case the handout means by "visual ' +
+                   'representation is helpful for multimodal data": show the histogram, and ' +
+                   'report HFrEF and HFpEF separately, because they differ in treatment and in ' +
+                   'what the trials show.',
+                D: 'Sample size is not the issue. n = 12,000 makes the mean very ' +
+                   '<em>precise</em>, and a precise estimate of a number that describes nobody ' +
+                   'is still not a useful summary. A narrow CI around 45% would give false ' +
+                   'confidence in a value sitting between the two real groups.'
             }
         }
     ];

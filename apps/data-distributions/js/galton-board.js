@@ -400,11 +400,19 @@ class GaltonPhysics {
      */
     _collideEdgeWalls(ball) {
         const lastRowY = this.pegTop + (this.rows - 1) * this.rowSpacing;
-        if (ball.y < this.pegTop || ball.y > lastRowY) return;
+        if (ball.y < this.chuteTop() || ball.y > lastRowY) return;
 
-        const slope = (0.5 * this.binW) / this.rowSpacing;   // dx per dy
+        // Above the apex the rails run straight down as a release chute, and
+        // below it they splay out along the triangle. Balls are dropped 1.2 bin
+        // widths above the first pin, and with nothing to hold them over that
+        // stretch a ball shoved sideways by its neighbours drifted outside the
+        // frame and then snapped back the instant it reached the slanted rail.
+        // Clamping dy at zero makes the rail vertical above the apex and keeps
+        // the two sections continuous where they meet.
+        const inChute = ball.y <= this.pegTop;
+        const slope = inChute ? 0 : (0.5 * this.binW) / this.rowSpacing;   // dx per dy
         const norm = Math.sqrt(1 + slope * slope);
-        const dy = ball.y - this.pegTop;
+        const dy = Math.max(0, ball.y - this.pegTop);
 
         // railSurface is the face of the rail, and the ball's *surface* is what
         // stops against it, so the centre is held one radius short. Earlier
@@ -444,6 +452,11 @@ class GaltonPhysics {
      */
     railOffset() {
         return 2 * (this.pegR + this.ballR) + this.ballR;
+    }
+
+    /** Top of the release chute, kept just inside the frame. */
+    chuteTop() {
+        return Math.max(0.08 * this.binW, this.pegTop - 1.5 * this.binW);
     }
 
     _collideWalls(ball) {
@@ -625,9 +638,53 @@ class GaltonBoard {
 
     /* -------------------- canvas sizing -------------------- */
 
+    /**
+     * Vertical room the board may occupy without pushing anything that has to
+     * stay visible below the fold.
+     *
+     * The board is about 1.33 times as tall as it is wide, so sizing it from
+     * the container width alone made it 1067px tall in an 800px column: on a
+     * laptop the pins and the sliders could not be on screen together. Here the
+     * budget is measured from the top of the board to the bottom of the
+     * viewport, less anything stacked underneath it.
+     */
+    _availableHeight(container) {
+        const rect = container.getBoundingClientRect();
+        const docTop = rect.top + window.scrollY;
+
+        let reserve = 16;
+        const layout = container.closest('.board-layout');
+        const side = layout && layout.querySelector('.side-col');
+        if (side) {
+            // When the columns are stacked the controls sit below the board and
+            // have to be counted; side by side they cost no vertical room.
+            const stacked = getComputedStyle(layout).flexDirection === 'column';
+            if (stacked) {
+                // Reserve room for the sliders and the drop button, and nothing
+                // else. Counting the whole column pulled in the explanatory box
+                // and the secondary buttons as well, and on a phone that
+                // squeezed the board to its minimum for the sake of things that
+                // are perfectly happy below the fold.
+                const controls = side.querySelector('.controls');
+                reserve += (controls ? controls.offsetHeight : 0) + 20;
+            }
+        }
+
+        return Math.max(200, window.innerHeight - docTop - reserve);
+    }
+
     resizeCanvas() {
         const container = this.canvas.parentElement;
-        const cssW = Math.max(280, container.clientWidth);
+        const availW = Math.max(240, container.clientWidth);
+
+        // Aspect is fixed by the geometry constants, so probe it once and use
+        // it to trade width against the height budget.
+        const aspect = this.physics.setSize(1000) / 1000;
+        const widthThatFits = this._availableHeight(container) / aspect;
+
+        // Floor low enough that the smallest phones can still fit the board
+        // and the sliders on one screen; below this the pins stop being legible.
+        const cssW = Math.max(190, Math.min(availW, widthThatFits));
         const cssH = this.physics.setSize(cssW);
 
         const dpr = window.devicePixelRatio || 1;
@@ -679,13 +736,16 @@ class GaltonBoard {
         const slope = (0.5 * p.binW) / p.rowSpacing;
         const lineW = Math.max(2, p.binW * 0.05);
         const off = p.railOffset() + lineW / 2;
+        const chuteTop = p.chuteTop();
 
         ctx.strokeStyle = '#5a3d26';
         ctx.lineWidth = lineW;
         ctx.lineCap = 'round';
         for (const side of [1, -1]) {
             ctx.beginPath();
-            ctx.moveTo(p.centerX + side * off, p.pegTop);
+            // Vertical release chute, then the slanted rail down the triangle.
+            ctx.moveTo(p.centerX + side * off, chuteTop);
+            ctx.lineTo(p.centerX + side * off, p.pegTop);
             ctx.lineTo(p.centerX + side * (slope * (lastRowY - p.pegTop) + off), lastRowY);
             ctx.stroke();
         }
@@ -863,24 +923,11 @@ class GaltonBoard {
         ctx.lineWidth = 1;
         ctx.strokeRect(frameW, frameW, this.w - 2 * frameW, this.h - 2 * frameW);
 
-        // Funnel above the apex peg.
-        const mouthY = p.pegTop - 1.5 * p.binW;
-        const mouthHalf = p.binW * 0.55;
-        ctx.fillStyle = '#6b4a2f';
-        ctx.beginPath();
-        ctx.moveTo(p.centerX - mouthHalf * 2.1, mouthY - p.binW * 0.62);
-        ctx.lineTo(p.centerX - mouthHalf * 0.42, mouthY);
-        ctx.lineTo(p.centerX - mouthHalf * 0.42, mouthY + p.binW * 0.12);
-        ctx.lineTo(p.centerX - mouthHalf * 2.1, mouthY + p.binW * 0.12);
-        ctx.closePath();
-        ctx.fill();
-        ctx.beginPath();
-        ctx.moveTo(p.centerX + mouthHalf * 2.1, mouthY - p.binW * 0.62);
-        ctx.lineTo(p.centerX + mouthHalf * 0.42, mouthY);
-        ctx.lineTo(p.centerX + mouthHalf * 0.42, mouthY + p.binW * 0.12);
-        ctx.lineTo(p.centerX + mouthHalf * 2.1, mouthY + p.binW * 0.12);
-        ctx.closePath();
-        ctx.fill();
+        // No funnel is drawn above the apex. There used to be one, but it
+        // necked down to about a third of the width of the release chute the
+        // physics actually uses, so balls sailed straight through the timber.
+        // The chute rails in _drawRails are the real boundary and are drawn
+        // where balls genuinely stop.
     }
 
     _drawBins(ctx, p) {

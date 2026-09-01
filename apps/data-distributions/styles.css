@@ -664,3 +664,73 @@ body {
     .control-group label { min-width: 120px; font-size: 0.9rem; }
     .test-row .test-name { min-width: 100%; }
 }
+
+/* ============================================================
+   Board page layout (page 1)
+   ============================================================
+   The Galton board is about 1.33x as tall as it is wide, so on a
+   laptop a full-width board pushes the sliders off screen. On wide
+   viewports the board and its controls sit side by side, which uses
+   the spare horizontal room and lets the board stay short enough to
+   be seen whole. On phones they stack, and the board shrinks to fit
+   whatever height is left (see _availableHeight in galton-board.js).
+   ============================================================ */
+
+.board-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: stretch;
+}
+
+.board-col,
+.side-col { width: 100%; min-width: 0; }
+
+.board-container canvas { margin: 0 auto; }
+
+@media (min-width: 900px) {
+    .container-wide { max-width: 1100px; }
+
+    .board-layout {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 22px;
+    }
+
+    .board-col {
+        width: min(48vw, 560px);
+        flex: 0 0 auto;
+    }
+
+    .side-col {
+        flex: 1 1 0;
+        width: auto;
+        position: sticky;
+        top: 12px;
+    }
+
+    /* Narrower labels so a slider and its readout still fit the column. */
+    .side-col .control-group label { min-width: 118px; }
+    .side-col .control-group input[type="range"] { min-width: 130px; }
+    .side-col .buttons { justify-content: flex-start; }
+}
+
+/* On a phone the board competes with the page chrome above it for vertical
+   room: every pixel of header spent is 0.75 of a pixel of board width lost,
+   because the board is 1.33x as tall as it is wide. These rules apply only to
+   the board page. */
+@media (max-width: 899px) {
+    .container-wide { padding: 12px; }
+
+    .container-wide .page-header {
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        gap: 8px;
+    }
+
+    .container-wide .page-header h1 { font-size: 1.15rem; }
+    .container-wide .step-indicator { margin: 2px 0 8px; }
+    .container-wide .board-layout { gap: 10px; }
+    .container-wide .controls { margin: 8px 0; padding: 10px 12px; }
+    .container-wide .control-group { margin-bottom: 8px; }
+}

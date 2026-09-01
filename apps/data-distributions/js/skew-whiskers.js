@@ -1,9 +1,10 @@
 /**
- * data-distributions, Q1 figure: mean +/- SD running off the axis.
+ * data-distributions, Q1 figure: the fitted normal runs off the axis.
  *
- * A static right-skewed pediatric age distribution with mean +/- SD and
- * mean +/- 2 SD drawn across it. The lower whisker visibly leaves the range of
- * ages a human can have, and the region below zero is shaded as impossible.
+ * A static right-skewed pediatric age distribution with a normal curve fitted
+ * to its mean and SD. The curve visibly leaves the range of ages a human can
+ * have, and the region below zero is shaded as impossible. The median and IQR
+ * are drawn alongside as the summary that stays inside the possible range.
  * Nothing here is adjustable: it is one picture, shown once the answer is
  * revealed, and the presenter talks over it.
  */
@@ -13,17 +14,6 @@ class SkewWhiskers {
         const mount = typeof mountId === 'string' ? document.getElementById(mountId) : mountId;
         mount.innerHTML =
             '<div class="canvas-container"><canvas id="sw-canvas"></canvas></div>' +
-            '<div class="legend">' +
-              '<span class="legend-item"><span class="legend-swatch" style="background:#1565c0"></span>mean ± SD and ± 2 SD</span>' +
-              '<span class="legend-item"><span class="legend-swatch" style="background:#2e7d32"></span>median (IQR)</span>' +
-              '<span class="legend-item"><span class="legend-swatch" style="background:rgba(198,40,40,0.35)"></span>impossible ages</span>' +
-            '</div>' +
-            '<div class="readout">' +
-              '<div class="readout-box"><h4>Mean ± SD</h4><div class="big" id="sw-meansd">-</div>' +
-                '<div class="sub" id="sw-meansd-sub"></div></div>' +
-              '<div class="readout-box"><h4>Median (IQR)</h4><div class="big" id="sw-medianiqr">-</div>' +
-                '<div class="sub">Always inside the possible range.</div></div>' +
-            '</div>' +
             '<p class="interactive-note" id="sw-note"></p>';
 
         this.chart = new HistChart('sw-canvas', {
@@ -73,14 +63,21 @@ class SkewWhiskers {
         this.chart.render({
             lo: lo, hi: hi, nBins: 30,
             data: data,
-            shade: [{ from: lo, to: 0, color: 'rgba(198,40,40,0.13)', label: 'no patient can be here' }],
+            shade: [{ from: lo, to: 0, color: 'rgba(198,40,40,0.13)' }],
+            // The fitted normal replaces the mean +/- SD bars: it makes the same
+            // point, and it spills into the shaded region on its own rather
+            // than needing a bar drawn to show that it would.
+            curve: {
+                fn: x => Stats.normalDensity(x, mean, sd),
+                n: data.length,
+                color: '#1565c0'
+            },
             bands: [
-                { from: mean - 2 * sd, to: mean + 2 * sd, label: 'mean ± 2 SD', color: '#1565c0' },
-                { from: mean - sd, to: mean + sd, label: 'mean ± SD', color: '#4a90d9' },
                 { from: q.q1, to: q.q3, label: 'median (IQR)', color: '#2e7d32' }
             ],
+            // No mean marker: the fitted curve already peaks at the mean, so a
+            // vertical bar there only repeated it.
             markers: [
-                { x: mean, label: 'mean', color: '#1565c0' },
                 { x: med, label: 'median', color: '#2e7d32', dash: [5, 4] }
             ]
         });
@@ -90,11 +87,6 @@ class SkewWhiskers {
             if (el) el.innerHTML = txt;
         };
 
-        set('sw-meansd', mean.toFixed(1) + ' ± ' + sd.toFixed(1));
-        set('sw-medianiqr', med.toFixed(1) + ' (' + q.q1.toFixed(1) + '–' + q.q3.toFixed(1) + ')');
-        set('sw-meansd-sub',
-            'Lower bound: ' + (mean - sd).toFixed(1) + ' at 1 SD, ' +
-            (mean - 2 * sd).toFixed(1) + ' at 2 SD.');
         set('sw-note',
             'Mean − 1 SD is <span class="ink-impossible">' + (mean - sd).toFixed(1) +
             ' years</span>. The interval that is supposed to contain the middle two-thirds ' +

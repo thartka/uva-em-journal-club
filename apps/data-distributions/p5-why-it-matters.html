@@ -25,9 +25,9 @@
         </div>
 
         <p class="lead">
-            Pathway B really is <strong>1 hour slower</strong> than Pathway A, 30 patients in
-            each group. Both tests are looking for that difference. Run 100 studies and count
-            how often each one finds it.
+            We are running an experiment testing two triage pathways. There are 30 patients in
+            each group. We will run the study a hundred times to see how often we find a
+            statistically significant difference with an alpha of 0.05.
         </p>
 
         <div class="controls">
@@ -41,8 +41,8 @@
             <div class="control-group">
                 <label>True difference:</label>
                 <div class="seg">
-                    <button class="btn btn-secondary" data-effect="1">1 hour</button>
                     <button class="btn btn-secondary" data-effect="0">None</button>
+                    <button class="btn btn-secondary" data-effect="1">1 hour</button>
                 </div>
             </div>
             <div class="control-group control-group-centered">
@@ -53,7 +53,7 @@
         <div class="canvas-container"><canvas id="tc-canvas"></canvas></div>
 
         <h3 id="tc-score-title" style="color:#232D4B; font-size:1.05rem; margin:18px 0 10px;">
-            Out of 100 studies, how often did each test find the difference?
+            Out of 100 studies, how often did each test call it significant anyway?
         </h3>
 
         <div class="test-row parametric">
@@ -71,12 +71,10 @@
 
         <div class="info-box" style="margin-top:16px">
             <p>
-                On <em>skewed</em> data the two tests come apart: a handful of boarded patients
-                yank the mean around, so the t-test misses a difference that is really there,
-                while the rank-based test finds it most of the time. On <em>normal</em> data
-                they agree almost perfectly. The test you choose only matters when the data has
-                a shape the test cannot handle, which is why "always use a non-parametric test"
-                is the wrong lesson to take away.
+                On normal data they agree almost perfectly. On skewed data the two tests come
+                apart: a handful of boarded patients yank the mean around, so the t-test misses
+                a difference that is really there, while the rank-based test finds it most of
+                the time.
             </p>
         </div>
 
