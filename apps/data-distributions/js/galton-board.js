@@ -120,8 +120,22 @@ class GaltonPhysics {
         this.reset();
     }
 
+    /**
+     * The board's height as a multiple of its width, from the geometry
+     * constants alone. Callers that need to trade width against a height budget
+     * can ask for this without resizing anything, which matters because
+     * setSize() now has a side effect on the balls in flight.
+     */
+    aspectRatio() {
+        const k = this.k;
+        const stack = k.topMargin + (this.rows - 1) * k.rowSpacing +
+                      k.binGap + k.binH + k.bottomMargin;
+        return stack * (1 - 2 * 0.04) / this.nBins;
+    }
+
     /** Recompute geometry from the board width. Returns the required height. */
     setSize(width) {
+        const prevWidth = this.width;
         this.width = width;
         const k = this.k;
         const fieldW = width * (1 - 2 * 0.04);
@@ -153,6 +167,24 @@ class GaltonPhysics {
 
         this._buildPegs();
         this._buildDividers();
+
+        // Every length on this board is proportional to the width, so a resize
+        // is a uniform scaling of the whole coordinate system. Balls already in
+        // flight have to be carried across with it. Without this the pins, bins
+        // and rails all moved to their new places while the balls kept their
+        // old pixel coordinates, which left them visibly in the wrong part of
+        // the board, and on a phone that happened every time the address bar
+        // slid away.
+        if (prevWidth && prevWidth !== width && this.balls && this.balls.length) {
+            const s = width / prevWidth;
+            for (const ball of this.balls) {
+                ball.x *= s;
+                ball.y *= s;
+                ball.vx *= s;
+                ball.vy *= s;
+            }
+        }
+
         return this.height;
     }
 
@@ -628,8 +660,11 @@ class GaltonBoard {
         this.animationId = null;
         this.dt = 1 / 240;
 
-        this._onResize = () => { this.resizeCanvas(); this.draw(); };
+        this._vw = window.innerWidth;
+        this._vh = window.innerHeight;
+        this._onResize = () => this._handleResize(false);
         window.addEventListener('resize', this._onResize);
+        window.addEventListener('orientationchange', () => this._handleResize(true));
 
         this.resizeCanvas();
         this.setupControls();
@@ -673,13 +708,52 @@ class GaltonBoard {
         return Math.max(200, window.innerHeight - docTop - reserve);
     }
 
+    /**
+     * Resize events are not all worth acting on.
+     *
+     * Mobile browsers fire one every time the address bar slides in or out,
+     * because that changes window.innerHeight by 50 to 120 pixels. The board
+     * sizes itself to the available height, so each of those events relaid it
+     * out and the board flipped between two sizes as the page was scrolled.
+     * On a touch device, a height-only change of that size is the address bar
+     * and is ignored; a width change, or a rotation, is real and is honoured.
+     * Pointer-precise devices relayout on everything, since there a short drag
+     * on the window edge is a deliberate resize.
+     */
+    _handleResize(force) {
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+
+        if (!force) {
+            const coarse = window.matchMedia &&
+                           window.matchMedia('(pointer: coarse)').matches;
+            const heightOnly = vw === this._vw && vh !== this._vh;
+            if (coarse && heightOnly && Math.abs(vh - this._vh) <= 160) {
+                this._vh = vh;
+                return;
+            }
+        }
+
+        this._vw = vw;
+        this._vh = vh;
+
+        // Coalesce bursts of events into one relayout per frame.
+        if (this._resizeRaf) cancelAnimationFrame(this._resizeRaf);
+        this._resizeRaf = requestAnimationFrame(() => {
+            this._resizeRaf = null;
+            this.resizeCanvas();
+            this.draw();
+        });
+    }
+
     resizeCanvas() {
         const container = this.canvas.parentElement;
         const availW = Math.max(240, container.clientWidth);
 
-        // Aspect is fixed by the geometry constants, so probe it once and use
-        // it to trade width against the height budget.
-        const aspect = this.physics.setSize(1000) / 1000;
+        // Aspect is fixed by the geometry constants, so read it directly rather
+        // than probing with a throwaway setSize, which would now drag the balls
+        // through an extra rescale.
+        const aspect = this.physics.aspectRatio();
         const widthThatFits = this._availableHeight(container) / aspect;
 
         // Floor low enough that the smallest phones can still fit the board
