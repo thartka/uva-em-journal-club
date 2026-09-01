@@ -58,13 +58,6 @@ class BimodalExplorer {
         const med = Stats.median(data);
         const q = Stats.iqr(data);
 
-        const inside = data.filter(v => v >= mean - sd && v <= mean + sd).length;
-        const pctInside = inside / data.length * 100;
-
-        // Share of patients in the mildly reduced band, which is where both
-        // summaries land.
-        const midRange = data.filter(v => v >= 40 && v <= 50).length / data.length * 100;
-
         this.chart.render({
             lo: 5, hi: 80, nBins: 30,
             data: data,
@@ -89,14 +82,12 @@ class BimodalExplorer {
             if (el) el.innerHTML = txt;
         };
 
+        // Values stay computed rather than written in, so the sentence cannot
+        // drift out of step with the figure above it.
         set('be-note',
             'The peaks are at <strong>' + muReduced.toFixed(0) + '%</strong> and <strong>' +
             muPreserved.toFixed(0) + '%</strong>, yet the mean sits at <strong>' +
             mean.toFixed(0) + '%</strong> and the median at <strong>' + med.toFixed(0) +
-            '%</strong>. Only <strong>' + midRange.toFixed(0) + '%</strong> of these patients ' +
-            'actually have an ejection fraction in that range, and clinically it is neither ' +
-            'HFrEF nor HFpEF but the mildly reduced band between them. Just <strong>' +
-            pctInside.toFixed(0) + '%</strong> fall inside mean ± SD, against the 68% a bell ' +
-            'would give. <strong>Neither summary is anywhere near either actual group.</strong>');
+            '%</strong>. No common parametric distribution can actually represent this data.');
     }
 }
