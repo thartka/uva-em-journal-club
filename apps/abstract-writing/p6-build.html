@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build an Abstract - Writing an Abstract</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>6: Build an Abstract</h1>
+            <a href="index.html" class="back-link">&larr; Back to Module</a>
+        </header>
+
+        <div class="step-indicator" aria-hidden="true">
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot done"></span>
+            <span class="step-dot active"></span>
+        </div>
+
+        <div class="exercise-container">
+            <div class="info-box">
+                <p>Here is a new abstract on <strong>mild hyperkalemia</strong>, taken apart one sentence at a time. Sentences arrive from a random mix of sections, but each section&rsquo;s sentences arrive in their original order. Tap the section where each one belongs.</p>
+            </div>
+
+            <div id="deal-card" class="deal-card" aria-live="polite">
+                <p id="build-progress" class="build-progress"></p>
+                <p id="current-sentence" class="current-sentence"></p>
+            </div>
+
+            <div id="choice-buttons" class="choice-buttons"></div>
+            <div id="build-feedback" class="build-feedback hidden" aria-live="polite"></div>
+
+            <div id="done-panel" class="result-callout done-panel hidden">
+                <h2>Abstract complete</h2>
+                <p id="done-score"></p>
+                <p style="margin-top: 8px;">Notice the shape: a two-sentence background that ends on the goal, methods that open with the study design and end on the outcome definition, results that start with the sample and the primary outcome, and a two-sentence conclusion that interprets those results without adding new ones.</p>
+                <div class="buttons">
+                    <button class="btn btn-secondary restart-btn" type="button">Try again (new order)</button>
+                </div>
+            </div>
+
+            <p id="build-score" class="build-score"></p>
+
+            <section id="built-abstract" class="built-abstract" aria-label="Abstract being built">
+                <p class="built-abstract-title">Your abstract so far</p>
+            </section>
+
+            <div class="buttons">
+                <button onclick="window.location.href='p5-conclusion.html'" class="btn btn-secondary">Previous</button>
+                <button class="btn btn-secondary restart-btn" type="button">Start over</button>
+                <button onclick="window.location.href='index.html'" class="btn btn-primary">Finish</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/abstract-data.js"></script>
+    <script src="js/build-page.js"></script>
+</body>
+</html>

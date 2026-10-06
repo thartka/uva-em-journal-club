@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background - Writing an Abstract</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body data-section="background">
+    <div class="container">
+        <header class="page-header">
+            <h1>2: Background</h1>
+            <a href="index.html" class="back-link">&larr; Back to Module</a>
+        </header>
+
+        <div class="step-indicator" aria-hidden="true">
+            <span class="step-dot done"></span>
+            <span class="step-dot active"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+        </div>
+
+        <div class="exercise-container">
+            <div id="abstract-map" class="abstract-map">
+                <p class="map-caption">Running example: predicting adverse events in hyperkalemia</p>
+            </div>
+
+            <div class="teaching-box">
+                <p><strong>The background is no more than 2 to 3 sentences.</strong> It should do two jobs, in this order:</p>
+                <ol id="element-list" class="element-list"></ol>
+            </div>
+
+            <h2 class="section-title">The running example</h2>
+            <div class="info-box">
+                <p><strong>Tap</strong> each sentence to see which job it does.</p>
+            </div>
+
+            <section class="example-card sec-background">
+                <h3>Background</h3>
+                <div id="example-sentences" class="sentence-stack"></div>
+            </section>
+            <p id="section-stats" class="section-stats"></p>
+
+            <div class="buttons reveal-row">
+                <button id="reveal-all-btn" class="btn btn-blue" type="button">Reveal all</button>
+            </div>
+
+            <div class="warning-box pitfalls">
+                <p><strong>Common mistakes</strong></p>
+                <ul>
+                    <li>Opening with a literature review. The reader needs one reason to care, not five citations.</li>
+                    <li>Leaving the goal implicit. Say it plainly: &ldquo;The goal of this project was to&hellip;&rdquo;</li>
+                </ul>
+            </div>
+
+            <div class="buttons">
+                <button onclick="window.location.href='p1-shape.html'" class="btn btn-secondary">Previous</button>
+                <button onclick="window.location.href='p3-methods.html'" class="btn btn-primary">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/abstract-data.js"></script>
+    <script src="js/section-page.js"></script>
+</body>
+</html>
