@@ -250,6 +250,61 @@ body {
     margin-top: 10px;
 }
 
+/* ---- Module landing ---- */
+.attribution {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.qr-card {
+    max-width: 320px;
+    margin: 0 auto 26px;
+    padding: 20px 20px 16px;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.qr-title { font-size: 1.15rem; color: #232D4B; margin-bottom: 14px; }
+.qr-img { width: 230px; height: 230px; max-width: 100%; display: block; margin: 0 auto; }
+.qr-caption { font-size: 0.92rem; color: #555; margin-top: 12px; }
+.qr-url { font-size: 0.8rem; color: #888; margin-top: 2px; }
+.nowrap { white-space: nowrap; }
+
+.page-list { list-style: none; max-width: 640px; margin: 0 auto 22px; }
+
+.page-list-item {
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+    padding: 9px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.page-list-item:last-child { border-bottom: none; }
+
+.page-list-num {
+    font-weight: 700;
+    color: #E57200;
+    min-width: 22px;
+}
+
+.page-list-text { font-size: 0.95rem; color: #444; text-decoration: none; }
+.page-list-text:hover { color: #E57200; }
+.page-list-text strong { color: #232D4B; }
+
+a.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
 /* ---- Step indicator ---- */
 .step-indicator {
     display: flex;
