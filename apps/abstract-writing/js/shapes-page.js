@@ -1,5 +1,5 @@
 /**
- * Page 1: four abstracts with blurred text. The reader picks the well-structured ones,
+ * Page 1: four abstracts with blurred text. The reader picks the well-proportioned ones,
  * then each card reveals its verdict and how its words split across the four sections.
  */
 (() => {
@@ -96,7 +96,7 @@
         toggle.type = 'button';
         toggle.className = 'pick-toggle';
         toggle.setAttribute('aria-pressed', 'false');
-        toggle.innerHTML = '<span class="pick-box" aria-hidden="true"></span><span>Well structured</span>';
+        toggle.innerHTML = '<span class="pick-box" aria-hidden="true"></span><span>Well proportioned</span>';
         head.appendChild(toggle);
         card.appendChild(head);
 
@@ -159,7 +159,7 @@
             card.querySelector('.pick-toggle').disabled = true;
             card.querySelector('.card-reveal').classList.remove('hidden');
             card.querySelector('.verdict').innerHTML =
-                `<strong>${abs.good ? 'Well structured' : 'Not well structured'}.</strong> ` +
+                `<strong>${abs.good ? 'Well proportioned' : 'Not well proportioned'}.</strong> ` +
                 `<span class="${correct ? 'verdict-right' : 'verdict-wrong'}">You ${picked ? 'picked' : 'did not pick'} this one.</span>`;
         });
 
