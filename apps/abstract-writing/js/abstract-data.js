@@ -55,10 +55,10 @@ const AbstractData = (() => {
             sentences: [
                 { el: 'screened', text: 'Our inclusion criteria identified 1002 patients with hyperkalemia, and after exclusions, we had a final sample of 727.' },
                 { el: 'primary', text: 'We identified 28 hyperkalemia-associated adverse events in 56 patients, yielding an adverse event rate of 7.7%.' },
-                { el: 'test', text: 'Using the threshold that optimized the Youden’s J statistic, the accuracy was 67% with a sensitivity of 65% and a specificity of 67%.' },
-                { el: 'secondary', text: 'All the predictors were found to increase the probability of an adverse event.' },
-                { el: 'secondary', text: 'ECG intervals (QTc, PR interval, and QRS interval) were found to be the most important variables in the model, followed by the patient’s age, potassium value, and creatinine value (Figure).' },
-                { el: 'secondary', text: 'Sex, persistent ECG findings (a-fib, a-flutter, RBBB, LBBB, and LVH), and Peaked T-waves were found to be modestly predictive.' }
+                { el: 'secondary', text: 'Using the threshold that optimized the Youden’s J statistic, the accuracy was 67% with a sensitivity of 65% and a specificity of 67%.' },
+                { el: 'test', text: 'All the predictors were found to increase the probability of an adverse event.' },
+                { el: 'test', text: 'ECG intervals (QTc, PR interval, and QRS interval) were found to be the most important variables in the model, followed by the patient’s age, potassium value, and creatinine value (Figure).' },
+                { el: 'test', text: 'Sex, persistent ECG findings (a-fib, a-flutter, RBBB, LBBB, and LVH), and Peaked T-waves were found to be modestly predictive.' }
             ]
         },
         conclusion: {
@@ -68,8 +68,8 @@ const AbstractData = (() => {
             ],
             sentences: [
                 // `links` are indexes into results.sentences
-                { el: 'main', links: [1, 2], text: 'Adverse events due to hyperkalemia occur moderately frequently, however, they are difficult to predict using a random forest model.' },
-                { el: 'secondary', links: [4], text: 'ECG intervals were the most important factors for predicting an adverse event, followed by age and laboratory results.' }
+                { el: 'secondary', links: [1, 2], text: 'Adverse events due to hyperkalemia occur moderately frequently, however, they are difficult to predict using a random forest model.' },
+                { el: 'main', links: [4], text: 'ECG intervals were the most important factors for predicting an adverse event, followed by age and laboratory results.' }
             ]
         }
     };

@@ -239,15 +239,7 @@ body {
     margin-top: 10px;
 }
 
-/* ---- Module landing ---- */
-.attribution {
-    width: 100%;
-    text-align: center;
-    margin-top: 10px;
-    font-size: 0.9rem;
-    color: #666;
-}
-
+/* ---- QR code card (page 6) ---- */
 .qr-card {
     width: fit-content;
     max-width: 100%;
