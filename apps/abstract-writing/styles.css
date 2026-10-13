@@ -203,17 +203,6 @@ body {
     transform: translateY(-1px);
 }
 
-.btn-blue {
-    background-color: #2196F3;
-    color: white;
-}
-
-.btn-blue:hover {
-    background-color: #1976D2;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
 .hidden {
     display: none;
 }
@@ -260,9 +249,10 @@ body {
 }
 
 .qr-card {
-    max-width: 320px;
-    margin: 0 auto 26px;
-    padding: 20px 20px 16px;
+    width: fit-content;
+    max-width: 100%;
+    margin: 10px auto 26px;
+    padding: 20px;
     text-align: center;
     background: #fff;
     border: 1px solid #e0e0e0;
@@ -270,33 +260,33 @@ body {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-.qr-title { font-size: 1.15rem; color: #232D4B; margin-bottom: 14px; }
 .qr-img { width: 230px; height: 230px; max-width: 100%; display: block; margin: 0 auto; }
-.qr-caption { font-size: 0.92rem; color: #555; margin-top: 12px; }
-.qr-url { font-size: 0.8rem; color: #888; margin-top: 2px; }
-.nowrap { white-space: nowrap; }
 
-.page-list { list-style: none; max-width: 640px; margin: 0 auto 22px; }
-
-.page-list-item {
-    display: flex;
-    gap: 12px;
-    align-items: baseline;
-    padding: 9px 0;
-    border-bottom: 1px solid #eee;
+/* ---- Page 6: Ivory Tower game ---- */
+.game-blurb {
+    text-align: center;
+    font-size: 1.02rem;
+    margin-bottom: 14px;
 }
 
-.page-list-item:last-child { border-bottom: none; }
-
-.page-list-num {
-    font-weight: 700;
-    color: #E57200;
-    min-width: 22px;
+.game-cover {
+    display: block;
+    max-width: 720px;
+    margin: 0 auto 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
 }
 
-.page-list-text { font-size: 0.95rem; color: #444; text-decoration: none; }
-.page-list-text:hover { color: #E57200; }
-.page-list-text strong { color: #232D4B; }
+.game-cover img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.game-play .qr-card {
+    margin-bottom: 4px;
+}
 
 a.btn {
     display: inline-flex;
@@ -347,11 +337,6 @@ a.btn {
     font-size: 0.9rem;
 }
 
-.lead {
-    font-size: 1.02rem;
-    margin-bottom: 16px;
-}
-
 .section-title {
     color: #232D4B;
     font-size: 1.15rem;
@@ -379,15 +364,38 @@ a.btn {
     box-shadow: 0 0 0 3px rgba(229, 114, 0, 0.15);
 }
 
-.abstract-card.checked.is-good {
-    border-color: #66bb6a;
-    box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.18);
+/* After checking: a thick green or red frame says whether the reader judged this card correctly.
+   Padding shrinks by the extra border width so the content does not shift. */
+.abstract-card.graded-right,
+.abstract-card.graded-wrong {
+    border-width: 5px;
+    padding: 11px 13px 13px;
 }
 
-.abstract-card.checked.is-poor {
-    border-color: #e0e0e0;
-    box-shadow: none;
+.abstract-card.graded-right {
+    border-color: #2e7d32;
+    background: #f7fcf7;
+    box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.18);
 }
+
+.abstract-card.graded-wrong {
+    border-color: #c62828;
+    background: #fff7f7;
+    box-shadow: 0 0 0 4px rgba(198, 40, 40, 0.18);
+}
+
+.grade-badge {
+    margin: -11px -13px 12px;
+    padding: 6px 13px;
+    border-radius: 2px 2px 0 0;
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+}
+
+.graded-right .grade-badge { background: #2e7d32; }
+.graded-wrong .grade-badge { background: #c62828; }
 
 .abstract-card-head {
     display: flex;
@@ -461,13 +469,6 @@ a.btn {
     line-height: 1.4;
     user-select: none;
     -webkit-user-select: none;
-}
-
-.fuzz-title {
-    font-weight: 700;
-    font-size: 0.9rem;
-    color: #232D4B;
-    margin-bottom: 10px;
 }
 
 .fuzz-section {
@@ -640,74 +641,136 @@ a.btn {
     background: #fff;
 }
 
-.example-card h3 {
-    color: var(--sec);
-    font-size: 0.95rem;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    margin-bottom: 8px;
-}
-
 .example-card.context {
     background: #fafafa;
 }
 
-.example-text { line-height: 1.7; }
-
-.sentence-stack {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+/* Inline layout: the section as it would print, with arrows out to callout bubbles */
+.annotated {
+    position: relative;
 }
 
-.sentence {
+/* Wide screens: a column beside the paragraph holds the bubbles; arrows cross the gap between. */
+.callout-gutter {
+    display: none;
+}
+
+.annotated.wide {
+    padding-right: 260px; /* 210px column + 50px for the arrows */
+}
+
+.annotated.wide .callout-lane {
+    display: none;
+}
+
+.annotated.wide .callout-gutter {
     display: block;
-    width: 100%;
-    text-align: left;
-    font: inherit;
-    font-size: 0.98rem;
-    line-height: 1.55;
-    color: #333;
-    padding: 10px 12px;
-    border: 1px dashed #c5cfdf;
-    border-radius: 6px;
-    background: #f7f9fc;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 210px;
+    height: 100%;
+}
+
+.callout-gutter .callout {
+    position: absolute;
+    left: 0;
+    transform-origin: left center;
+}
+
+/* Narrow screens. Above the paragraph: room for the first sentence's bubble, reserved so text does not jump. */
+.callout-lane {
+    position: relative;
+    min-height: 72px;
+    padding-bottom: 34px;
+}
+
+/* Under any later sentence: a row that opens inside the paragraph when its bubble appears. */
+.callout-row {
+    display: block;
+    position: relative;
+    padding: 34px 0 8px;
+    line-height: 1.3;
+}
+
+.abstract-para {
+    font-size: 1rem;
+    line-height: 1.75;
+}
+
+.para-label {
+    color: var(--sec);
+}
+
+.inline-sentence {
     cursor: pointer;
-    transition: background-color 0.2s, border-color 0.2s;
+    border-radius: 3px;
+    text-decoration: underline dotted #9aa8bf;
+    text-underline-offset: 4px;
+    transition: background-color 0.3s;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
 }
 
-.sentence:hover:not(.revealed) {
-    border-color: #E57200;
-    background: #fff8f0;
+.inline-sentence:hover:not(.revealed),
+.inline-sentence:focus-visible:not(.revealed) {
+    background: #fff3e0;
+    outline: none;
 }
 
-.sentence.revealed {
+.inline-sentence.revealed {
     background: var(--hl);
-    border: 1px solid transparent;
+    text-decoration: none;
     cursor: default;
 }
 
-.sentence-num {
+.callout {
     display: inline-block;
-    min-width: 1.5em;
-    font-weight: 700;
-    color: #888;
-}
-
-.sentence-tag {
-    display: none;
-    width: fit-content;
-    margin-bottom: 4px;
-    padding: 1px 9px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.75);
+    position: relative;
+    width: max-content;
+    max-width: min(270px, 100%);
+    padding: 6px 12px;
+    border-radius: 14px;
+    border: 2px solid var(--hl-ink);
+    background: var(--hl);
     color: var(--hl-ink);
-    font-size: 0.8rem;
+    font-size: 0.88rem;
     font-weight: 700;
+    line-height: 1.3;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.25s ease-out, transform 0.25s ease-out;
 }
 
-.sentence.revealed .sentence-tag { display: block; }
-.sentence.revealed .sentence-num { color: var(--hl-ink); }
+.callout.shown {
+    opacity: 1;
+    transform: none;
+}
+
+.arrow-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.arrow-line,
+.arrow-head {
+    fill: none;
+    stroke: var(--hl-ink);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.arrow-head {
+    opacity: 0;
+    transition: opacity 0.15s ease-out 0.65s;
+}
+
+.arrow-head.shown { opacity: 1; }
 
 .context-sentence {
     color: #888;
@@ -722,18 +785,6 @@ a.btn {
     box-decoration-break: clone;
     -webkit-box-decoration-break: clone;
 }
-
-.section-stats {
-    font-size: 0.88rem;
-    color: #666;
-    margin: -4px 0 14px;
-}
-
-.reveal-row {
-    margin: 0 0 18px;
-}
-
-.reveal-row .btn { max-width: 260px; }
 
 .btn:disabled,
 .btn:disabled:hover {

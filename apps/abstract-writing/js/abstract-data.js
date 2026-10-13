@@ -63,13 +63,13 @@ const AbstractData = (() => {
         },
         conclusion: {
             elements: [
-                { id: 'rate', label: 'Ties back to the event rate and model accuracy', hl: 2 },
-                { id: 'importance', label: 'Ties back to which predictors mattered most', hl: 4 }
+                { id: 'main', label: 'Main finding, stated succinctly', hl: 2 },
+                { id: 'secondary', label: 'Secondary outcomes or next steps', hl: 4 }
             ],
             sentences: [
                 // `links` are indexes into results.sentences
-                { el: 'rate', links: [1, 2], text: 'Adverse events due to hyperkalemia occur moderately frequently, however, they are difficult to predict using a random forest model.' },
-                { el: 'importance', links: [4], text: 'ECG intervals were the most important factors for predicting an adverse event, followed by age and laboratory results.' }
+                { el: 'main', links: [1, 2], text: 'Adverse events due to hyperkalemia occur moderately frequently, however, they are difficult to predict using a random forest model.' },
+                { el: 'secondary', links: [4], text: 'ECG intervals were the most important factors for predicting an adverse event, followed by age and laboratory results.' }
             ]
         }
     };
@@ -128,7 +128,7 @@ const AbstractData = (() => {
         ],
         conclusion: [
             {
-                text: 'Adverse events due to mild hyperkalemia are uncommon, and nearly all of them present with characteristic clinical signs and ECG changes.',
+                text: 'Adverse events due to mild hyperkalemia were uncommon, and nearly all of them present with characteristic clinical signs and ECG changes.',
                 hint: 'This sums up what the findings mean, without any new numbers.'
             },
             {

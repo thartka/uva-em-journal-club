@@ -100,12 +100,6 @@
         head.appendChild(toggle);
         card.appendChild(head);
 
-        const title = document.createElement('p');
-        title.className = 'fuzz fuzz-title';
-        title.setAttribute('aria-hidden', 'true');
-        title.textContent = fillerText(9, rand).replace(/\.$/, '');
-        card.appendChild(title);
-
         SECTIONS.forEach(sec => {
             const block = document.createElement('div');
             block.className = `fuzz-section sec-${sec.id}`;
@@ -157,7 +151,11 @@
             const correct = picked === abs.good;
             if (correct) right++;
 
-            card.classList.add('checked', abs.good ? 'is-good' : 'is-poor');
+            card.classList.add('checked', correct ? 'graded-right' : 'graded-wrong');
+            const badge = document.createElement('p');
+            badge.className = 'grade-badge';
+            badge.textContent = correct ? '✓ Correct' : '✗ Incorrect';
+            card.prepend(badge);
             card.querySelector('.pick-toggle').disabled = true;
             card.querySelector('.card-reveal').classList.remove('hidden');
             card.querySelector('.verdict').innerHTML =
@@ -176,7 +174,8 @@
         checked = false;
         selected.clear();
         grid.querySelectorAll('.abstract-card').forEach(card => {
-            card.classList.remove('checked', 'is-good', 'is-poor', 'picked');
+            card.classList.remove('checked', 'graded-right', 'graded-wrong', 'picked');
+            card.querySelector('.grade-badge')?.remove();
             const toggle = card.querySelector('.pick-toggle');
             toggle.disabled = false;
             toggle.setAttribute('aria-pressed', 'false');
