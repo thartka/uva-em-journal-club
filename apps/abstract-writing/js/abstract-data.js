@@ -9,7 +9,7 @@
 const AbstractData = (() => {
 
     const SECTIONS = [
-        { id: 'background', label: 'Background', page: 'p2-background.html' },
+        { id: 'background', label: 'Introduction', page: 'p2-introduction.html' },
         { id: 'methods', label: 'Methods', page: 'p3-methods.html' },
         { id: 'results', label: 'Results', page: 'p4-results.html' },
         { id: 'conclusion', label: 'Conclusion', page: 'p5-conclusion.html' }

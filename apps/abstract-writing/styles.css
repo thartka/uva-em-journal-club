@@ -239,22 +239,7 @@ body {
     margin-top: 10px;
 }
 
-/* ---- QR code card (page 6) ---- */
-.qr-card {
-    width: fit-content;
-    max-width: 100%;
-    margin: 10px auto 26px;
-    padding: 20px;
-    text-align: center;
-    background: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-}
-
-.qr-img { width: 230px; height: 230px; max-width: 100%; display: block; margin: 0 auto; }
-
-/* ---- Page 6: Ivory Tower game ---- */
+/* ---- Page 7: Ivory Tower game ---- */
 .game-blurb {
     text-align: center;
     font-size: 1.02rem;
@@ -274,10 +259,6 @@ body {
     display: block;
     width: 100%;
     height: auto;
-}
-
-.game-play .qr-card {
-    margin-bottom: 4px;
 }
 
 a.btn {

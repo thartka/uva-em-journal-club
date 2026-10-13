@@ -11,13 +11,13 @@
             key: 'A',
             words: { background: 135, methods: 35, results: 70, conclusion: 40 },
             good: false,
-            explanation: 'The background runs for a whole paragraph while the methods get a sentence or two. A reader learns a lot about the problem and almost nothing about how the study was done.'
+            explanation: 'The introduction runs for a whole paragraph while the methods get a sentence or two. A reader learns a lot about the problem and almost nothing about how the study was done.'
         },
         {
             key: 'B',
             words: { background: 45, methods: 125, results: 85, conclusion: 35 },
             good: true,
-            explanation: 'Short background and conclusion bracket a long methods and results. Methods is the biggest section here, which is common when the design or analysis takes some explaining.'
+            explanation: 'Short introduction and conclusion bracket a long methods and results. Methods is the biggest section here, which is common when the design or analysis takes some explaining.'
         },
         {
             key: 'C',
@@ -29,7 +29,7 @@
             key: 'D',
             words: { background: 40, methods: 80, results: 130, conclusion: 30 },
             good: true,
-            explanation: 'Same short bookends, but this time the results carry the most weight. Either methods or results can be the longest section; both should dwarf the background and conclusion.'
+            explanation: 'Same short bookends, but this time the results carry the most weight. Either methods or results can be the longest section; both should dwarf the introduction and conclusion.'
         }
     ];
 
