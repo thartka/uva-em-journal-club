@@ -64,7 +64,7 @@ const AbstractData = (() => {
         conclusion: {
             elements: [
                 { id: 'main', label: 'Main finding, stated succinctly', hl: 2 },
-                { id: 'secondary', label: 'Secondary outcomes or next steps', hl: 4 }
+                { id: 'secondary', label: 'Implications for practice or future research', hl: 4 }
             ],
             sentences: [
                 // `links` are indexes into results.sentences
