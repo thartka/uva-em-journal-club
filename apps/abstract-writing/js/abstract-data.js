@@ -47,9 +47,9 @@ const AbstractData = (() => {
         },
         results: {
             elements: [
-                { id: 'screened', label: 'Screened, then included', hl: 1 },
-                { id: 'primary', label: 'How many had the primary outcome', hl: 2 },
-                { id: 'test', label: 'Chief hypothesis test', hl: 3 },
+                { id: 'screened', label: 'Number of patients screened, then included/excluded', hl: 1 },
+                { id: 'primary', label: 'Percent of patients with the primary outcome', hl: 2 },
+                { id: 'test', label: 'Primary hypothesis test', hl: 3 },
                 { id: 'secondary', label: 'Secondary outcomes and other details', hl: 4 }
             ],
             sentences: [
@@ -57,7 +57,7 @@ const AbstractData = (() => {
                 { el: 'primary', text: 'We identified 28 hyperkalemia-associated adverse events in 56 patients, yielding an adverse event rate of 7.7%.' },
                 { el: 'secondary', text: 'Using the threshold that optimized the Youden’s J statistic, the accuracy was 67% with a sensitivity of 65% and a specificity of 67%.' },
                 { el: 'test', text: 'All the predictors were found to increase the probability of an adverse event.' },
-                { el: 'test', text: 'ECG intervals (QTc, PR interval, and QRS interval) were found to be the most important variables in the model, followed by the patient’s age, potassium value, and creatinine value (Figure).' },
+                { el: 'test', text: 'ECG intervals (QTc, PR interval, and QRS interval) were found to be the most important variables in the model, followed by the patient’s age, potassium value, and creatinine value.' },
                 { el: 'test', text: 'Sex, persistent ECG findings (a-fib, a-flutter, RBBB, LBBB, and LVH), and Peaked T-waves were found to be modestly predictive.' }
             ]
         },
